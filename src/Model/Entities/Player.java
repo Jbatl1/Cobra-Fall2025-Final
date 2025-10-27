@@ -35,3 +35,4 @@ public class Player extends Entity {
         // TODO: Check if item with name s is in inventory
         return -1;
     }
+}
