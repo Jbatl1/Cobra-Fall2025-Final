@@ -1,22 +1,21 @@
 package Model;
 
 import java.sql.Connection;
-import java.util.Map;
-import Model.Entities.Player;  // assuming Player is in Model.Entities
-import Model.Entities.Room;
-import Model.Entities.Item;
+import Model.Entities.Player;
+import Model.Rooms.Room;
+import Model.Items.Item;
 import Model.Entities.Monster;
-import Model.Entities.Puzzle;
+import Model.Puzzle;
 
 public class Map {
 
     // === UML Fields ===
     private Room playerLocation;
     private Player player;
-    private Map<String, Room> rooms;
-    private Map<String, Item> items;
-    private Map<String, Monster> monsters;
-    private Map<String, Puzzle> puzzles;
+    private java.util.Map<String, Room> rooms;
+    private java.util.Map<String, Item> items;
+    private java.util.Map<String, Monster> monsters;
+    private java.util.Map<String, Puzzle> puzzles;
 
     // === Constructor ===
     public Map() {
@@ -24,19 +23,19 @@ public class Map {
     }
 
     // === Getter Methods (from UML) ===
-    public Map<String, Room> getRooms() {
+    public java.util.Map<String, Room> getRooms() {
         return rooms;
     }
 
-    public Map<String, Item> getItems() {
+    public java.util.Map<String, Item> getItems() {
         return items;
     }
 
-    public Map<String, Monster> getMonsters() {
+    public java.util.Map<String, Monster> getMonsters() {
         return monsters;
     }
 
-    public Map<String, Puzzle> getPuzzles() {
+    public java.util.Map<String, Puzzle> getPuzzles() {
         return puzzles;
     }
 
