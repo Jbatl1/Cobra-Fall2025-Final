@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Shop extends Room{
     private ArrayList<Item> stock;
 
-    public Shop(Strimg id, String name, String description) {
+    public Shop(String id, String name, String description) {
         super(id, name, description);
         this.stock = new ArrayList<>();
     }
