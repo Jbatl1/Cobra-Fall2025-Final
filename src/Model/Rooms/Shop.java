@@ -1,4 +1,3 @@
-/*
 package Model.Rooms;
 
 import Model.Entities.Player;
@@ -39,4 +38,3 @@ public class Shop extends Room{
         }
     }
 }
-*/
