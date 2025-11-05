@@ -87,7 +87,7 @@ public class Player extends Entity {
         return 0;
     }
 
-    public int PickupItem(String s) {
+    public int pickupItem(String s) {
         Item item = currRoom.removeItem(s); // assume Room has removeItem()
         if (item != null) {
             inventory.add(item);
@@ -164,14 +164,13 @@ public class Player extends Entity {
         System.out.println("Puzzle: " + p.getDescription());
     }
 
-    public void requestPuzzleHint(Puzzle p) {
-        System.out.println("Hint: " + p.getHint());
-        receiveDamage(5); // penalty
-    }
+    public int skipPuzzle(Puzzle p) {
+        if(currRoom.getPuzzle() != null && !currRoom.getpuzzle().isSkipped()){
+            receiveDamage(10);
+            return 1;
+        }
+        return -1;
 
-    public void skipPuzzle(Puzzle p) {
-        System.out.println("You skipped the puzzle, but lost health!");
-        receiveDamage(10);
     }
 
     // ==============================
