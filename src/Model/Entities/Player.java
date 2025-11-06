@@ -132,6 +132,8 @@ public class Player extends Entity {
         System.out.println("You received " + item.getName() + " after victory!");
     }
 
+    //add start fight method - it takes string and returns int which should find the monster in the room
+
     // ==============================
     // Player Memory and Bartering (FR-005.2, FR-005.3, FR-005.5)
     // ==============================
