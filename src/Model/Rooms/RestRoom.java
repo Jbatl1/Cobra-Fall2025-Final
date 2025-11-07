@@ -1,6 +1,7 @@
 package Model.Rooms;
 
 import Model.Entities.Player;
+import View.View;
 
 public class RestRoom extends Room {
     private int restAmount;
@@ -12,19 +13,27 @@ public class RestRoom extends Room {
         this.restDelay = restDelay;
     }
 
-    public void rest(Player player) {
-        System.out.println("You take a moment to rest...");
+    public boolean rest(Player player, View view) {
+        view.displayRestStart();
+
         try {
-            Thread.sleep(restDelay * 1000);
+            Thread.sleep(getRestDelay() * 1000L); // use getter
         } catch (InterruptedException e) {
-            System.out.println("You couldn't get comfortable.");
+            view.displayRestInterrupted();
+            return false;
         }
 
-        player.heal(restAmount);
-        System.out.println("You feel refreshed. +" + restAmount + " HP restored.");
+        player.heal(getRestAmount()); // use getter
+
+        view.displayRestComplete(getRestAmount()); // use getter again
+        return true;
     }
 
-    public int getRestAmount() { return restAmount; }
-    public int getRestDelay() { return restDelay; }
-}
+    public int getRestAmount() {
+        return restAmount;
+    }
 
+    public int getRestDelay() {
+        return restDelay;
+    }
+}

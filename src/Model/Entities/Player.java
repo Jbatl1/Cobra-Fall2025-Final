@@ -195,7 +195,4 @@ public class Player extends Entity {
     public Room getCurrRoom() {
         return currRoom;
     }
-    public void setCurrRoom(Room currRoom) {
-        this.currRoom = currRoom;
-    }
 }
