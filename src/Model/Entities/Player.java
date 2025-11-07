@@ -136,6 +136,11 @@ public class Player extends Entity {
     }*/
 
     // ==============================
+    // Inventory / ToolBelt Management
+    // ==============================
+
+
+    // ==============================
     // Player Memory and Bartering (FR-005.2, FR-005.3, FR-005.5)
     // ==============================
     public void rememberEvent(String event) {
@@ -199,3 +204,5 @@ public class Player extends Entity {
         return currRoom;
     }
 }
+
+

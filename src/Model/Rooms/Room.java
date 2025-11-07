@@ -1,5 +1,15 @@
 package Model.Rooms;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import Model.Database.DatabaseConnection;
+import Model.Entities.Monster;
+import Model.Items.Item;
+import Model.Puzzle;
+import Model.Entities.Player;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -99,3 +109,21 @@ public class Room {
 
 
 }
+
+        return sb.toString();
+    }
+
+    // ==============================
+    // Getters
+    // ==============================
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public List<Monster> getMonsters() { return monsters; }
+    public List<Item> getItems() { return items; }
+    public Puzzle getPuzzle() { return puzzle; }
+    public boolean isVisited() { return visited; }
+
+    // ==============================
+    // String Representation
+    // ==============================

@@ -2,8 +2,6 @@ package Model.Entities;
 
 import Model.Rooms.Room;
 import Model.Items.Item;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class Monster extends Entity {
 
@@ -11,15 +9,20 @@ public class Monster extends Entity {
     // Fields
     private String monsterID;// Unique ID for the monster
     private String abilityEffect;
-    private Item dropItem;
+    private String roomID;
+    private String description;
     private boolean isBoss;
+    private Item dropItem;
     private boolean isRaider;
     private Room currentRoom; // The room this monster belongs to
+
 
 
     // Constructor
     public Monster(String name, int health, int attackPower, int defense, String monsterID, String abilityEffect, Item dropItem, boolean isBoss, boolean isRaider, Room currentRoom) {
         super(name, health, attackPower, defense);
+
+
         this.monsterID = monsterID;
         this.abilityEffect = abilityEffect;
         this.dropItem = dropItem;
@@ -101,3 +104,4 @@ public class Monster extends Entity {
         }
     }
 }
+
