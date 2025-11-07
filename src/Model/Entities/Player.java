@@ -16,7 +16,7 @@ public class Player extends Entity {
     private ArrayList<Item> toolBelt;
     private Item equippedItem;
     private Room currRoom;
-    private ArrayList<String> narrativeMemory; // FR-005.3
+    private ArrayList<String> narrativeMemory;
     private int health;
 
     // ==============================
@@ -53,7 +53,7 @@ public class Player extends Entity {
             equippedItem = inventory.get(idx);
             return 1; // success
         }
-        return 0;
+        return 0; // item not found
     }
 
     public int EquipItemToToolBelt(String s) {
@@ -81,19 +81,19 @@ public class Player extends Entity {
         int idx = isInInventory(s);
         if (idx >= 0) {
             Item item = inventory.remove(idx);
-            currRoom.addItem(item); // assume Room has addItem()
-            return 1;
+            currRoom.addItem(item);
+            return 1; // success
         }
-        return 0;
+        return 0; // item not found
     }
 
     public int pickupItem(String s) {
-        Item item = currRoom.removeItem(s); // assume Room has removeItem()
+        Item item = currRoom.removeItem(s);
         if (item != null) {
             inventory.add(item);
-            return 1;
+            return 1; // success
         }
-        return 0;
+        return 0; // item not found
     }
 
     public int destroyItem(String s) {
@@ -106,33 +106,93 @@ public class Player extends Entity {
     }
 
     // ==============================
-    // Combat and Damage (FR-004.3–004.6)
+    // Combat and Damage (FR-004.2–004.6)
     // ==============================
-    public void receiveDamage(int amount) { // FR-004.3
+    public void receiveDamage(int amount) {
         health -= amount;
         if (health < 0) health = 0;
     }
 
-    public int inflictDamage(Monster enemy) { // FR-004.4
-        if (equippedItem == null) return 0; // no weapon
-        int damage = equippedItem.getDamageValue(); // assume Item has damage value
+    public int inflictDamage(Monster enemy) {
+        if (equippedItem == null) return 0;
+        int damage = equippedItem.getDamageValue();
         enemy.receiveDamage(damage);
         return damage;
     }
 
-    public void loseItemOnDefeat() { // FR-004.5
+    public int loseItemOnDefeat() {
         if (equippedItem != null) {
-            System.out.println("You lost your " + equippedItem.getName() + " in battle!");
             equippedItem = null;
+            return 1; // item lost
         }
+        return 0; // nothing to lose
     }
 
-    public void receiveRewardItem(Item item) { // FR-004.6
+    public int receiveRewardItem(Item item) {
+        if (item == null) return 0;
         inventory.add(item);
-        System.out.println("You received " + item.getName() + " after victory!");
+        return 1; // reward received
+    }
+    // ==============================
+// Combat - Ignore Fight
+// ==============================
+    public int ignoreFight(String monsterName) {
+        if (currRoom == null || currRoom.getMonsters().isEmpty()) {
+            return -1; // No monsters in room
+        }
+
+        for (Monster m : currRoom.getMonsters()) {
+            if (m.getName().equalsIgnoreCase(monsterName)) {
+                return 1; // Player chose to ignore fight
+            }
+        }
+        return 0; // No matching monster
     }
 
-    //add start fight method - it takes string and returns int which should find the monster in the room
+    // ==============================
+    // Start Fight (no print statements)
+    // ==============================
+    public int startFight(String monsterName) {
+        ArrayList<Monster> monsters = currRoom.getMonsters();
+
+        if (monsters == null || monsters.isEmpty()) {
+            return -1; // no monsters in room
+        }
+
+        Monster target = null;
+        for (Monster m : monsters) {
+            if (m.getName().equalsIgnoreCase(monsterName)) {
+                target = m;
+                break;
+            }
+        }
+
+        if (target == null) {
+            return 0; // monster not found
+        }
+
+        // Fight loop (logic only)
+        while (this.health > 0 && target.getHealth() > 0) {
+            inflictDamage(target);
+
+            if (target.getHealth() <= 0) {
+                currRoom.getMonsters().remove(target);
+                if (target.getRewardItem() != null) {
+                    receiveRewardItem(target.getRewardItem());
+                }
+                return 1; // fight won
+            }
+
+            target.attack(this); // Monster attacks back
+        }
+
+        if (this.health <= 0) {
+            loseItemOnDefeat();
+            return -2; // player defeated
+        }
+
+        return 0; // fallback
+    }
 
     // ==============================
     // Player Memory and Bartering (FR-005.2, FR-005.3, FR-005.5)
@@ -141,19 +201,15 @@ public class Player extends Entity {
         narrativeMemory.add(event);
     }
 
-    public void showMemories() {
-        System.out.println("Your memories:");
-        for (String e : narrativeMemory) {
-            System.out.println("- " + e);
-        }
+    public ArrayList<String> getMemories() {
+        return narrativeMemory;
     }
 
-    public boolean barterItem(String offerItem, String receiveItem) { // FR-005.5
+    public boolean barterItem(String offerItem, String receiveItem) {
         int idx = isInInventory(offerItem);
         if (idx >= 0) {
             inventory.remove(idx);
             inventory.add(new Item(receiveItem)); // placeholder
-            System.out.println("You bartered " + offerItem + " for " + receiveItem + "!");
             return true;
         }
         return false;
@@ -162,17 +218,12 @@ public class Player extends Entity {
     // ==============================
     // Puzzle Interaction (FR-006.2, FR-006.4, FR-006.5)
     // ==============================
-    public void examinePuzzle(Puzzle p) {
-        System.out.println("Puzzle: " + p.getDescription());
-    }
-
     public int skipPuzzle(Puzzle p) {
-        if(currRoom.getPuzzle() != null && !currRoom.getpuzzle().isSkipped()){
+        if (currRoom.getPuzzle() != null && !currRoom.getPuzzle().isSkipped()) {
             receiveDamage(10);
-            return 1;
+            return 1; // puzzle skipped with penalty
         }
-        return -1;
-
+        return -1; // no puzzle or already skipped
     }
 
     // ==============================
@@ -182,11 +233,9 @@ public class Player extends Entity {
         Room next = currRoom.getExit(direction);
         if (next != null) {
             currRoom = next;
-            System.out.println("You moved " + direction + " to " + currRoom.getName());
-            return 1;
+            return 1; // moved successfully
         }
-        System.out.println("You can't move that way.");
-        return 0;
+        return 0; // invalid move
     }
 
     public int getHealth() {
@@ -195,5 +244,9 @@ public class Player extends Entity {
 
     public Room getCurrRoom() {
         return currRoom;
+    }
+
+    public Item getEquippedItem() {
+        return equippedItem;
     }
 }
