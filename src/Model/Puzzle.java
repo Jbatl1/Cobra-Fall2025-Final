@@ -33,10 +33,6 @@ public class Puzzle {
         }
     }
 
-    public String hint() {
-        return "Hint: The answer begins with '" + solution.charAt(0) + "'";
-    }
-
     public String examine() {
         return question;
     }
