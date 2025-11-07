@@ -9,83 +9,49 @@ public class Monster extends Entity {
 
 
     // Fields
-
-    private String monsterID;     // Unique ID for the monster
-    private String roomID;        // The room this monster belongs to
-    private String description;
-    private boolean isBoss;
+    private String monsterID;// Unique ID for the monster
+    private String abilityEffect;
     private Item dropItem;
-    private int maxHealth;
-    private Room currentRoom;
+    private boolean isBoss;
+    private boolean isRaider;
+    private Room currentRoom; // The room this monster belongs to
 
 
     // Constructor
-
-    public Monster(String monsterID, String roomID, String name, String description,
-                   int health, int attackPower, int defense, boolean isBoss, Item dropItem, Room currentRoom) {
-
-        super(name, health, attackPower);
+    public Monster(String name, int health, int attackPower, int defense, String monsterID, String abilityEffect, Item dropItem, boolean isBoss, boolean isRaider, Room currentRoom) {
+        super(name, health, attackPower, defense);
         this.monsterID = monsterID;
-        this.roomID = roomID;
-        this.description = description;
-        this.isBoss = isBoss;
+        this.abilityEffect = abilityEffect;
         this.dropItem = dropItem;
-        this.defense = defense;
-        this.maxHealth = health;
+        this.isBoss = isBoss;
+        this.isRaider = isRaider;
         this.currentRoom = currentRoom;
     }
 
-
     // Getters / Setters
-
     public String getMonsterID() {
         return monsterID;
     }
 
-    public String getRoomID() {
-        return roomID;
-    }
-
-    public Room getCurrentRoom() {
-        return currentRoom;
-    }
-
-    public void setCurrentRoom(Room currentRoom) {
-        this.currentRoom = currentRoom;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isBoss() {
-        return isBoss;
+    public String getAbilityEffect() {
+        return abilityEffect;
     }
 
     public Item getDropItem() {
         return dropItem;
     }
 
-    public void setDropItem(Item dropItem) {
-        this.dropItem = dropItem;
+    public boolean isBoss() {
+        return isBoss;
     }
 
-
-    // Display Info
-
-    public void inspect() {
-        System.out.println("=== Monster Information ===");
-        System.out.println("Monster ID: " + monsterID);
-        System.out.println("Room ID: " + roomID);
-        System.out.println("Name: " + name);
-        System.out.println("Description: " + description);
-        System.out.println("Health: " + health + "/" + maxHealth);
-        System.out.println("Attack Power: " + attackPower);
-        System.out.println("Defense: " + defense);
-        System.out.println("Boss: " + (isBoss ? "Yes" : "No"));
-        System.out.println("============================");
+    public boolean isRaider() {
+        return isRaider;
     }
 
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
 
     // Combat
 
@@ -110,7 +76,7 @@ public class Monster extends Entity {
 
     public Item getReward() {
         if (health <= 0 && dropItem != null) {
-            System.out.println(name + " dropped: " + dropItem.getName());
+            System.out.println(name + " dropped: " + dropItem.getItemName());
             return dropItem;
         }
         return null;

@@ -3,8 +3,11 @@ package Model.Items;
 public class EnergyWeapon extends Weapon{
     private int charge;
     private int maxCharge;
-    public EnergyWeapon(String id, String name, String description, String rarity, int damage, int durability, int maxCharge) {
-        super(id, name, description, rarity, damage, durability);
+
+    public EnergyWeapon(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemEffect, String itemMessage, int itemUpgrade, String itemNeeded, int damage, int durability, int charge, int maxCharge) {
+        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemRestoreHP, itemEffect, itemMessage, itemUpgrade, itemNeeded, damage, durability);
+        this.charge = charge;
+        this.maxCharge = maxCharge;
     }
 
     public int getCharge() {

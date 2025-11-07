@@ -7,14 +7,16 @@ import java.util.ArrayList;
 public class Shop extends Room{
     private ArrayList<Item> stock;
 
-    public Shop(String id, String name, String description) {
-        super(id, name, description);
+    public Shop(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, ArrayList<Item> stock) {
+        super(roomID, roomName, roomDescription, roomType, northNavigation, eastNavigation, southNavigation, westNavigation, roomVisited);
         this.stock = new ArrayList<>();
     }
+
     public void addItemToStock(Item item){
         stock.add(item);
     }
-    public void displayStock(){
+
+   /* public void displayStock(){
         System.out.println("Items for sale:");
         for (Item item : stock){
             System.out.println("- " + item.getName());
@@ -36,5 +38,7 @@ public class Shop extends Room{
             stock.add(item);
             System.out.println("You sold " + item.getName() + ".");
         }
-    }
+    }*/
+
+
 }

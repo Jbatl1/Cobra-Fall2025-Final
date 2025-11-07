@@ -1,47 +1,36 @@
 package Model.Items;
 
-public abstract class Item {
-    private String id;
-    private String name;
-    private String description;
-    private String rarity;
+public  class Item {
 
-    public Item(String id, String name, String description, String rarity) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.rarity = rarity;
+    private String ItemID;
+    private String RoomID;
+    private String ItemName;
+    private String ItemType;
+    private String ItemRarity;
+    private int ItemDamage;
+    private int ItemDurability;
+    private int ItemRestoreHP;
+    private String ItemEffect;
+    private String ItemMessage;
+    private int ItemUpgrade;
+    private String ItemNeeded;
+
+    public Item(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemEffect, String itemMessage, int itemUpgrade, String itemNeeded) {
+        ItemID = itemID;
+        RoomID = roomID;
+        ItemName = itemName;
+        ItemType = itemType;
+        ItemRarity = itemRarity;
+        ItemDamage = itemDamage;
+        ItemDurability = itemDurability;
+        ItemRestoreHP = itemRestoreHP;
+        ItemEffect = itemEffect;
+        ItemMessage = itemMessage;
+        ItemUpgrade = itemUpgrade;
+        ItemNeeded = itemNeeded;
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getItemID() { return ItemID; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getRarity() {
-        return rarity;
-    }
-
-    public void setRarity(String rarity) {
-        this.rarity = rarity;
-    }
+    public String getItemName() {return ItemName;}
 }

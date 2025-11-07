@@ -13,7 +13,7 @@ public abstract class Entity {
 
     // Constructor
 
-    public Entity(String name, int health, int attackPower) {
+    public Entity(String name, int health, int attackPower, int defense) {
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;

@@ -7,13 +7,13 @@ public class RaiderCamp extends Room {
     private Monster raiderLeader;
     private boolean cleared;
 
-    public RaiderCamp(String id, String name, String description, Monster raiderLeader) {
-        super(id, name, description);
+    public RaiderCamp(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, Monster raiderLeader, boolean cleared) {
+        super(roomID, roomName, roomDescription, roomType, northNavigation, eastNavigation, southNavigation, westNavigation, roomVisited);
         this.raiderLeader = raiderLeader;
-        this.cleared = false;
+        this.cleared = cleared;
     }
 
-    public void enterCamp(Player player) {
+   /* public void enterCamp(Player player) {
         System.out.println("You approach the Raider Camp...");
         if (!cleared) {
             raidEncounter(player);
@@ -35,7 +35,7 @@ public class RaiderCamp extends Room {
             cleared = true;
             System.out.println("You’ve defeated the Raider Camp leader!");
         }
-    }
+    }*/
 
     public boolean isCleared() { return cleared; }
 }
