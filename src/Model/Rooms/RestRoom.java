@@ -27,3 +27,4 @@ public class RestRoom extends Room {
     public int getRestAmount() { return restAmount; }
     public int getRestDelay() { return restDelay; }
 }
+
