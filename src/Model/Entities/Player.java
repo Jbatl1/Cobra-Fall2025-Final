@@ -1,7 +1,6 @@
 package Model.Entities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import Model.Items.Item;
 import Model.Rooms.Room;
 import Model.Entities.Monster;
@@ -19,17 +18,64 @@ public class Player extends Entity {
     private ArrayList<String> narrativeMemory; // FR-005.3
     private int health;
 
+    // Ship storage (capacity 20)
+    private ArrayList<Item> shipStorage;
+    private final int SHIP_CAPACITY = 20;
+
     // ==============================
     // Constructor
     // ==============================
     public Player(Room startingRoom, String name, int health, int attackPower) {
-        super(name,health,attackPower);
+        super(name, health, attackPower);
         this.inventory = new ArrayList<>();
         this.toolBelt = new ArrayList<>();
         this.currRoom = startingRoom;
         this.equippedItem = null;
         this.narrativeMemory = new ArrayList<>();
+        this.shipStorage = new ArrayList<>();
         this.health = 100; // Default HP
+    }
+
+    // ==============================
+    // Ship Storage Management
+    // ==============================
+    public int addCargoItem(Item item) {
+        if (shipStorage.size() >= SHIP_CAPACITY) {
+            return -1; // storage full
+        }
+        shipStorage.add(item);
+        return 1; // success
+    }
+
+    public int removeCargoItem(Item item) {
+        if (shipStorage.remove(item)) {
+            return 1; // successfully removed
+        }
+        return -1; // item not found
+    }
+
+    public ArrayList<Item> getShipStorage() {
+        return shipStorage;
+    }
+
+    // ==============================
+    // Move to a Different Landing Site
+    // ==============================
+    public int moveToLandingSite(String landingSite) {
+        // Not currently at a landing site
+        if (!currRoom.getName().equalsIgnoreCase("Landing site")) {
+            return -2;
+        }
+
+        // Check if the given landing site exists
+        Room target = Room.getRoomByName(landingSite); // assumed static lookup
+        if (target == null || !target.getName().equalsIgnoreCase("Landing site")) {
+            return -1;
+        }
+
+        // Move to the new landing site
+        currRoom = target;
+        return 1;
     }
 
     // ==============================
@@ -123,14 +169,12 @@ public class Player extends Entity {
 
     public void loseItemOnDefeat() { // FR-004.5
         if (equippedItem != null) {
-            System.out.println("You lost your " + equippedItem.getName() + " in battle!");
             equippedItem = null;
         }
     }
 
     public void receiveRewardItem(Item item) { // FR-004.6
         inventory.add(item);
-        System.out.println("You received " + item.getName() + " after victory!");
     }
 
     // ==============================
@@ -140,11 +184,8 @@ public class Player extends Entity {
         narrativeMemory.add(event);
     }
 
-    public void showMemories() {
-        System.out.println("Your memories:");
-        for (String e : narrativeMemory) {
-            System.out.println("- " + e);
-        }
+    public ArrayList<String> getMemories() {
+        return narrativeMemory;
     }
 
     public boolean barterItem(String offerItem, String receiveItem) { // FR-005.5
@@ -152,7 +193,6 @@ public class Player extends Entity {
         if (idx >= 0) {
             inventory.remove(idx);
             inventory.add(new Item(receiveItem)); // placeholder
-            System.out.println("You bartered " + offerItem + " for " + receiveItem + "!");
             return true;
         }
         return false;
@@ -161,18 +201,13 @@ public class Player extends Entity {
     // ==============================
     // Puzzle Interaction (FR-006.2, FR-006.4, FR-006.5)
     // ==============================
+    // Take out puzzle p check if currRoom has puzzle Return 1 if not null, then give puzzle description, if no puzzle then return 0.
     public void examinePuzzle(Puzzle p) {
-        System.out.println("Puzzle: " + p.getDescription());
-    }
-
-    public void requestPuzzleHint(Puzzle p) {
-        System.out.println("Hint: " + p.getHint());
-        receiveDamage(5); // penalty
+        // handled by View
     }
 
     public void skipPuzzle(Puzzle p) {
-        System.out.println("You skipped the puzzle, but lost health!");
-        receiveDamage(10);
+        receiveDamage(10); // penalty
     }
 
     // ==============================
@@ -182,10 +217,8 @@ public class Player extends Entity {
         Room next = currRoom.getExit(direction);
         if (next != null) {
             currRoom = next;
-            System.out.println("You moved " + direction + " to " + currRoom.getName());
             return 1;
         }
-        System.out.println("You can't move that way.");
         return 0;
     }
 
@@ -197,4 +230,5 @@ public class Player extends Entity {
         return currRoom;
     }
 }
+
 //need a arraylist with a ship capacity of 20 items, we going to need a method in the player class to move to a different landing site which will take in a string called landingsite, its going to check if they current room is a landingsite, we also need to check if its an existing landingsite, if it exist update player room to the new landingsite, if its false return -1, if true return 1, if not in landingsite from the start return -2.
