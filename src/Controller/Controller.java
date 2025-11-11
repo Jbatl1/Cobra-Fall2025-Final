@@ -16,78 +16,77 @@ public class Controller {
         boolean fight = false;
         boolean puzzle = false;
         int x;
-        String input;
 
         while (!shop && !fight) {
-            input = View.input();
+            String input = this.view.getInput();
             switch (input) {
 
                 // MOVEMENT----------------------
                 case "N": // move north
                     x = model.getPlayer().move("N");
-                    view.enterRoom(x, "North", model.getPlayer().getCurrRoom().getName());
+                    view.enterRoom(x, "North", model.getPlayer().getCurrRoom());
                     if (x == -2) puzzle = true;
                     break;
                 case "E": // move east
                     x = model.getPlayer().move("E");
-                    view.enterRoom(x, "East", model.getPlayer().getCurrRoom().getName());
+                    view.enterRoom(x, "East", model.getPlayer().getCurrRoom());
                     if (x == -2) puzzle = true;
                     break;
                 case "S": // move south
                     x = model.getPlayer().move("S");
-                    view.enterRoom(x, "South", model.getPlayer().getCurrRoom().getName());
+                    view.enterRoom(x, "South", model.getPlayer().getCurrRoom());
                     if (x == -2) puzzle = true;
                     break;
                 case "W": // move west
                     x = model.getPlayer().move("W");
-                    view.enterRoom(x, "West", model.getPlayer().getCurrRoom().getName());
+                    view.enterRoom(x, "West", model.getPlayer().getCurrRoom());
                     if (x == -2) puzzle = true;
                     break;
 
                 // ITEMS---------------------
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item
-                    x = model.getPlayer().pickupItem(s.substring(7).trim());
-                    view.displayItemPickup(x, s);
+                    x = this.model.getPlayer().pickupItem(s.substring(7).trim());
+                    this.view.displayItemPickup(x, s);
                     break;
                 case String s when input.matches("^DROP\\s.*$"): // drop item
-                    x = model.getPlayer().dropItem(s.substring(5).trim());
-                    view.displayItemDropped(x, s);
+                    x = this.model.getPlayer().dropItem(s.substring(5).trim());
+                    this.view.displayItemDropped(x, s);
                     break;
                 case String s when input.matches("^EQUIP\\s.*$"): //pickup item
-                    x = model.getPlayer().equipItemToHands(s);
-                    view.equipItem();
+                    x = this.model.getPlayer().equipItemToHands(s);
+                    this.view.equipItem();
                     break;
                 case String s when input.matches("^EXAMINE\\s.*$"): //pickup item
-                    x = model.getPlayer().getCurrRoom().getItems().contains();
-                    view.equipItem();
+                    x = this.model.getPlayer().getCurrRoom().getItems().contains();
+                    this.view.equipItem();
                     break;
                 case "TOOL BELT": // opens tool belt
-                    view.printToolbelt(model.getPlayer().getToolBelt);
+                    this.view.printToolbelt(this.model.getPlayer().getToolBelt);
                     break;
                 case "B": // check inventory
-                    view.printInv(model.getPlayer().getInventory());
+                    this.view.printInv(this.model.getPlayer().getInventory());
                     break;
                 case "G": // drop held item
-                    String itemName = model.getPlayer().getEquippedItem().getName;
-                    x = model.getPlayer().dropItem(itemName);
-                    view.displayItemDropped(x, itemName);
+                    String itemName = this.model.getPlayer().getEquippedItem().getName;
+                    x = this.model.getPlayer().dropItem(itemName);
+                    this.view.displayItemDropped(x, itemName);
                     break;
                 case "SHIP": // explore room
-                    if (model.getPlayer().getCurrRoom() instanceof LaunchSite) {
-                        view.displayShip(model.getPlayer().getShipInventory());
+                    if (this.model.getPlayer().getCurrRoom() instanceof LaunchSite) {
+                        this.view.displayShip(this.model.getPlayer().getShipInventory());
                     }
                     break;
 
                 // MONSTER -----------------------
                 case String s when input.matches("^ATTACK\\s.*$"): // attack monster
-                    model.getPlayer().
+                    this.model.getPlayer().attack();
                     break;
                 case "FIGHT": // Start fight
-                    model.getPlayer().fightMonster();
+                    this.model.getPlayer().fightMonster();
                     break;
                 case "G": // drop held item
-                    String equippedItem = model.getPlayer().getEquippedItem().getName;
-                    model.getPlayer().dropItem(equippedItem);
+                    String equippedItem = this.model.getPlayer().getEquippedItem().getName;
+                    this.model.getPlayer().dropItem(equippedItem);
                     view.dropEquippedItem(equippedItem);
                     break;
                 case "INSPECT": // shows monster name / desc / health / atk
@@ -115,7 +114,7 @@ public class Controller {
         }
 
         while (fight) {
-            input = view.input();
+            String input = this.view.getInput();
             switch (input) {
                 case "ATTACK":
 
@@ -127,33 +126,33 @@ public class Controller {
         }
 
         while (shop) {
-            input = view.input();
+            String input = this.view.getInput();
             switch (input) {
                 case "SHOP": // opens shop and displays items for sale
-                    (Shop)(model.getPlayer().getCurrRoom()).displayStock();
+                    (Shop)(this.model.getPlayer().getCurrRoom()).displayStock();
                     break;
                 case String s when input.matches("^BUY\\s.*$"): // buy item
-                    view.printToUser(model.getPlayer().dropItem(s.substring(4).trim()));
+                    this.view.printToUser(this.model.getPlayer().dropItem(s.substring(4).trim()));
                     break;
                 case String s when input.matches("^SELL\\s.*$"): // sell item
-                    view.printToUser(model.getPlayer().dropItem(s.substring(5).trim()));
+                    this.view.printToUser(this.model.getPlayer().dropItem(s.substring(5).trim()));
                     break;
             }
         }
 
         while (puzzle) {
-            input = view.input();
+            String input = this.view.getInput();
             switch (input) {
                 case "EXAMINE":
-                    if (model.getPlayer().getCurrRoom().getBoundryPuzzle != null) {
-                        view.printBoundryPuzzle();
-                    } else if (model.getPlayer().getCurrRoom().getPuzzle() != null) {
-                        view.printPuzzle();
+                    if (this.model.getPlayer().getCurrRoom().getBoundryPuzzle != null) {
+                        this.view.printBoundryPuzzle();
+                    } else if (this.model.getPlayer().getCurrRoom().getPuzzle() != null) {
+                        this.view.printPuzzle();
                     }
-                    model.getPlayer().examinePuzzle(model.getPlayer().getCurrRoom().getPuzzle());
+                    this.model.getPlayer().examinePuzzle(this.model.getPlayer().getCurrRoom().getPuzzle());
                     break;
                 case "SOLVE":
-                    model.getPlayer().solvePuzzle();
+                    this.model.getPlayer().solvePuzzle();
                     break;
                 case "IGNORE":
                     puzzle = false;
@@ -163,7 +162,7 @@ public class Controller {
 
 
         if (rest) {
-            model.getPlayer().rest();
+            this.model.getPlayer().rest();
         }
     }
 }

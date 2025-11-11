@@ -7,52 +7,62 @@ import Model.Rooms.RestRoom;
 import Model.Items.Item;
 
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class View {
+    private Scanner scanner;
+
+    public View() {
+        scanner = new Scanner(System.in);
+    }
+
+    public String getInput() {
+        return scanner.nextLine().trim().toUpperCase();
+    }
 
     // ==============================
     // General / Utility Output
     // ==============================
-    public static void printMessage(String msg) {
+    public void printMessage(String msg) {
         System.out.println(msg);
     }
 
-    public static void printSeparator() {
+    public void printSeparator() {
         System.out.println("===============================");
     }
 
     // ==============================
     // Combat Output
     // ==============================
-    public static void displayFightStart(String monsterName) {
+    public void displayFightStart(String monsterName) {
         System.out.println("⚔️ A wild " + monsterName + " appears! Prepare for battle!");
     }
 
-    public static void displayFightIgnored(String monsterName) {
+    public void displayFightIgnored(String monsterName) {
         System.out.println("❕ You chose to ignore the " + monsterName + ". It watches you warily...");
     }
 
-    public static void displayPlayerAttack(String monsterName, int damage) {
+    public void displayPlayerAttack(String monsterName, int damage) {
         System.out.println("You attack " + monsterName + " for " + damage + " damage!");
     }
 
-    public static void displayMonsterAttack(String monsterName, int damage) {
+    public void displayMonsterAttack(String monsterName, int damage) {
         System.out.println(monsterName + " strikes back for " + damage + " damage!");
     }
 
-    public static void displayVictory(String monsterName, Item reward) {
+    public void displayVictory(String monsterName, Item reward) {
         System.out.println("🏆 You defeated " + monsterName + "!");
         if (reward != null) {
             System.out.println("You received " + reward.getName() + " as a reward!");
         }
     }
 
-    public static void displayDefeat(Player player) {
+    public void displayDefeat(Player player) {
         System.out.println("💀 You were defeated! You lost your equipped item...");
         System.out.println("Current HP: " + player.getHealth());
     }
 
-    public static void displayFightSummary(Player player, Monster monster) {
+    public void displayFightSummary(Player player, Monster monster) {
         System.out.println("⚔️ Combat Summary:");
         System.out.println("  " + player.getClass().getSimpleName() + " HP: " + player.getHealth());
         System.out.println("  " + monster.getName() + " HP: " + monster.getHealth());
@@ -62,7 +72,7 @@ public class View {
     // ==============================
     // Room / Exploration Output
     // ==============================
-    public static void displayRoomEntry(Room room) {
+    private void displayRoomEntry(Room room) {
         printSeparator();
         System.out.println("🏠 You enter: " + room.getName());
         System.out.println(room.getDescription());
@@ -70,10 +80,11 @@ public class View {
         System.out.println("Monsters here: " + (room.getMonsters().isEmpty() ? "None" : room.getMonsters().size()));
         printSeparator();
     }
-    public void enterRoom(int x, String direction, String roomName){
+    public void enterRoom(int x, String direction, Room room){
         switch (x) {
             case 1:
-                System.out.println("You traveled " + direction + " to room " + roomName + ".");
+                System.out.println("You traveled " + direction);
+                displayRoomEntry(room);
                 break;
             case -1:
                 System.out.println("You can't go " + direction + " from here.");
@@ -87,16 +98,16 @@ public class View {
     // ==============================
     // Rest / Healing Output
     // ==============================
-    public static void displayRestStart(RestRoom room) {
+    public void displayRestStart(RestRoom room) {
         System.out.println("💤 You take a moment to rest...");
         System.out.println("(Resting will take " + room.getRestDelay() + " seconds)");
     }
 
-    public static void displayRestInterrupted() {
+    public void displayRestInterrupted() {
         System.out.println("⚠️ You couldn’t get comfortable. Rest interrupted!");
     }
 
-    public static void displayRestComplete(int amountHealed, int currentHealth) {
+    public void displayRestComplete(int amountHealed, int currentHealth) {
         System.out.println("✨ You feel refreshed! +" + amountHealed + " HP restored.");
         System.out.println("Your current health is now: " + currentHealth);
     }
@@ -104,20 +115,20 @@ public class View {
     // ==============================
     // Inventory / Items
     // ==============================
-    public static void displayItemPickup(Item item) {
+    public void displayItemPickup(Item item) {
         System.out.println("📦 You picked up: " + item.getName());
     }
 
-    public static void displayItemDropped(Item item) {
+    public void displayItemDropped(Item item) {
         System.out.println("🗑️ You dropped: " + item.getName());
     }
 
-    public static void displayItemDestroyed(Item item) {
+    public void displayItemDestroyed(Item item) {
         System.out.println("🔥 You destroyed: " + item.getName());
     }
 
     // Store all dialogues here
-    private static final HashMap<String, String[]> dialogues = new HashMap<>();
+    private final HashMap<String, String[]> dialogues = new HashMap<>();
 
     static {
         // Raider Camp
@@ -162,7 +173,7 @@ public class View {
     // ========================
 
     // Plays a dialogue sequence
-    public static void play(String key) {
+    public void play(String key) {
         if (!dialogues.containsKey(key)) {
             System.out.println("[No dialogue found for key: " + key + "]");
             return;
