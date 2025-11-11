@@ -70,6 +70,19 @@ public class View {
         System.out.println("Monsters here: " + (room.getMonsters().isEmpty() ? "None" : room.getMonsters().size()));
         printSeparator();
     }
+    public void enterRoom(int x, String direction, String roomName){
+        switch (x) {
+            case 1:
+                System.out.println("You traveled " + direction + " to room " + roomName + ".");
+                break;
+            case -1:
+                System.out.println("You can't go " + direction + " from here.");
+                break;
+            case -2:
+                System.out.println("There is a boundry puzzle blocking your way " + direction + ". Solve it to proceed.");
+                break;
+        }
+    }
 
     // ==============================
     // Rest / Healing Output
