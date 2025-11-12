@@ -48,7 +48,10 @@ public class LoadRooms {
                         rs.getString("EastNavigation"),
                         rs.getString("SouthNavigation"),
                         rs.getString("WestNavigation"),
-                        rs.getBoolean("isVisited")
+                        rs.getBoolean("isVisited"),
+                        rs.getBoolean("isRaider"),
+                        rs.getBoolean("isShop")
+
                 );
 
                 roomsInfo.put(room.getRoomID(), room);
@@ -68,7 +71,9 @@ public class LoadRooms {
                         rs1.getString("EastNavigation"),
                         rs1.getString("SouthNavigation"),
                         rs1.getString("WestNavigation"),
-                        rs1.getBoolean("isVisited")
+                        rs1.getBoolean("isVisited"),
+                        rs1.getBoolean("isRaider"),
+                        rs1.getBoolean("isShop")
                 );
 
                 roomsInfo.put(room.getRoomID(), room);
@@ -88,7 +93,9 @@ public class LoadRooms {
                         rs2.getString("EastNavigation"),
                         rs2.getString("SouthNavigation"),
                         rs2.getString("WestNavigation"),
-                        rs2.getBoolean("isVisited")
+                        rs2.getBoolean("isVisited"),
+                        rs2.getBoolean("isRaider"),
+                        rs2.getBoolean("isShop")
                 );
 
                 roomsInfo.put(room.getRoomID(), room);
@@ -107,7 +114,9 @@ public class LoadRooms {
                         rs3.getString("EastNavigation"),
                         rs3.getString("SouthNavigation"),
                         rs3.getString("WestNavigation"),
-                        rs3.getBoolean("isVisited")
+                        rs3.getBoolean("isVisited"),
+                        rs3.getBoolean("isRaider"),
+                        rs3.getBoolean("isShop")
                 );
 
                 roomsInfo.put(room.getRoomID(), room);
@@ -127,7 +136,9 @@ public class LoadRooms {
                         rs4.getString("EastNavigation"),
                         rs4.getString("SouthNavigation"),
                         rs4.getString("WestNavigation"),
-                        rs4.getBoolean("isVisited")
+                        rs4.getBoolean("isVisited"),
+                        rs4.getBoolean("isRaider"),
+                        rs4.getBoolean("isShop")
                 );
 
                 roomsInfo.put(room.getRoomID(), room);
@@ -147,7 +158,9 @@ public class LoadRooms {
                         rs5.getString("EastNavigation"),
                         rs5.getString("SouthNavigation"),
                         rs5.getString("WestNavigation"),
-                        rs5.getBoolean("isVisited")
+                        rs5.getBoolean("isVisited"),
+                        rs5.getBoolean("isRaider"),
+                        rs5.getBoolean("isShop")
                 );
 
                 roomsInfo.put(room.getRoomID(), room);
@@ -167,7 +180,9 @@ public class LoadRooms {
                         rs6.getString("EastNavigation"),
                         rs6.getString("SouthNavigation"),
                         rs6.getString("WestNavigation"),
-                        rs6.getBoolean("isVisited")
+                        rs6.getBoolean("isVisited"),
+                        rs6.getBoolean("isRaider"),
+                        rs6.getBoolean("isShop")
                 );
 
                 roomsInfo.put(room.getRoomID(), room);
@@ -187,7 +202,9 @@ public class LoadRooms {
                         rs7.getString("EastNavigation"),
                         rs7.getString("SouthNavigation"),
                         rs7.getString("WestNavigation"),
-                        rs7.getBoolean("isVisited")
+                        rs7.getBoolean("isVisited"),
+                        rs7.getBoolean("isRaider"),
+                        rs7.getBoolean("isShop")
                 );
                 roomsInfo.put(room.getRoomID(), room);
             }
@@ -265,16 +282,16 @@ public class LoadRooms {
                 items.put(item.getItemID(), item);
             }
 
-        /*    for (Map.Entry<Integer, Rooms> entry : roomsInfo.entrySet()) {
+      for (Map.Entry<String, Room> entry : roomsInfo.entrySet()) {
 
-                Integer key = entry.getKey();
-                Rooms room = entry.getValue();
+                String key = entry.getKey();
+                Room room = entry.getValue();
 
                 room.addRoomExit("NORTH", room.getNorthNavigation());
                 room.addRoomExit("EAST", room.getEastNavigation());
                 room.addRoomExit("SOUTH", room.getSouthNavigation());
                 room.addRoomExit("WEST", room.getWestNavigation());
-            }*/
+            }
 
 
         } catch(Exception e){

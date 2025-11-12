@@ -1,3 +1,4 @@
+/*
 package Model.Rooms;
 
 import Model.Entities.Player;
@@ -21,7 +22,7 @@ public class RestRoom extends Room {
             System.out.println("You couldn't get comfortable.");
         }
 
-        player.heal(restAmount);
+        //player.heal(restAmount);
         System.out.println("You feel refreshed. +" + restAmount + " HP restored.");
     }
 
@@ -30,3 +31,4 @@ public class RestRoom extends Room {
 
 }
 
+*/

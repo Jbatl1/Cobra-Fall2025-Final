@@ -1,3 +1,4 @@
+/*
 package Model.Rooms;
 
 import Model.Entities.Player;
@@ -12,8 +13,7 @@ public class RaiderCamp extends Room {
         this.raiderLeader = raiderLeader;
         this.cleared = cleared;
     }
-
-   /* public void enterCamp(Player player) {
+ public void enterCamp(Player player) {
         System.out.println("You approach the Raider Camp...");
         if (!cleared) {
             raidEncounter(player);
@@ -35,7 +35,9 @@ public class RaiderCamp extends Room {
             cleared = true;
             System.out.println("You’ve defeated the Raider Camp leader!");
         }
-    }*/
+    }
+
 
     public boolean isCleared() { return cleared; }
 }
+*/

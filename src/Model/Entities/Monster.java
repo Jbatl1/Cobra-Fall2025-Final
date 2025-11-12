@@ -89,7 +89,7 @@ public class Monster extends Entity {
         return !isBoss;
     }
 
-    public void fleeAttempt(Player player) {
+  /*  public void fleeAttempt(Player player) {
         if (!canFlee()) {
             System.out.println("You cannot flee from this boss monster!");
         } else {
@@ -102,6 +102,6 @@ public class Monster extends Entity {
                 System.out.println("You failed to flee and lost " + penalty + " HP!");
             }
         }
-    }
+    }*/
 }
 

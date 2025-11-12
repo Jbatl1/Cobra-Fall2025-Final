@@ -33,4 +33,42 @@ public  class Item {
     public String getItemID() { return ItemID; }
 
     public String getItemName() {return ItemName;}
+
+    public String getRoomID() {return RoomID;}
+
+    public String getItemType() {
+        return ItemType;
+    }
+
+    public String getItemRarity() {
+        return ItemRarity;
+    }
+
+    public int getItemDamage() {
+        return ItemDamage;
+    }
+
+    public int getItemDurability() {
+        return ItemDurability;
+    }
+
+    public int getItemRestoreHP() {
+        return ItemRestoreHP;
+    }
+
+    public String getItemEffect() {
+        return ItemEffect;
+    }
+
+    public String getItemMessage() {
+        return ItemMessage;
+    }
+
+    public int getItemUpgrade() {
+        return ItemUpgrade;
+    }
+
+    public String getItemNeeded() {
+        return ItemNeeded;
+    }
 }

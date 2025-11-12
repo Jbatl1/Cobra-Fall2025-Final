@@ -1,20 +1,16 @@
 package Model.Rooms;
 
-import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
-import Model.Database.DatabaseConnection;
 import Model.Entities.Monster;
 import Model.Items.Item;
-import Model.Puzzle;
-import Model.Entities.Player;
+import Model.Puzzles.Puzzle;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-import Model.Items.Item;
-
+//items --> roomItems
+//getName() --> getItemName
 public class Room {
     private String roomID;
     private String roomName;
@@ -25,12 +21,16 @@ public class Room {
     private String southNavigation;
     private String westNavigation;
     private boolean roomVisited;
-   // private Puzzle roomPuzzle;  // the puzzle in this room, can be null
-    private HashMap<String, Integer> exits;// stores exits (direction → roomNumber mapping)
-   private ArrayList<Item> roomItems = new ArrayList<>(); // items present in this room
+    private boolean isRaider;
+    private boolean isShop;
+    private Puzzle roomPuzzle;  // the puzzle in this room, can be null
+    private HashMap<String, String> exits;// stores exits (direction → roomNumber mapping)
+    private ArrayList<Item> roomItems = new ArrayList<>(); // items present in this room
+    private ArrayList<Puzzle> puzzlePresent = new ArrayList<>();
+    private List<Monster> monsters;
 
 
-    public Room(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited) {
+    public Room(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop) {
         this.roomID = roomID;
         this.roomName = roomName;
         this.roomDescription = roomDescription;
@@ -40,6 +40,10 @@ public class Room {
         this.southNavigation = southNavigation;
         this.westNavigation = westNavigation;
         this.roomVisited = roomVisited;
+        this.isRaider = isRaider;
+        this.isShop = isShop;
+
+        this.exits = new HashMap<>();  // <<< REQUIRED
     }
 
     public String getRoomID() {
@@ -78,29 +82,48 @@ public class Room {
         return roomVisited;
     }
 
-  /*  public Puzzle getRoomPuzzle() {
-        return roomPuzzle;
-    }*/
+    public void addPuzzleToRoom(Puzzle puzzle) {puzzlePresent.add(puzzle);}
+    public ArrayList<Puzzle> getPuzzlePresent() {return puzzlePresent;}
 
-    public HashMap<String, Integer> getExits() {
+    public Puzzle getRoomPuzzle() {return roomPuzzle;}
+
+    public HashMap<String, String> getExits() {
         return exits;
     }
 
-
-  /*  public void addItem(Item item) {
-        items.add(item);
+    public void addRoomExit(String direction,String roomID) {
+        exits.put(direction, roomID);
     }
 
-    public Item removeItem(String itemName) {
-        for (Item i : items) {
-            if (i.getName().equalsIgnoreCase(itemName)) {
-                items.remove(i);
-                return i;
-            }
-        }
-        return null;
+    public boolean isRaider() {
+        return isRaider;
     }
-*/
+
+    public boolean isShop() {
+        return isShop;
+    }
+
+    public ArrayList<Item> getRoomItems() {
+        return roomItems;
+    }
+
+    public List<Monster> getMonsters() {
+        return monsters;
+    }
+ public void addItem(Item item) {
+     roomItems.add(item);
+      }
+
+      public Item removeItem(String itemName) {
+          for (Item i : roomItems) {
+              if (i.getItemName().equalsIgnoreCase(itemName)) {
+                  roomItems.remove(i);
+                  return i;
+              }
+          }
+          return null;
+      }
+
     public Room getExit(String direction) {
         // TODO: Map directions to connected rooms (if using a direction table)
         return null;
@@ -110,20 +133,3 @@ public class Room {
 
 }
 
-        return sb.toString();
-    }
-
-    // ==============================
-    // Getters
-    // ==============================
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public List<Monster> getMonsters() { return monsters; }
-    public List<Item> getItems() { return items; }
-    public Puzzle getPuzzle() { return puzzle; }
-    public boolean isVisited() { return visited; }
-
-    // ==============================
-    // String Representation
-    // ==============================
