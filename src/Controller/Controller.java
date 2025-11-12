@@ -4,6 +4,7 @@ import Model.Entities.Monster;
 import Model.Model;
 import Model.Rooms.Shop;
 import View.View;
+import Model.Puzzle;
 
 public class Controller {
     private Model model;
@@ -16,9 +17,10 @@ public class Controller {
         boolean shop = model.getPlayer().getCurrRoom() instanceof Shop;
         boolean fight = false;
         boolean puzzle = false;
+        boolean solvePuzzle = false;
         int x;
         Monster currentMonster = null;
-
+        Puzzle currentPuzzle = null;
         while (!shop && !fight) {
             String input = this.view.getInput();
             switch (input) {
@@ -130,6 +132,59 @@ public class Controller {
             }
         }
 
+        while (puzzle) {
+            String input = this.view.getInput();
+            switch (input) {
+                case "EXAMINE":
+                    if (this.model.getPlayer().getCurrRoom().getBoundryPuzzle != null) {
+                        currentPuzzle = model.getPlayer().getCurrRoom().getBoundryPuzzle();
+                        this.view.displayBoundaryPuzzle(currentPuzzle);
+                    } else if (this.model.getPlayer().getCurrRoom().getPuzzle() != null) {
+                        currentPuzzle = model.getPlayer().getCurrRoom().getPuzzle();
+                        this.view.displayPuzzle(currentPuzzle);
+                    }
+                    break;
+                case "SOLVE":
+                    this.view.displayPuzzleStart();
+                    x = this.model.getPlayer().solvePuzzle();
+                    solvePuzzle = true;
+                    puzzle = false;
+                    break;
+                case "IGNORE":
+                    puzzle = false;
+                    break;
+            }
+        }
+
+        while (solvePuzzle) {
+
+            if (this.model.getPlayer().getCurrRoom().getPuzzle().isSolved()) {
+                this.view.displayPuzzleSolved();
+                solvePuzzle = false;
+                break;
+            }
+
+            while (currentPuzzle.getAttempts() >= 0) {
+                String input = this.view.getInput();
+                if (input.equals(currentPuzzle.getSolution())) {
+                    currentPuzzle.setSolved(true);
+                    this.view.displayPuzzleSolved();
+                    solvePuzzle = false;
+                    currentPuzzle = null;
+                    break;
+                } else {
+                    currentPuzzle.decrementAttempts();
+                    if (currentPuzzle.getAttempts() >= 0) {
+                        this.view.displayPuzzleIncorrect(currentPuzzle.getAttempts());
+                    } else {
+                        this.view.displayPuzzleFailed();
+                        solvePuzzle = false;
+                        break;
+                    }
+                }
+            }
+        }
+
         while (fight) {
 
             if (this.model.getPlayer().getHealth() <= 0) {
@@ -174,6 +229,7 @@ public class Controller {
             this.view.displayMonsterAttack(currentMonster.getName(), currentMonster.getAttackPower());
         }
 
+
         while (shop) {
             String input = this.view.getInput();
             switch (input) {
@@ -198,25 +254,6 @@ public class Controller {
             }
         }
 
-        while (puzzle) {
-            String input = this.view.getInput();
-            switch (input) {
-                case "EXAMINE":
-                    if (this.model.getPlayer().getCurrRoom().getBoundryPuzzle != null) {
-                        this.view.printBoundryPuzzle();
-                    } else if (this.model.getPlayer().getCurrRoom().getPuzzle() != null) {
-                        this.view.printPuzzle();
-                    }
-                    this.model.getPlayer().examinePuzzle(this.model.getPlayer().getCurrRoom().getPuzzle());
-                    break;
-                case "SOLVE":
-                    this.model.getPlayer().solvePuzzle();
-                    break;
-                case "IGNORE":
-                    puzzle = false;
-                    break;
-            }
-        }
 
 
         if (rest) {

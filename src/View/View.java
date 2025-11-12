@@ -2,6 +2,7 @@ package View;
 
 import Model.Entities.Monster;
 import Model.Entities.Player;
+import Model.Puzzle;
 import Model.Rooms.Room;
 import Model.Rooms.RestRoom;
 import Model.Items.Item;
@@ -32,6 +33,48 @@ public class View {
     public void printSeparator() {
         System.out.println("===============================");
     }
+
+
+    // ==============================
+    // Puzzle
+    // ==============================
+
+    public void displayPuzzleStart() {
+        System.out.println("Strange runes glow on the wall.\nA voice whispers: 'Answer correctly, or face the consequences.'");
+    }
+
+    public void displayPuzzle(Puzzle puzzle) {
+        System.out.println(puzzle.toString());
+    }
+
+    public void displayBoundaryPuzzle(Puzzle puzzle) {
+        System.out.println(puzzle.toString());
+    }
+
+    public void displayPuzzleSolved() {
+        System.out.println("The runes fade away. You feel a surge of power as the puzzle unlocks something within you.");
+    }
+
+    public void displayPuzzleIncorrect(int attemptsLeft) {
+        System.out.println("The runes flash red. An ominous feeling washes over you. You have " + attemptsLeft + " attempts left.");
+    }
+
+    public void displayPuzzleFailed() {
+
+    }
+
+    public void displayPuzzleAttempt(int x, int attemptsLeft) {
+        switch (x) {
+            case 1:
+                System.out.println("✅ Correct! The path is now clear.");
+                break;
+            case -1:
+                System.out.println("❌ Incorrect. you have, " + attemptsLeft + " attempts left.");
+                break;
+        }
+    }
+
+
 
     // ==============================
     // Room / Exploration Output
@@ -265,17 +308,6 @@ public class View {
                 "You find a quiet place to rest.",
                 "Warmth returns to your limbs.",
                 "Your health slowly recovers..."
-        });
-
-        // Puzzle
-        dialogues.put("puzzle_start", new String[]{
-                "Strange runes glow on the wall.",
-                "A voice whispers: 'Answer correctly, or face the consequences.'"
-        });
-
-        dialogues.put("puzzle_solved", new String[]{
-                "The runes fade away.",
-                "You feel a surge of power as the puzzle unlocks something within you."
         });
     }
 
