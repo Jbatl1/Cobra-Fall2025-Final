@@ -22,6 +22,7 @@ public class Room {
     protected List<Item> items;
     protected Puzzle puzzle;
     protected boolean visited;
+    private boolean isRestRoom;
 
     // ==============================
     // Constructor
@@ -167,6 +168,7 @@ public class Room {
     public List<Item> getItems() { return items; }
     public Puzzle getPuzzle() { return puzzle; }
     public boolean isVisited() { return visited; }
+    public boolean isRestRoom() { return isRestRoom; }
 
     // ==============================
     // String Representation
@@ -181,5 +183,15 @@ public class Room {
                 ", items=" + items.size() +
                 ", puzzle=" + (puzzle != null) +
                 '}';
+    }
+
+
+    public int getMonsterByName(String s) { // Caleb
+        for (int i = 0; i < monsters.size(); i++) {
+            if (monsters.get(i).getName().equalsIgnoreCase(s)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
