@@ -9,6 +9,7 @@ import Model.Entities.Monster;
 import Model.Items.Item;
 import Model.Puzzle;
 import Model.Entities.Player;
+import Model.Puzzles.BoundaryPuzzle;
 
 public class Room {
 
@@ -21,6 +22,7 @@ public class Room {
     protected List<Monster> monsters;
     protected List<Item> items;
     protected Puzzle puzzle;
+    private BoundaryPuzzle boundaryPuzzle;
     protected boolean visited;
     private boolean isRestRoom;
 
@@ -169,6 +171,9 @@ public class Room {
     public Puzzle getPuzzle() { return puzzle; }
     public boolean isVisited() { return visited; }
     public boolean isRestRoom() { return isRestRoom; }
+    public BoundaryPuzzle getBoundaryPuzzle() {
+        return boundaryPuzzle;
+    }
 
     // ==============================
     // String Representation

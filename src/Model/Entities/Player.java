@@ -290,11 +290,13 @@ public class Player extends Entity {
     // ==============================
     public int move(String direction) {
         Room next = currRoom.getExit(direction);
-        if (next != null) {
+        if (next != null && next.getBoundaryPuzzle() == null) {
             currRoom = next;
             return 1;
+        } else if (next != null && next.getBoundaryPuzzle() != null) {
+            return -2; // boundary puzzle exists
         }
-        return 0;
+        return -1;
     }
 
     public int getHealth() {

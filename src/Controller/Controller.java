@@ -31,22 +31,34 @@ public class Controller {
                 case "N": // move north
                     x = model.getPlayer().move("N");
                     view.enterRoom(x, "North", model.getPlayer().getCurrRoom());
-                    if (x == -2) puzzle = true;
+                    if (x == -2) {
+                        puzzle = true;
+                        currentPuzzle = model.getPlayer().getCurrRoom().getExit("N").getBoundryPuzzle();
+                    }
                     break;
                 case "E": // move east
                     x = model.getPlayer().move("E");
                     view.enterRoom(x, "East", model.getPlayer().getCurrRoom());
-                    if (x == -2) puzzle = true;
+                    if (x == -2){
+                        puzzle = true;
+                        currentPuzzle = model.getPlayer().getCurrRoom().getExit("E").getBoundryPuzzle();
+                    }
                     break;
                 case "S": // move south
                     x = model.getPlayer().move("S");
                     view.enterRoom(x, "South", model.getPlayer().getCurrRoom());
-                    if (x == -2) puzzle = true;
+                    if (x == -2) {
+                        puzzle = true;
+                        currentPuzzle = model.getPlayer().getCurrRoom().getExit("S").getBoundryPuzzle();
+                    }
                     break;
                 case "W": // move west
                     x = model.getPlayer().move("W");
                     view.enterRoom(x, "West", model.getPlayer().getCurrRoom());
-                    if (x == -2) puzzle = true;
+                    if (x == -2) {
+                        puzzle = true;
+                        currentPuzzle = model.getPlayer().getCurrRoom().getExit("W").getBoundryPuzzle();
+                    }
                     break;
 
 
