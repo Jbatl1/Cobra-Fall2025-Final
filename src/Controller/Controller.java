@@ -11,17 +11,19 @@ public class Controller {
     private View view;
 
 
+    private boolean shop = model.getPlayer().getCurrRoom() instanceof Shop;
+    private boolean fight = false;
+    private boolean puzzle = false;
+    private boolean solvePuzzle = false;
+    private Monster currentMonster = null;
+    private Puzzle currentPuzzle = null;
 
     public void processInput () { // Caleb
-        boolean rest = model.getPlayer().getCurrRoom().isRestRoom();
-        boolean shop = model.getPlayer().getCurrRoom() instanceof Shop;
-        boolean fight = false;
-        boolean puzzle = false;
-        boolean solvePuzzle = false;
+
         int x;
-        Monster currentMonster = null;
-        Puzzle currentPuzzle = null;
-        while (!shop && !fight) {
+        boolean rest = model.getPlayer().getCurrRoom().isRestRoom();
+
+        while (!shop && !fight && !puzzle && !solvePuzzle) {
             String input = this.view.getInput();
             switch (input) {
 
@@ -136,7 +138,7 @@ public class Controller {
             String input = this.view.getInput();
             switch (input) {
                 case "EXAMINE":
-                    if (this.model.getPlayer().getCurrRoom().getBoundryPuzzle != null) {
+                    if (this.model.getPlayer().getCurrRoom().getBoundryPuzzle() != null) {
                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundryPuzzle();
                         this.view.displayBoundaryPuzzle(currentPuzzle);
                     } else if (this.model.getPlayer().getCurrRoom().getRoomPuzzle() != null) {
