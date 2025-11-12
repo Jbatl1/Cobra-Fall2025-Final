@@ -44,7 +44,7 @@ public class BoundaryPuzzle extends Puzzle {
 
         if (userInput.equalsIgnoreCase("ignore")) {
             player.setCurrRoom(player.getPrevRoom());
-            player.receiveDamage(5);
+            player.receiveDamage(20);
             return -1;
         }
 

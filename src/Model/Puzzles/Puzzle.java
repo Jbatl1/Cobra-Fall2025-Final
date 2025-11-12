@@ -68,6 +68,10 @@ public class Puzzle {
         }
     }
 
+    public int decrementAttempts(){
+       return puzzleMaxAttempts-- ;
+    }
+
     //after puzzle is solved the loot/drop is added to players inventory
     public void addLootToInventory(Player player, Puzzle puzzle) {
         player.addItem(puzzle.getReward());

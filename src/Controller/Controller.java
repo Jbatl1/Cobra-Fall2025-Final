@@ -54,6 +54,7 @@ public class Controller {
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item
                     x = this.model.getPlayer().pickupItem(s.substring(7).trim());
                     this.view.displayItemPickup(x, s);
+
                     break;
                 case String s when input.matches("^DROP\\s.*$"): // drop item
                     x = this.model.getPlayer().dropItem(s.substring(5).trim());
@@ -68,19 +69,19 @@ public class Controller {
                     this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
                     break;
                 case "TOOL BELT": // opens tool belt
-                    this.view.displayToolbelt(this.model.getPlayer().getToolBelt);
+                    this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
                     break;
                 case "B": // Shows Inventory
                     this.view.displayInv(this.model.getPlayer().getInventory());
                     break;
                 case "G": // drop held item
-                    String itemName = this.model.getPlayer().getEquippedItem().getName;
+                    String itemName = this.model.getPlayer().getEquippedItem().getName();
                     x = this.model.getPlayer().dropItem(itemName);
                     this.view.displayItemDropped(x, itemName);  // need to update player dropItem method to return -1 when item cant be dropped
                     break;
                 case "SHIP": // Opens Ship Inventory
                     if (this.model.getPlayer().getCurrRoom() instanceof LaunchSite) {
-                        this.view.displayShipInv(this.model.getPlayer().getShipInventory());
+                        this.view.displayShipInv(this.model.getPlayer().getShipStorage());
                     }
                     break;
 
@@ -134,34 +135,41 @@ public class Controller {
             }
         }
 
+        //check if its boundary/loot/normal
+        //after each check add the display.view(add the method in view)
+        //remember if it's an loot/normal your displaying "loot box (solve puzzle to obtain item)"
+        //if its item " *itemName* (solve puzzle to obtain item)
+        //in each puzzle class add extra check (if its loot, if its boundary, if its boundary
+        //
+        //
         while (puzzle) {
+
+            this.view.displayPuzzlePrompt(currentPuzzle);
             String input = this.view.getInput();
-            switch (input) {
-                case "EXAMINE":
-                    if (this.model.getPlayer().getCurrRoom().getBoundryPuzzle() != null) {
-                        currentPuzzle = model.getPlayer().getCurrRoom().getBoundryPuzzle();
-                        this.view.displayBoundaryPuzzle(currentPuzzle);
-                    } else if (this.model.getPlayer().getCurrRoom().getRoomPuzzle() != null) {
-                        currentPuzzle = model.getPlayer().getCurrRoom().getRoomPuzzle();
-                        this.view.displayPuzzle(currentPuzzle);
-                    }
-                    break;
-                case "SOLVE":
-                    this.view.displayPuzzleStart();
-                    x = this.model.getPlayer().solvePuzzle();
-                    solvePuzzle = true;
-                    puzzle = false;
-                    break;
-                case "IGNORE":
-                    puzzle = false;
-                    break;
+
+            if (input.equalsIgnoreCase("IGNORE")) {
+                currentPuzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), "ignore");
+
+                this.view.displayPuzzleIgnored(currentPuzzle);
+                puzzle = false;
+                continue;
+            }
+
+            int result = currentPuzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), input);
+            if (result == 1) {
+                this.view.displayPuzzleSolved(currentPuzzle);
+                puzzle = false;
+            } else if (result == 0) {
+                this.view.displayPuzzleIncorrect(currentPuzzle);
+            } else {
+                this.view.displayPuzzleLocked(currentPuzzle);
+                puzzle = false;
             }
         }
-
         while (solvePuzzle) {
 
             if (this.model.getPlayer().getCurrRoom().getRoomPuzzle().isPuzzleIsSolved()) {
-                this.view.displayPuzzleSolved();
+                this.view.displayPuzzleSolved(currentPuzzle);
                 solvePuzzle = false;
                 break;
             }
@@ -170,16 +178,16 @@ public class Controller {
                 String input = this.view.getInput();
                 if (input.equals(currentPuzzle.getPuzzleSolution())) {
                     currentPuzzle.isPuzzleIsSolved();
-                    this.view.displayPuzzleSolved();
+                    this.view.displayPuzzleSolved(currentPuzzle);
                     solvePuzzle = false;
                     currentPuzzle = null;
                     break;
                 } else {
                     currentPuzzle.decrementAttempts();
                     if (currentPuzzle.getMaxAttempts() >= 0) {
-                        this.view.displayPuzzleIncorrect(currentPuzzle.getMaxAttempts());
+                        this.view.displayPuzzleIncorrect(currentPuzzle);
                     } else {
-                        this.view.displayPuzzleFailed();
+                        this.view.displayPuzzleFailed(currentPuzzle);
                         solvePuzzle = false;
                         break;
                     }
@@ -191,6 +199,7 @@ public class Controller {
 
             if (this.model.getPlayer().getHealth() <= 0) {
                 this.view.displayDefeat();
+                model.getPlayer().loseItemOnDefeat();
                 fight = false;
                 break;
             }
