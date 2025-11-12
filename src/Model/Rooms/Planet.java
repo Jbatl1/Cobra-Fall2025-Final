@@ -1,7 +1,9 @@
 package Model.Rooms;
 
 import Model.Rooms.Room;
-
+//change planet to landing site, no collection, add desc to landing site (planet desc, boolean isAtlandingsite,
+//get other connections from other landing sites , and other rooms in that landing
+//hashmap for landsite connections and hashmap for rooms and landsite connections
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +44,7 @@ public class Planet{
         this.landingSite = landingSite;
     }
 
-    public void planetDesc{
+    public void planetDesc(){
         System.out.println("Planet name: " + name);
         System.out.println(desc);
         System.out.println("Landing site: " + landingSite != null ? landingSite.getName() : "None");
