@@ -55,7 +55,7 @@ public class View {
     public static void displayVictory(String monsterName, Item reward) {
         System.out.println("🏆 You defeated " + monsterName + "!");
         if (reward != null) {
-            System.out.println("You received " + reward.getName() + " as a reward!");
+            System.out.println("You received " + reward.getItemName() + " as a reward!");
         }
     }
 
@@ -76,9 +76,10 @@ public class View {
     // ==============================
     public static void displayRoomEntry(Room room) {
         printSeparator();
-        System.out.println("🏠 You enter: " + room.getName());
-        System.out.println(room.getDescription());
-        System.out.println("Items here: " + (room.getItems().isEmpty() ? "None" : room.getItems().size()));
+        System.out.println("🏠 You enter: " + room.getRoomName());
+        System.out.println(room.getRoomDescription());
+
+        System.out.println("Items here: " + (room.getRoomItems().isEmpty() ? "None" : room.getRoomItems().size()));
         System.out.println("Monsters here: " + (room.getMonsters().isEmpty() ? "None" : room.getMonsters().size()));
         printSeparator();
     }
@@ -104,14 +105,74 @@ public class View {
     // Inventory / Items
     // ==============================
     public static void displayItemPickup(Item item) {
-        System.out.println("📦 You picked up: " + item.getName());
+        System.out.println("📦 You picked up: " + item.getItemName());
     }
 
     public static void displayItemDropped(Item item) {
-        System.out.println("🗑️ You dropped: " + item.getName());
+        System.out.println("🗑️ You dropped: " + item.getItemName());
     }
 
-    public static void displayItemDestroyed(Item item) {
-        System.out.println("🔥 You destroyed: " + item.getName());
+    public static void displayItemDestroyed(Item item) {System.out.println("🔥 You destroyed: " + item.getItemName());}
+
+    // ==============================
+    // Puzzle
+    // ==============================
+
+    public static void displayPuzzleBeforePickup(Puzzle puzzle) {
+        System.out.println("You must solve a puzzle before you can pickup this Item! (Examine or Ignore)");
     }
+
+    public static void displayPuzzleChoice() {
+        System.out.println("Type 'EXAMINE' to try solving the puzzle or 'IGNORE' to leave it.");
+    }
+
+    public static void displayPuzzleQuestion(Puzzle puzzle) {
+        System.out.println("🧩 Puzzle: " + puzzle.getPuzzleQuestion());
+    }
+
+
+
+    public static void displayBoundaryPuzzlePrompt(Puzzle puzzle) {
+        System.out.println("❓: " + puzzle.getPuzzleQuestion() );
+    }
+
+    public static void displayLootPuzzlePrompt(Puzzle puzzle) {
+        System.out.println("❓: " + puzzle.getPuzzleQuestion() );
+    }
+    public static void displayItemPuzzlePrompt(Puzzle puzzle) {
+        System.out.println("❓: " + puzzle.getPuzzleQuestion() );
+    }
+
+    public static void displayPuzzleIgnored(Puzzle puzzle) {
+      //  puzzle.view.displayRoomEntry()
+    }
+
+    public static void displayPuzzleSolved(Puzzle puzzle) {
+        System.out.println("🧩 You have correctly solved the puzzle!");
+        System.out.println("Item ♦️ " + puzzle.getReward().getItemName() + " has been added to your inventory! ");
+
+    }
+
+    public static void displayBoundaryPuzzleSolved(Puzzle puzzle) {
+        System.out.println("You have correctly solved the puzzle!, You can now explore room");
+        System.out.println("Item ♦️ " + puzzle.getReward().getItemName() + " has been added to your inventory! ");
+    }
+
+    public static void displayPuzzleIncorrect(Puzzle puzzle) {
+        System.out.println("That answer is not correct! ");
+    }
+
+    public static void displayBoundaryPuzzleIncorrect(Puzzle puzzle) {
+        System.out.println("That answer is not correct!");
+    }
+
+    public static void displayPuzzleFailed(Puzzle puzzle) {
+        System.out.println("That answer is not correct! ");
+    }
+
+    public static void displayPuzzleLocked(Puzzle puzzle) {
+        System.out.println("You have have failed to solve the puzzle! Leave and comeback to try again");
+    }
+
+
 }
