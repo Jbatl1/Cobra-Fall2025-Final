@@ -4,26 +4,24 @@ import Model.Entities.Monster;
 import Model.Model;
 import Model.Rooms.Shop;
 import View.View;
-import Model.Puzzle;
+import Model.Puzzles.Puzzle;
 
 public class Controller {
     private Model model;
     private View view;
 
 
-    private boolean shop = model.getPlayer().getCurrRoom() instanceof Shop;
-    private boolean fight = false;
-    private boolean puzzle = false;
-    private boolean solvePuzzle = false;
-    private Monster currentMonster = null;
-    private Puzzle currentPuzzle = null;
 
     public void processInput () { // Caleb
-
-        int x;
         boolean rest = model.getPlayer().getCurrRoom().isRestRoom();
-
-        while (!shop && !fight && !puzzle && !solvePuzzle) {
+        boolean shop = model.getPlayer().getCurrRoom() instanceof Shop;
+        boolean fight = false;
+        boolean puzzle = false;
+        boolean solvePuzzle = false;
+        int x;
+        Monster currentMonster = null;
+        Puzzle currentPuzzle = null;
+        while (!shop && !fight) {
             String input = this.view.getInput();
             switch (input) {
 
@@ -138,11 +136,11 @@ public class Controller {
             String input = this.view.getInput();
             switch (input) {
                 case "EXAMINE":
-                    if (this.model.getPlayer().getCurrRoom().getBoundryPuzzle() != null) {
+                    if (this.model.getPlayer().getCurrRoom().getBoundryPuzzle != null) {
                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundryPuzzle();
                         this.view.displayBoundaryPuzzle(currentPuzzle);
-                    } else if (this.model.getPlayer().getCurrRoom().getPuzzle() != null) {
-                        currentPuzzle = model.getPlayer().getCurrRoom().getPuzzle();
+                    } else if (this.model.getPlayer().getCurrRoom().getRoomPuzzle() != null) {
+                        currentPuzzle = model.getPlayer().getCurrRoom().getRoomPuzzle();
                         this.view.displayPuzzle(currentPuzzle);
                     }
                     break;
@@ -160,24 +158,24 @@ public class Controller {
 
         while (solvePuzzle) {
 
-            if (this.model.getPlayer().getCurrRoom().getPuzzle().isSolved()) {
+            if (this.model.getPlayer().getCurrRoom().getRoomPuzzle().isPuzzleIsSolved()) {
                 this.view.displayPuzzleSolved();
                 solvePuzzle = false;
                 break;
             }
 
-            while (currentPuzzle.getAttempts() >= 0) {
+            while (currentPuzzle.getMaxAttempts() >= 0) {
                 String input = this.view.getInput();
-                if (input.equals(currentPuzzle.getSolution())) {
-                    currentPuzzle.setSolved(true);
+                if (input.equals(currentPuzzle.getPuzzleSolution())) {
+                    currentPuzzle.isPuzzleIsSolved();
                     this.view.displayPuzzleSolved();
                     solvePuzzle = false;
                     currentPuzzle = null;
                     break;
                 } else {
                     currentPuzzle.decrementAttempts();
-                    if (currentPuzzle.getAttempts() >= 0) {
-                        this.view.displayPuzzleIncorrect(currentPuzzle.getAttempts());
+                    if (currentPuzzle.getMaxAttempts() >= 0) {
+                        this.view.displayPuzzleIncorrect(currentPuzzle.getMaxAttempts());
                     } else {
                         this.view.displayPuzzleFailed();
                         solvePuzzle = false;

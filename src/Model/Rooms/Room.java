@@ -1,185 +1,135 @@
 package Model.Rooms;
 
-import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
-import Model.Database.DatabaseConnection;
 import Model.Entities.Monster;
 import Model.Items.Item;
-import Model.Puzzle;
-import Model.Entities.Player;
+import Model.Puzzles.Puzzle;
 
+import java.util.HashMap;
+import java.util.List;
+
+//items --> roomItems
+//getName() --> getItemName
 public class Room {
+    private String roomID;
+    private String roomName;
+    private String roomDescription;
+    private String roomType;
+    private String northNavigation;
+    private String eastNavigation;
+    private String southNavigation;
+    private String westNavigation;
+    private boolean roomVisited;
+    private boolean isRaider;
+    private boolean isShop;
+    private Puzzle roomPuzzle;  // the puzzle in this room, can be null
+    private HashMap<String, String> exits;// stores exits (direction → roomNumber mapping)
+    private ArrayList<Item> roomItems = new ArrayList<>(); // items present in this room
+    private ArrayList<Puzzle> puzzlePresent = new ArrayList<>();
+    private List<Monster> monsters;
 
-    // ==============================
-    // Fields
-    // ==============================
-    protected String id;
-    protected String name;
-    protected String description;
-    protected List<Monster> monsters;
-    protected List<Item> items;
-    protected Puzzle puzzle;
-    protected boolean visited;
 
-    // ==============================
-    // Constructor
-    // ==============================
-    public Room(String id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.monsters = new ArrayList<>();
-        this.items = new ArrayList<>();
-        this.visited = false;
+    public Room(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop) {
+        this.roomID = roomID;
+        this.roomName = roomName;
+        this.roomDescription = roomDescription;
+        this.roomType = roomType;
+        this.northNavigation = northNavigation;
+        this.eastNavigation = eastNavigation;
+        this.southNavigation = southNavigation;
+        this.westNavigation = westNavigation;
+        this.roomVisited = roomVisited;
+        this.isRaider = isRaider;
+        this.isShop = isShop;
+
+        this.exits = new HashMap<>();  // <<< REQUIRED
     }
 
-    // ==============================
-    // Load Room Data from Database
-    // ==============================
-    public static Room loadRoomById(String roomId) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        Room room = null;
-
-        try {
-            conn = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM Rooms WHERE id = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, roomId);
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                String name = rs.getString("name");
-                String description = rs.getString("description");
-                room = new Room(roomId, name, description);
-
-                // Load related data
-                room.loadMonsters(conn);
-                room.loadItems(conn);
-                room.loadPuzzle(conn);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DatabaseConnection.closeResources(conn, stmt, rs);
-        }
-
-        return room;
+    public String getRoomID() {
+        return roomID;
     }
 
-    // ==============================
-    // Load Monsters, Items, Puzzle
-    // ==============================
-    private void loadMonsters(Connection conn) throws SQLException {
-        String sql = "SELECT * FROM Monsters WHERE roomID = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Monster monster = new Monster(
-                            rs.getString("monsterID"),
-                            rs.getString("roomID"),
-                            rs.getString("name"),
-                            rs.getString("description"),
-                            rs.getInt("health"),
-                            rs.getInt("attackPower"),
-                            rs.getInt("defense"),
-                            rs.getBoolean("isBoss"),
-                            null, // dropItem will be assigned later if needed
-                            this
-                    );
-                    monsters.add(monster);
-                }
-            }
-        }
+    public String getRoomName() {
+        return roomName;
     }
 
-    private void loadItems(Connection conn) throws SQLException {
-        String sql = "SELECT * FROM Items WHERE roomID = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Item item = new Item(
-                            rs.getString("itemID"),
-                            rs.getString("name"),
-                            rs.getString("description"),
-                            rs.getBoolean("isConsumable")
-                    );
-                    items.add(item);
-                }
-            }
-        }
+    public String getRoomDescription() {
+        return roomDescription;
     }
 
-    private void loadPuzzle(Connection conn) throws SQLException {
-        String sql = "SELECT * FROM Puzzles WHERE roomID = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    puzzle = new Puzzle(
-                            rs.getString("puzzleID"),
-                            rs.getString("question"),
-                            rs.getString("solution"),
-                            null,
-                            rs.getInt("attempts")
-                    );
-                }
-            }
-        }
+    public String getRoomType() {
+        return roomType;
     }
 
-    // ==============================
-    // Player Interaction Logic
-    // ==============================
-    public String enter(Player player) {
-        visited = true;
-        player.setCurrRoom(this);
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("You have entered ").append(name).append(".\n")
-                .append(description).append("\n");
-
-        if (!monsters.isEmpty()) {
-            sb.append("There are ").append(monsters.size()).append(" monster(s) here.\n");
-        }
-        if (puzzle != null) {
-            sb.append("There is a puzzle waiting for you.\n");
-        }
-        if (!items.isEmpty()) {
-            sb.append("You see some items lying around.\n");
-        }
-
-        return sb.toString();
+    public String getNorthNavigation() {
+        return northNavigation;
     }
 
-    // ==============================
-    // Getters
-    // ==============================
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public List<Monster> getMonsters() { return monsters; }
-    public List<Item> getItems() { return items; }
-    public Puzzle getPuzzle() { return puzzle; }
-    public boolean isVisited() { return visited; }
-
-    // ==============================
-    // String Representation
-    // ==============================
-    @Override
-    public String toString() {
-        return "Room{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", monsters=" + monsters.size() +
-                ", items=" + items.size() +
-                ", puzzle=" + (puzzle != null) +
-                '}';
+    public String getEastNavigation() {
+        return eastNavigation;
     }
+
+    public String getSouthNavigation() {
+        return southNavigation;
+    }
+
+    public String getWestNavigation() {
+        return westNavigation;
+    }
+
+    public boolean isRoomVisited() {
+        return roomVisited;
+    }
+
+    public void addPuzzleToRoom(Puzzle puzzle) {puzzlePresent.add(puzzle);}
+    public ArrayList<Puzzle> getPuzzlePresent() {return puzzlePresent;}
+
+    public Puzzle getRoomPuzzle() {return roomPuzzle;}
+
+    public HashMap<String, String> getExits() {
+        return exits;
+    }
+
+    public void addRoomExit(String direction,String roomID) {
+        exits.put(direction, roomID);
+    }
+
+    public boolean isRaider() {
+        return isRaider;
+    }
+
+    public boolean isShop() {
+        return isShop;
+    }
+
+    public ArrayList<Item> getRoomItems() {
+        return roomItems;
+    }
+
+    public List<Monster> getMonsters() {
+        return monsters;
+    }
+ public void addItem(Item item) {
+     roomItems.add(item);
+      }
+
+      public Item removeItem(String itemName) {
+          for (Item i : roomItems) {
+              if (i.getItemName().equalsIgnoreCase(itemName)) {
+                  roomItems.remove(i);
+                  return i;
+              }
+          }
+          return null;
+      }
+
+    public Room getExit(String direction) {
+        // TODO: Map directions to connected rooms (if using a direction table)
+        return null;
+    }
+
+
+
 }
+

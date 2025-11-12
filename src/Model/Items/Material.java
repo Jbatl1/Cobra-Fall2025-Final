@@ -3,8 +3,8 @@ package Model.Items;
 public class Material extends Item {
     private int damageIncrease;
 
-    public Material(String id, String name, String description, String rarity, int damageIncrease) {
-        super(id, name, description, rarity);
+    public Material(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemEffect, String itemMessage, int itemUpgrade, String itemNeeded, int damageIncrease) {
+        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemRestoreHP, itemEffect, itemMessage, itemUpgrade, itemNeeded);
         this.damageIncrease = damageIncrease;
     }
 

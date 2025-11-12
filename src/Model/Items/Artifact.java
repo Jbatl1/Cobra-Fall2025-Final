@@ -3,8 +3,8 @@ package Model.Items;
 public class Artifact extends Item{
     private String memory;
 
-    public Artifact(String id, String name, String description, String rarity, String memory) {
-        super(id, name, description, rarity);
+    public Artifact(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemEffect, String itemMessage, int itemUpgrade, String itemNeeded, String memory) {
+        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemRestoreHP, itemEffect, itemMessage, itemUpgrade, itemNeeded);
         this.memory = memory;
     }
 

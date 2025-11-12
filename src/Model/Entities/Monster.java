@@ -5,81 +5,103 @@ import Model.Items.Item;
 
 public class Monster extends Entity {
 
-    // ==============================
+
     // Fields
-    // ==============================
-    private String monsterID;
+    private String monsterID;// Unique ID for the monster
+    private String abilityEffect;
     private String roomID;
     private String description;
     private boolean isBoss;
     private Item dropItem;
-    private int maxHealth;
-    private Room currentRoom;
+    private boolean isRaider;
+    private Room currentRoom; // The room this monster belongs to
 
-    // ==============================
-    // Constructor (used when loaded from Room)
-    // ==============================
-    public Monster(String monsterID, String roomID, String name, String description,
-                   int health, int attackPower, int defense, boolean isBoss, Item dropItem, Room currentRoom) {
 
-        super(name, health, attackPower);
+
+    // Constructor
+    public Monster(String name, int health, int attackPower, int defense, String monsterID, String abilityEffect, Item dropItem, boolean isBoss, boolean isRaider, Room currentRoom) {
+        super(name, health, attackPower, defense);
+
+
         this.monsterID = monsterID;
-        this.roomID = roomID;
-        this.description = description;
-        this.isBoss = isBoss;
+        this.abilityEffect = abilityEffect;
         this.dropItem = dropItem;
-        this.defense = defense;
-        this.maxHealth = health;
+        this.isBoss = isBoss;
+        this.isRaider = isRaider;
         this.currentRoom = currentRoom;
     }
 
-
     // Getters / Setters
-
     public String getMonsterID() {
         return monsterID;
     }
 
-    public String getRoomID() {
-        return roomID;
-    }
-
-    public Room getCurrentRoom() {
-        return currentRoom;
-    }
-
-    public void setCurrentRoom(Room currentRoom) {
-        this.currentRoom = currentRoom;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isBoss() {
-        return isBoss;
+    public String getAbilityEffect() {
+        return abilityEffect;
     }
 
     public Item getDropItem() {
         return dropItem;
     }
 
-
-    public void setDropItem(Item dropItem) {
-        this.dropItem = dropItem;
+    public boolean isBoss() {
+        return isBoss;
     }
 
-    // ==============================
-    // Inspect Monster (logic only — View will print)
-    // ==============================
-    public String inspectDetails() {
-        return "Monster ID: " + monsterID + "\n"
-                + "Room ID: " + roomID + "\n"
-                + "Name: " + name + "\n"
-                + "Description: " + description + "\n"
-                + "Health: " + health + "/" + maxHealth + "\n"
-                + "Attack Power: " + attackPower + "\n"
-                + "Defense: " + defense + "\n"
-                + "Boss: " + (isBoss ? "Yes" : "No");
+    public boolean isRaider() {
+        return isRaider;
     }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    // Combat
+
+    public void attackPlayer(Player player) {
+        int damage = Math.max(0, attackPower - player.getDefense());
+        player.receiveDamage(damage);
+        System.out.println(name + " attacks " + player.getName() + " for " + damage + " damage!");
+    }
+
+    public void receiveDamage(int amount) {
+        int damageTaken = Math.max(0, amount - defense);
+        health -= damageTaken;
+        if (health < 0) health = 0;
+        System.out.println(name + " takes " + damageTaken + " damage! (" + health + " HP left)");
+        if (health == 0) {
+            System.out.println(name + " has been defeated!");
+        }
+    }
+
+
+    // Rewards / Flee
+
+    public Item getReward() {
+        if (health <= 0 && dropItem != null) {
+            System.out.println(name + " dropped: " + dropItem.getItemName());
+            return dropItem;
+        }
+        return null;
+    }
+
+    public boolean canFlee() {
+        return !isBoss;
+    }
+
+  /*  public void fleeAttempt(Player player) {
+        if (!canFlee()) {
+            System.out.println("You cannot flee from this boss monster!");
+        } else {
+            Random rand = new Random();
+            if (rand.nextBoolean()) {
+                System.out.println("You successfully fled from " + name + "!");
+            } else {
+                int penalty = 10;
+                player.receiveDamage(penalty);
+                System.out.println("You failed to flee and lost " + penalty + " HP!");
+            }
+        }
+    }*/
 }
+
