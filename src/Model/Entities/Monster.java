@@ -33,18 +33,41 @@ public class Monster extends Entity {
         this.currentRoom = currentRoom;
     }
 
-    // ==============================
-    // Basic Getters and Setters
-    // ==============================
-    public String getMonsterID() { return monsterID; }
-    public String getRoomID() { return roomID; }
-    public Room getCurrentRoom() { return currentRoom; }
-    public String getDescription() { return description; }
-    public boolean isBoss() { return isBoss; }
-    public Item getDropItem() { return dropItem; }
 
-    public void setCurrentRoom(Room room) { this.currentRoom = room; }
-    public void setDropItem(Item dropItem) { this.dropItem = dropItem; }
+    // Getters / Setters
+
+    public String getMonsterID() {
+        return monsterID;
+    }
+
+    public String getRoomID() {
+        return roomID;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public void setCurrentRoom(Room currentRoom) {
+        this.currentRoom = currentRoom;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isBoss() {
+        return isBoss;
+    }
+
+    public Item getDropItem() {
+        return dropItem;
+    }
+
+
+    public void setDropItem(Item dropItem) {
+        this.dropItem = dropItem;
+    }
 
     // ==============================
     // Inspect Monster (logic only — View will print)

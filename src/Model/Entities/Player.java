@@ -22,7 +22,8 @@ public class Player extends Entity {
     // ==============================
     // Constructor
     // ==============================
-    public Player(Room startingRoom) {
+    public Player(Room startingRoom, String name, int health, int attackPower) {
+        super(name,health,attackPower);
         this.inventory = new ArrayList<>();
         this.toolBelt = new ArrayList<>();
         this.currRoom = startingRoom;
@@ -47,7 +48,7 @@ public class Player extends Entity {
         return -1;
     }
 
-    public int EquipItemToHands(String s) {
+    public int equipItemToHands(String s) {
         int idx = isInInventory(s);
         if (idx >= 0) {
             equippedItem = inventory.get(idx);
@@ -56,7 +57,7 @@ public class Player extends Entity {
         return 0;
     }
 
-    public int EquipItemToToolBelt(String s) {
+    public int equipItemToToolBelt(String s) {
         int idx = isInInventory(s);
         if (idx >= 0) {
             toolBelt.add(inventory.get(idx));
@@ -65,7 +66,7 @@ public class Player extends Entity {
         return 0;
     }
 
-    public int RemoveItemFromHands(String s) {
+    public int removeItemFromHands(String s) {
         if (equippedItem != null && equippedItem.getName().equalsIgnoreCase(s)) {
             equippedItem = null;
             return 1;
@@ -73,7 +74,7 @@ public class Player extends Entity {
         return 0;
     }
 
-    public int RemoveItemFromToolBelt(String s) {
+    public int removeItemFromToolBelt(String s) {
         return toolBelt.removeIf(i -> i.getName().equalsIgnoreCase(s)) ? 1 : 0;
     }
 
@@ -87,7 +88,7 @@ public class Player extends Entity {
         return 0;
     }
 
-    public int PickupItem(String s) {
+    public int pickupItem(String s) {
         Item item = currRoom.removeItem(s); // assume Room has removeItem()
         if (item != null) {
             inventory.add(item);
@@ -196,3 +197,4 @@ public class Player extends Entity {
         return currRoom;
     }
 }
+///need a arraylist with a ship capacity of 20 items, we going to need a method in the player class to move to a different landing site which will take in a string called landingsite, its going to check if they current room is a landingsite, we also need to check if its an existing landingsite, if it exist update player room to the new landingsite, if its false return -1, if true return 1, if not in landingsite from the start return -2.
