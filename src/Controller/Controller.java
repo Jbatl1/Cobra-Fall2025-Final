@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Entities.Monster;
 import Model.Model;
 import Model.Rooms.Shop;
 import View.View;
@@ -16,6 +17,7 @@ public class Controller {
         boolean fight = false;
         boolean puzzle = false;
         int x;
+        Monster currentMonster = null;
 
         while (!shop && !fight) {
             String input = this.view.getInput();
@@ -43,6 +45,7 @@ public class Controller {
                     if (x == -2) puzzle = true;
                     break;
 
+
                 // ITEMS---------------------
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item
                     x = this.model.getPlayer().pickupItem(s.substring(7).trim());
@@ -52,54 +55,60 @@ public class Controller {
                     x = this.model.getPlayer().dropItem(s.substring(5).trim());
                     this.view.displayItemDropped(x, s);
                     break;
-                case String s when input.matches("^EQUIP\\s.*$"): //pickup item
+                case String s when input.matches("^EQUIP\\s.*$"): //Equip Item
                     x = this.model.getPlayer().equipItemToHands(s);
-                    this.view.equipItem();
+                    this.view.displayEquipItem(x, s);
                     break;
-                case String s when input.matches("^EXAMINE\\s.*$"): //pickup item
-                    x = this.model.getPlayer().getCurrRoom().getItems().contains();
-                    this.view.equipItem();
+                case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
+                    x = this.model.getPlayer().isInInventory(s);
+                    this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
                     break;
                 case "TOOL BELT": // opens tool belt
-                    this.view.printToolbelt(this.model.getPlayer().getToolBelt);
+                    this.view.displayToolbelt(this.model.getPlayer().getToolBelt);
                     break;
-                case "B": // check inventory
-                    this.view.printInv(this.model.getPlayer().getInventory());
+                case "B": // Shows Inventory
+                    this.view.displayInv(this.model.getPlayer().getInventory());
                     break;
                 case "G": // drop held item
                     String itemName = this.model.getPlayer().getEquippedItem().getName;
                     x = this.model.getPlayer().dropItem(itemName);
-                    this.view.displayItemDropped(x, itemName);
+                    this.view.displayItemDropped(x, itemName);  // need to update player dropItem method to return -1 when item cant be dropped
                     break;
-                case "SHIP": // explore room
+                case "SHIP": // Opens Ship Inventory
                     if (this.model.getPlayer().getCurrRoom() instanceof LaunchSite) {
-                        this.view.displayShip(this.model.getPlayer().getShipInventory());
+                        this.view.displayShipInv(this.model.getPlayer().getShipInventory());
                     }
                     break;
 
                 // MONSTER -----------------------
-                case String s when input.matches("^ATTACK\\s.*$"): // attack monster
-                    this.model.getPlayer().attack();
-                    break;
-                case "FIGHT": // Start fight
-                    this.model.getPlayer().fightMonster();
-                    break;
-                case "G": // drop held item
-                    String equippedItem = this.model.getPlayer().getEquippedItem().getName;
-                    this.model.getPlayer().dropItem(equippedItem);
-                    view.dropEquippedItem(equippedItem);
-                    break;
-                case "INSPECT": // shows monster name / desc / health / atk
 
+                case String s when input.matches("^FIGHT\\s.*$"): // Start fight
+                    x = this.model.getPlayer().getCurrRoom().getMonsterByName(s.substring(6).trim());
+                    if (x >= 0) {
+                        this.view.displayFightStart(s.substring(6).trim());
+                        currentMonster = this.model.getPlayer().getCurrRoom().getMonsters().get(x);
+                        fight = true;
+                    } else {
+                        this.view.displayMonsterNotFound(s.substring(6).trim());
+                    }
                     break;
-                case "IGNORE": // explore room
-
+                case String s when input.matches("^INSPECT\\s.*$"): // shows monster name / desc / health / atk
+                    x = this.model.getPlayer().getCurrRoom().getMonsterByName(s.substring(8).trim());
+                    if (this.model.getPlayer().getCurrRoom().getMonsterByName(s) > 0) {
+                        this.view.displayInspectMonster(this.model.getPlayer().getCurrRoom().getMonsters().get(x));
+                    }
+                    else {
+                        this.view.displayMonsterNotFound(s.substring(8).trim());
+                    }
+                    break;
+                case "IGNORE": // ignore monster in room
+                    // idk if this is useful? they can just pick what monster to fight in the room
                     break;
 
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
-
+                    this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
 
                 // OTHER --------------------
@@ -107,35 +116,84 @@ public class Controller {
 
                     break;
                 case "SHOP": // opens shop and displays items for sale
-
-                    shop = true;
+                    if (this.model.getPlayer().getCurrRoom() instanceof Shop) {
+                        this.view.displayOpenShop();
+                        shop = true;
+                    }
+                    else {
+                        this.view.displayNotInShop();
+                    }
+                    break;
+                default:
+                    this.view.displayInvalidCommand();
                     break;
             }
         }
 
         while (fight) {
+
+            if (this.model.getPlayer().getHealth() <= 0) {
+                this.view.displayDefeat();
+                fight = false;
+                break;
+            }
             String input = this.view.getInput();
             switch (input) {
                 case "ATTACK":
-
+                    this.model.getPlayer().inflictDamage(currentMonster);
+                    this.view.displayPlayerAttack(currentMonster.getName(), this.model.getPlayer().getAttackPower()); // make getter display item damage if one is equipped
                     break;
-                case "INVENTORY":
-
+                case "TOOL BELT": // opens tool belt
+                    this.view.displayToolbelt(this.model.getPlayer().getToolBelt);
+                    break;
+                case "B": // Shows Inventory
+                    this.view.displayInv(this.model.getPlayer().getInventory());
+                    break;
+                case String s when input.matches("^EQUIP\\s.*$"): //Equip Item
+                    x = this.model.getPlayer().equipItemToHands(s);
+                    this.view.displayEquipItem(x, s);
+                    break;
+                case "FLEE":
+                    this.model.getPlayer().flee();
+                    this.view.displayFlee(currentMonster.getName());
+                    fight = false;
+                default:
+                    this.view.displayInvalidCommand();
                     break;
             }
+
+            // check if we killed the monster before it damages us
+            if (currentMonster.getHealth() <= 0) {
+                this.view.displayVictory(currentMonster.getName(), currentMonster.getDropItem());
+                this.model.getPlayer().getCurrRoom().removeMonster(currentMonster);
+                fight = false;
+                break;
+            }
+
+            this.model.getPlayer().receiveDamage(currentMonster.getAttackPower());
+            this.view.displayMonsterAttack(currentMonster.getName(), currentMonster.getAttackPower());
         }
 
         while (shop) {
             String input = this.view.getInput();
             switch (input) {
-                case "SHOP": // opens shop and displays items for sale
+                case "VIEW ITEMS": // displays items for sale
                     (Shop)(this.model.getPlayer().getCurrRoom()).displayStock();
                     break;
                 case String s when input.matches("^BUY\\s.*$"): // buy item
-                    this.view.printToUser(this.model.getPlayer().dropItem(s.substring(4).trim()));
+                    x = this.model.getPlayer().buyItem(s.substring(4).trim()); // -1 = not enough money, -2 = item not found, else return price of item
+                    this.view.DisplayPurchaseItem(x, s);
                     break;
                 case String s when input.matches("^SELL\\s.*$"): // sell item
-                    this.view.printToUser(this.model.getPlayer().dropItem(s.substring(5).trim()));
+                    x = this.model.getPlayer().sellItem(s.substring(5).trim()); // -1 = item not found, else return sell price
+                    this.view.displaySellItem(x, s);
+                    break;
+                case "EXIT": // exit shop
+                    this.view.displayExitShop();
+                    shop = false;
+                    break;
+                default:
+                    this.view.displayInvalidCommand();
                     break;
             }
         }

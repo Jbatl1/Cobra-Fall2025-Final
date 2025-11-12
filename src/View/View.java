@@ -6,6 +6,7 @@ import Model.Rooms.Room;
 import Model.Rooms.RestRoom;
 import Model.Items.Item;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -23,50 +24,13 @@ public class View {
     // ==============================
     // General / Utility Output
     // ==============================
-    public void printMessage(String msg) {
-        System.out.println(msg);
+
+    public void displayInvalidCommand() {
+        System.out.println("❗ Invalid command. Please try again.");
     }
 
     public void printSeparator() {
         System.out.println("===============================");
-    }
-
-    // ==============================
-    // Combat Output
-    // ==============================
-    public void displayFightStart(String monsterName) {
-        System.out.println("⚔️ A wild " + monsterName + " appears! Prepare for battle!");
-    }
-
-    public void displayFightIgnored(String monsterName) {
-        System.out.println("❕ You chose to ignore the " + monsterName + ". It watches you warily...");
-    }
-
-    public void displayPlayerAttack(String monsterName, int damage) {
-        System.out.println("You attack " + monsterName + " for " + damage + " damage!");
-    }
-
-    public void displayMonsterAttack(String monsterName, int damage) {
-        System.out.println(monsterName + " strikes back for " + damage + " damage!");
-    }
-
-    public void displayVictory(String monsterName, Item reward) {
-        System.out.println("🏆 You defeated " + monsterName + "!");
-        if (reward != null) {
-            System.out.println("You received " + reward.getName() + " as a reward!");
-        }
-    }
-
-    public void displayDefeat(Player player) {
-        System.out.println("💀 You were defeated! You lost your equipped item...");
-        System.out.println("Current HP: " + player.getHealth());
-    }
-
-    public void displayFightSummary(Player player, Monster monster) {
-        System.out.println("⚔️ Combat Summary:");
-        System.out.println("  " + player.getClass().getSimpleName() + " HP: " + player.getHealth());
-        System.out.println("  " + monster.getName() + " HP: " + monster.getHealth());
-        printSeparator();
     }
 
     // ==============================
@@ -95,6 +59,30 @@ public class View {
         }
     }
 
+    public void displayExploreRoom(Room room) {
+        System.out.println("🔍 Exploring " + room.getName() + ":");
+        System.out.println(room.getDescription());
+    }
+
+    public void displayOpenShop() {
+        System.out.println("🛒 Welcome to the Shop! you may: ");
+        System.out.println("""
+                - VIEW ITEMS
+                - BUY <item name>
+                - SELL <item name>
+                - EXIT
+                """);
+
+    }
+
+    public void displayNotInShop() {
+        System.out.println("❗ You are not in a shop.");
+    }
+
+    public void displayExitShop() {
+        System.out.println("👋 You exit the shop.");
+    }
+
     // ==============================
     // Rest / Healing Output
     // ==============================
@@ -115,17 +103,140 @@ public class View {
     // ==============================
     // Inventory / Items
     // ==============================
-    public void displayItemPickup(Item item) {
-        System.out.println("📦 You picked up: " + item.getName());
+    public void displayItemPickup(int x, String itemName) {
+        switch (x) {
+            case 1:
+                System.out.println("📦 You picked up: " + itemName);
+                break;
+            case -1:
+                System.out.println("❗ You can't pick up " + itemName + ". It's not here.");
+                break;
+        }
     }
 
-    public void displayItemDropped(Item item) {
-        System.out.println("🗑️ You dropped: " + item.getName());
+    public void displayItemDropped(int x, String itemName) {
+        switch (x) {
+            case 1:
+                System.out.println("🗑️ You dropped: " + itemName);
+                break;
+            case -1:
+                System.out.println("❗ You can't drop " + itemName + ". You don't have it.");
+                break;
+        }
     }
 
     public void displayItemDestroyed(Item item) {
         System.out.println("🔥 You destroyed: " + item.getName());
     }
+
+    public void displayEquipItem(int x, String itemName) {
+        switch (x) {
+            case 1:
+                System.out.println("🛠️ You equipped: " + itemName);
+                break;
+            case -1:
+                System.out.println("❗ You can't equip " + itemName + ". You don't have it.");
+                break;
+            case -2:
+                System.out.println("❗ " + itemName + " cannot be equipped.");
+                break;
+        }
+    }
+
+    public void displayExamineItem(Item i) {
+        if (i != null) {
+            System.out.println(i.getDescription());
+        } else {
+            System.out.println("❗ Item not found in inventory.");
+        }
+    }
+
+    public void displayToolbelt(java.util.List<Item> toolBelt) {
+        System.out.println("🧰 Tool Belt Items:");
+        if (toolBelt.isEmpty()) {
+            System.out.println("  (empty)");
+        } else {
+            for (Item item : toolBelt) {
+                System.out.println("  - " + item.getName());
+            }
+        }
+    }
+
+    public void displayInv(ArrayList<Item> inv) {
+        if (inv.isEmpty()) {
+            System.out.println("❗ You have no items in your inventory.");
+        } else {
+            System.out.println("🎒 Inventory Items:");
+            for (Item item : inv) {
+                System.out.println("  - " + item.getName());
+            }
+        }
+    }
+
+    public void displayShipInv(ArrayList<Item> shipInv) {
+        if (shipInv.isEmpty()) {
+            System.out.println("❗ Your ship's inventory is empty.");
+        } else {
+            System.out.println("🚀 Ship Inventory Items:");
+            for (Item item : shipInv) {
+                System.out.println("  - " + item.getName());
+            }
+        }
+    }
+
+    // ==============================
+    // Monsters / Fights
+    // ==============================
+
+    public void displayMonsterNotFound(String s) {
+        System.out.println("❗ No monster named " + s + " found here.");
+    }
+
+    public void displayInspectMonster(Monster monster) {
+        System.out.println("👹 Monster Info:");
+        System.out.println("  Name: " + monster.getName());
+        System.out.println("  Description: " + monster.getDescription());
+        System.out.println("  Health: " + monster.getHealth());
+        System.out.println("  Attack Power: " + monster.getAttackPower());
+    }
+
+    public void displayFightStart(String monsterName) {
+        System.out.println("⚔️ A wild " + monsterName + " appears! Prepare for battle!");
+    }
+
+    public void displayFightIgnored(String monsterName) {
+        System.out.println("❕ You chose to ignore the " + monsterName + ". It watches you warily...");
+    }
+
+    public void displayPlayerAttack(String monsterName, int damage) {
+        System.out.println("You attack " + monsterName + " for " + damage + " damage!");
+    }
+
+    public void displayMonsterAttack(String monsterName, int damage) {
+        System.out.println(monsterName + " strikes back for " + damage + " damage!");
+    }
+
+    public void displayVictory(String monsterName, Item reward) {
+        System.out.println("🏆 You defeated " + monsterName + "!");
+        if (reward != null) {
+            System.out.println("You received " + reward.getName() + " as a reward!");
+        }
+    }
+
+    public void displayDefeat() {
+        System.out.println("💀 You were defeated! You lost your equipped item...");
+        System.out.println("Find a safe place to recover and try again.");
+    }
+
+    public void displayFightSummary(Player player, Monster monster) {
+        System.out.println("⚔️ Combat Summary:");
+        System.out.println("  " + player.getClass().getSimpleName() + " HP: " + player.getHealth());
+        System.out.println("  " + monster.getName() + " HP: " + monster.getHealth());
+        printSeparator();
+    }
+
+
+
 
     // Store all dialogues here
     private final HashMap<String, String[]> dialogues = new HashMap<>();
