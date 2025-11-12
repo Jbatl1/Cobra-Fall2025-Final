@@ -15,12 +15,15 @@ public class Player extends Entity {
     private ArrayList<Item> toolBelt;
     private Item equippedItem;
     private Room currRoom;
-    private ArrayList<String> narrativeMemory; // FR-005.3
+    private ArrayList<String> narrativeMemory;
     private int health;
 
     // Ship storage (capacity 20)
     private ArrayList<Item> shipStorage;
     private final int SHIP_CAPACITY = 20;
+
+    // Currency
+    private int gold;
 
     // ==============================
     // Constructor
@@ -33,7 +36,8 @@ public class Player extends Entity {
         this.equippedItem = null;
         this.narrativeMemory = new ArrayList<>();
         this.shipStorage = new ArrayList<>();
-        this.health = 100; // Default HP
+        this.health = 100;
+        this.gold = 100; // starting gold
     }
 
     // ==============================
@@ -41,17 +45,17 @@ public class Player extends Entity {
     // ==============================
     public int addCargoItem(Item item) {
         if (shipStorage.size() >= SHIP_CAPACITY) {
-            return -1; // storage full
+            return -1; // full
         }
         shipStorage.add(item);
-        return 1; // success
+        return 1;
     }
 
     public int removeCargoItem(Item item) {
         if (shipStorage.remove(item)) {
-            return 1; // successfully removed
+            return 1;
         }
-        return -1; // item not found
+        return -1;
     }
 
     public ArrayList<Item> getShipStorage() {
@@ -59,21 +63,41 @@ public class Player extends Entity {
     }
 
     // ==============================
+    // Currency Methods
+    // ==============================
+    public int getGold() {
+        return gold;
+    }
+
+    public void addGold(int amount) {
+        if (amount > 0) {
+            gold += amount;
+        }
+    }
+
+    public boolean spendGold(int amount) {
+        if (amount <= gold) {
+            gold -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public int checkCurrency() {
+        return gold;
+    }
+
+    // ==============================
     // Move to a Different Landing Site
     // ==============================
     public int moveToLandingSite(String landingSite) {
-        // Not currently at a landing site
         if (!currRoom.getName().equalsIgnoreCase("Landing site")) {
             return -2;
         }
-
-        // Check if the given landing site exists
-        Room target = Room.getRoomByName(landingSite); // assumed static lookup
+        Room target = Room.getRoomByName(landingSite);
         if (target == null || !target.getName().equalsIgnoreCase("Landing site")) {
             return -1;
         }
-
-        // Move to the new landing site
         currRoom = target;
         return 1;
     }
@@ -94,18 +118,20 @@ public class Player extends Entity {
         return -1;
     }
 
+    // Equip item to hands but keep it in inventory
     public int equipItemToHands(String s) {
         int idx = isInInventory(s);
         if (idx >= 0) {
             equippedItem = inventory.get(idx);
-            return 1; // success
+            return 1;
         }
         return 0;
     }
 
+    // Add item to toolbelt but keep it in inventory
     public int equipItemToToolBelt(String s) {
         int idx = isInInventory(s);
-        if (idx >= 0) {
+        if (idx >= 0 && !toolBelt.contains(inventory.get(idx))) {
             toolBelt.add(inventory.get(idx));
             return 1;
         }
@@ -128,14 +154,14 @@ public class Player extends Entity {
         int idx = isInInventory(s);
         if (idx >= 0) {
             Item item = inventory.remove(idx);
-            currRoom.addItem(item); // assume Room has addItem()
+            currRoom.addItem(item);
             return 1;
         }
         return 0;
     }
 
     public int pickupItem(String s) {
-        Item item = currRoom.removeItem(s); // assume Room has removeItem()
+        Item item = currRoom.removeItem(s);
         if (item != null) {
             inventory.add(item);
             return 1;
@@ -153,32 +179,56 @@ public class Player extends Entity {
     }
 
     // ==============================
-    // Combat and Damage (FR-004.3–004.6)
+    // Combat System
     // ==============================
-    public void receiveDamage(int amount) { // FR-004.3
+    public void receiveDamage(int amount) {
         health -= amount;
-        if (health < 0) health = 0;
+        if (health < 0) {
+            health = 0;
+        }
     }
 
-    public int inflictDamage(Monster enemy) { // FR-004.4
-        if (equippedItem == null) return 0; // no weapon
-        int damage = equippedItem.getDamageValue(); // assume Item has damage value
+    public int inflictDamage(Monster enemy) {
+        if (equippedItem == null) return 0; // no weapon equipped
+        int damage = equippedItem.getDamageValue();
         enemy.receiveDamage(damage);
         return damage;
     }
 
-    public void loseItemOnDefeat() { // FR-004.5
+    public void loseItemOnDefeat() {
         if (equippedItem != null) {
             equippedItem = null;
         }
     }
 
-    public void receiveRewardItem(Item item) { // FR-004.6
+    public void receiveRewardItem(Item item) {
         inventory.add(item);
     }
 
+    // Main combat logic — called externally when "fight" command is issued
+    public int startCombatLoop(Monster enemy) {
+        if (enemy == null) return -1;
+
+        while (health > 0 && enemy.getHealth() > 0) {
+            int damageDealt = inflictDamage(enemy);
+
+            if (enemy.getHealth() <= 0) {
+                receiveRewardItem(new Item("Trophy"));
+                addGold(20);
+                return 1; // win
+            }
+
+            receiveDamage(enemy.getAttackPower());
+            if (health <= 0) {
+                loseItemOnDefeat();
+                return 0; // lose
+            }
+        }
+        return -1; // unexpected
+    }
+
     // ==============================
-    // Player Memory and Bartering (FR-005.2, FR-005.3, FR-005.5)
+    // Player Memory & Bartering
     // ==============================
     public void rememberEvent(String event) {
         narrativeMemory.add(event);
@@ -188,30 +238,51 @@ public class Player extends Entity {
         return narrativeMemory;
     }
 
-    public boolean barterItem(String offerItem, String receiveItem) { // FR-005.5
-        int idx = isInInventory(offerItem);
-        if (idx >= 0) {
-            inventory.remove(idx);
-            inventory.add(new Item(receiveItem)); // placeholder
-            return true;
+    // barterType = "buy", "sell", or "trade"
+    // price = gold amount for buy/sell
+    public int barterItem(String offerItem, String receiveItem, String barterType, int price) {
+        if (barterType.equalsIgnoreCase("sell")) {
+            int idx = isInInventory(offerItem);
+            if (idx >= 0) {
+                inventory.remove(idx);
+                addGold(price);
+                return 1;
+            }
+            return 0;
         }
-        return false;
+
+        if (barterType.equalsIgnoreCase("buy")) {
+            if (spendGold(price)) {
+                inventory.add(new Item(receiveItem));
+                return 1;
+            }
+            return -1;
+        }
+
+        if (barterType.equalsIgnoreCase("trade")) {
+            int idx = isInInventory(offerItem);
+            if (idx >= 0) {
+                inventory.remove(idx);
+                inventory.add(new Item(receiveItem));
+                return 1;
+            }
+            return 0;
+        }
+
+        return 0;
     }
 
     // ==============================
-    // Puzzle Interaction (FR-006.2, FR-006.4, FR-006.5)
+    // Puzzle Interaction
     // ==============================
-    // Take out puzzle p check if currRoom has puzzle Return 1 if not null, then give puzzle description, if no puzzle then return 0.
-    public void examinePuzzle(Puzzle p) {
-        // handled by View
-    }
+    public void examinePuzzle(Puzzle p) { }
 
     public void skipPuzzle(Puzzle p) {
-        receiveDamage(10); // penalty
+        receiveDamage(10);
     }
 
     // ==============================
-    // Movement and General Actions
+    // Movement
     // ==============================
     public int move(String direction) {
         Room next = currRoom.getExit(direction);
@@ -229,6 +300,9 @@ public class Player extends Entity {
     public Room getCurrRoom() {
         return currRoom;
     }
-}
 
+    public Item getEquippedItem() {
+        return equippedItem;
+    }
+}
 //need a arraylist with a ship capacity of 20 items, we going to need a method in the player class to move to a different landing site which will take in a string called landingsite, its going to check if they current room is a landingsite, we also need to check if its an existing landingsite, if it exist update player room to the new landingsite, if its false return -1, if true return 1, if not in landingsite from the start return -2.
