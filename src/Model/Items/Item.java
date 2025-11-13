@@ -1,5 +1,7 @@
 package Model.Items;
 
+import java.util.List;
+
 public  class Item {
 
     private String ItemID;
@@ -10,12 +12,15 @@ public  class Item {
     private int ItemDamage;
     private int ItemDurability;
     private int ItemRestoreHP;
-    private String ItemEffect;
-    private String ItemMessage;
+    private String ItemDescription;
     private int ItemUpgrade;
-    private String ItemNeeded;
+    private String PuzzleID;
+    private int quantity;
 
-    public Item(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemEffect, String itemMessage, int itemUpgrade, String itemNeeded) {
+    private List<String> puzzleIDs;
+
+
+    public Item(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity) {
         ItemID = itemID;
         RoomID = roomID;
         ItemName = itemName;
@@ -24,10 +29,10 @@ public  class Item {
         ItemDamage = itemDamage;
         ItemDurability = itemDurability;
         ItemRestoreHP = itemRestoreHP;
-        ItemEffect = itemEffect;
-        ItemMessage = itemMessage;
+        ItemDescription = itemDescription;
         ItemUpgrade = itemUpgrade;
-        ItemNeeded = itemNeeded;
+        PuzzleID = puzzleID;
+        this.quantity = quantity;
     }
 
     public String getItemID() { return ItemID; }
@@ -56,19 +61,22 @@ public  class Item {
         return ItemRestoreHP;
     }
 
-    public String getItemEffect() {
-        return ItemEffect;
-    }
-
-    public String getItemMessage() {
-        return ItemMessage;
-    }
 
     public int getItemUpgrade() {
         return ItemUpgrade;
     }
 
-    public String getItemNeeded() {
-        return ItemNeeded;
-    }
+    public String getItemDescription() {return ItemDescription;}
+
+    public String getPuzzleID() {return PuzzleID;}
+
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    public void increaseQuantity() { this.quantity++; }
+    public void decreaseQuantity() { this.quantity--; }
+
+    public List<String> getPuzzleIDs() { return puzzleIDs; }
+    public void setPuzzleIDs(List<String> ids) { this.puzzleIDs = ids; }
+
 }

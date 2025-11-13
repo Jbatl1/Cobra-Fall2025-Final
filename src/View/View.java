@@ -4,12 +4,15 @@ import Model.Entities.Monster;
 import Model.Entities.Player;
 import Model.Puzzles.Puzzle;
 import Model.Rooms.Room;
+import Model.Rooms.RestRoom;
 import Model.Items.Item;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class View {
-    private final Scanner scanner;
+    private Scanner scanner;
 
     public View() {
         scanner = new Scanner(System.in);
@@ -253,61 +256,80 @@ public class View {
     // Puzzle
     // ==============================
 
-    public void displayPuzzleBeforePickup(Puzzle puzzle) {
-        System.out.println("You must solve a puzzle before you can pickup this Item! (Examine or Ignore)");
+    public static void displayBoundaryPuzzlePrompt(Puzzle puzzle) {
+        public void displayPuzzleBeforePickup (Puzzle puzzle){
+            System.out.println("You must solve a puzzle before you can pickup this Item! (Examine or Ignore)");
+        }
+
+        public void displayPuzzleChoice () {
+            System.out.println("Type 'EXAMINE' to try solving the puzzle or 'IGNORE' to leave it.");
+        }
+
+        public void displayPuzzleQuestion (Puzzle puzzle){
+            System.out.println("🧩 Puzzle: " + puzzle.getPuzzleQuestion());
+        }
+
+
+        public void displayBoundaryPuzzlePrompt (Puzzle puzzle){
+            System.out.println("❓: " + puzzle.getPuzzleQuestion());
+        }
+
+        public void displayLootPuzzlePrompt (Puzzle puzzle){
+            System.out.println("❓: " + puzzle.getPuzzleQuestion());
+        }
+        public void displayItemPuzzlePrompt (Puzzle puzzle){
+            System.out.println("❓: " + puzzle.getPuzzleQuestion());
+        }
+
+
+        public void displayPuzzleSolved (Puzzle puzzle){
+            System.out.println("🧩 You have correctly solved the puzzle!");
+            System.out.println("Item ♦️ " + puzzle.getReward().getItemName() + " has been added to your inventory! ");
+
+        }
+
+        public static void displayPuzzleIncorrect (Puzzle puzzle){
+            System.out.println("That answer is not correct! ");
+        }
+
+        public static void displayPuzzleLocked (Puzzle puzzle){
+            System.out.println("You have have failed to solve the puzzle! Leave and comeback to try again");
+        }
+
+        // =========================
+        public void displayItemNotFound (String itemName){
+            System.out.println("There is no item named '" + itemName + "' here.");
+        }
+
+        public void displayPuzzlePrompt (Puzzle p){
+            System.out.println("A puzzle blocks your access!");
+            System.out.println("Puzzle Type: " + p.getType());
+            System.out.println("Type EXAMINE to solve or IGNORE to leave it.");
+        }
+
+        public void displayPuzzleBlockedPickup (Item i){
+            System.out.println("You cannot pick up " + i.getItemName() + " until the puzzle is solved.");
+        }
+
+        public void displayPuzzleQuestion (Puzzle p){
+            System.out.println("Puzzle Question: " + p.getPuzzleQuestion());
+        }
+
+        public void displayPuzzleIgnored (Puzzle p){
+            System.out.println("You decided to ignore the puzzle.");
+        }
+
+        public void displayPuzzleFailed (Puzzle p){
+            System.out.println("You failed to solve the puzzle. The item remains locked.");
+        }
+
+        public void displayReturnToPreviousRoom (Room m){
+            System.out.println("You have been moved back to previous room");
+        }
+
+        public void displayMessage () {
+            System.out.println("You cannot move back, no previous room recorded.");
+        }
+
     }
-
-    public void displayPuzzleChoice() {
-        System.out.println("Type 'EXAMINE' to try solving the puzzle or 'IGNORE' to leave it.");
-    }
-
-    public void displayPuzzleQuestion(Puzzle puzzle) {
-        System.out.println("🧩 Puzzle: " + puzzle.getPuzzleQuestion());
-    }
-
-
-
-    public void displayBoundaryPuzzlePrompt(Puzzle puzzle) {
-        System.out.println("❓: " + puzzle.getPuzzleQuestion() );
-    }
-
-    public void displayLootPuzzlePrompt(Puzzle puzzle) {
-        System.out.println("❓: " + puzzle.getPuzzleQuestion() );
-    }
-    public void displayItemPuzzlePrompt(Puzzle puzzle) {
-        System.out.println("❓: " + puzzle.getPuzzleQuestion() );
-    }
-
-    public void displayPuzzleIgnored(Puzzle puzzle) {
-      //  puzzle.view.displayRoomEntry()
-    }
-
-    public void displayPuzzleSolved(Puzzle puzzle) {
-        System.out.println("🧩 You have correctly solved the puzzle!");
-        System.out.println("Item ♦️ " + puzzle.getReward().getItemName() + " has been added to your inventory! ");
-
-    }
-
-    public void displayBoundaryPuzzleSolved(Puzzle puzzle) {
-        System.out.println("You have correctly solved the puzzle!, You can now explore room");
-        System.out.println("Item ♦️ " + puzzle.getReward().getItemName() + " has been added to your inventory! ");
-    }
-
-    public void displayPuzzleIncorrect(Puzzle puzzle) {
-        System.out.println("That answer is not correct! ");
-    }
-
-    public void displayBoundaryPuzzleIncorrect(Puzzle puzzle) {
-        System.out.println("That answer is not correct!");
-    }
-
-    public void displayPuzzleFailed(Puzzle puzzle) {
-        System.out.println("That answer is not correct! ");
-    }
-
-    public void displayPuzzleLocked(Puzzle puzzle) {
-        System.out.println("You have have failed to solve the puzzle! Leave and comeback to try again");
-    }
-
-
 }

@@ -50,7 +50,7 @@ public class BoundaryPuzzle extends Puzzle {
 
         if (userInput.equalsIgnoreCase(puzzleSolution)) {
             puzzleIsSolved = true;
-            currentPuzzle.addLootToInventory(player, currentPuzzle);
+            currentPuzzle.addLootToInventory(player);
             room.getPuzzlePresent().remove(currentPuzzle);
             return 1;
         } else {

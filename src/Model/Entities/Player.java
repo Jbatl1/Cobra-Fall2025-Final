@@ -4,9 +4,17 @@ import java.util.ArrayList;
 import Model.Items.Item;
 import Model.Rooms.Room;
 import Model.Entities.Monster;
-import Model.Puzzle;
+import Model.Puzzles.Puzzle;
 
 public class Player extends Entity {
+
+    //ANITA MODIFIED
+    //getName()  --> getItemName()
+    //getDescription() --> getPuzzleQuestion()
+    //getDamageValue() --> getItemDamage()
+    //getName() --> getRoomName()
+    //deleted hint method
+
 
     // ==============================
     // Fields
@@ -15,7 +23,8 @@ public class Player extends Entity {
     private ArrayList<Item> toolBelt;
     private Item equippedItem;
     private Room currRoom;
-    private ArrayList<String> narrativeMemory;
+    private Room prevRoom;
+    private ArrayList<String> narrativeMemory; // FR-005.3
     private int health;
 
     // Ship storage (capacity 20)
@@ -105,12 +114,23 @@ public class Player extends Entity {
     // ==============================
     // Inventory / ToolBelt Management
     // ==============================
+
     public ArrayList<Item> getInventory() {
         return inventory;
     }
     public ArrayList<Item> getToolBelt() {
         return toolBelt;
     }
+
+   public void addItem(Item newItem) {
+       for (Item item : inventory) {
+           if (item.getItemID().equals(newItem.getItemID())) {
+               item.setQuantity(item.getQuantity() + newItem.getQuantity());
+               return;
+           }
+       }
+       inventory.add(newItem);
+   }
 
 
     public int isInInventory(String s) {
@@ -127,7 +147,7 @@ public class Player extends Entity {
         int idx = isInInventory(s);
         if (idx >= 0) {
             equippedItem = inventory.get(idx);
-            return 1;
+            return 1; // success
         }
         return 0;
     }
@@ -149,6 +169,8 @@ public class Player extends Entity {
         }
         return 0;
     }
+
+
 
     public int removeItemFromToolBelt(String s) {
         return toolBelt.removeIf(i -> i.getName().equalsIgnoreCase(s)) ? 1 : 0;
@@ -181,6 +203,8 @@ public class Player extends Entity {
         }
         return 0;
     }
+
+
 
     // ==============================
     // Combat System
@@ -307,8 +331,15 @@ public class Player extends Entity {
         return currRoom;
     }
 
+
     public Item getEquippedItem() {
         return equippedItem;
+    }
+    public Room getPrevRoom() {return prevRoom;}
+
+    public void setCurrRoom(Room newRoom) {
+        this.prevRoom = this.currRoom;  // store current as previous
+        this.currRoom = newRoom;        // move to new room
     }
 
 
