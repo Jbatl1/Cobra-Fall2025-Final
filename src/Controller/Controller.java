@@ -1,10 +1,15 @@
 package Controller;
 
 import Model.Entities.Monster;
+import Model.Items.Item;
 import Model.Model;
+import Model.Rooms.Room;
 import Model.Rooms.Shop;
 import View.View;
 import Model.Puzzles.Puzzle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     private Model model;
@@ -29,31 +34,75 @@ public class Controller {
                 case "N": // move north
                     x = model.getPlayer().move("N");
                     view.enterRoom(x, "North", model.getPlayer().getCurrRoom());
+                    // Handle boundary puzzle automatically after entering
+                    handleBoundaryPuzzle(model.getPlayer().getCurrRoom());
+
                     if (x == -2) puzzle = true;
                     break;
                 case "E": // move east
                     x = model.getPlayer().move("E");
                     view.enterRoom(x, "East", model.getPlayer().getCurrRoom());
+                    handleBoundaryPuzzle(model.getPlayer().getCurrRoom());
                     if (x == -2) puzzle = true;
                     break;
                 case "S": // move south
                     x = model.getPlayer().move("S");
                     view.enterRoom(x, "South", model.getPlayer().getCurrRoom());
+                    handleBoundaryPuzzle(model.getPlayer().getCurrRoom());
                     if (x == -2) puzzle = true;
                     break;
                 case "W": // move west
                     x = model.getPlayer().move("W");
                     view.enterRoom(x, "West", model.getPlayer().getCurrRoom());
+                    handleBoundaryPuzzle(model.getPlayer().getCurrRoom());
                     if (x == -2) puzzle = true;
                     break;
 
 
                 // ITEMS---------------------
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item
-                    x = this.model.getPlayer().pickupItem(s.substring(7).trim());
-                    this.view.displayItemPickup(x, s);
+                    String itemName = input.substring(7).trim();
+                    Item targetItem = model.findItemInCurrentRoom(itemName);
 
+                    if (targetItem == null) {
+                        view.displayItemNotFound(itemName);
+                        break;
+                    }
+
+                    // Get puzzles for this item in the current room
+                    List<Puzzle> puzzlesInThisRoom = getItemPuzzlesForCurrentRoom(targetItem);
+                    boolean blocked = false;
+
+                    for (Puzzle p : puzzlesInThisRoom) {
+                        if (!p.isPuzzleIsSolved()) {
+                            view.displayPuzzlePrompt(p);
+                            String choice = view.getInput();
+
+                            if (choice.equalsIgnoreCase("EXAMINE")) {
+                                boolean solved = runPuzzleLoop(p);
+                                if (!solved) {
+                                    view.displayPuzzleFailed(p);
+                                    view.displayPuzzleBlockedPickup(targetItem);
+                                    blocked = true;
+                                    break;
+                                }
+                            } else { // IGNORE
+                                view.displayPuzzleIgnored(p);
+                                view.displayPuzzleBlockedPickup(targetItem);
+                                blocked = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    // If not blocked, allow pickup
+                    if (!blocked) {
+                        model.getPlayer().pickupItem(targetItem.getItemName());
+                        model.getPlayer().getCurrRoom().getRoomItems().remove(targetItem); // ✅ Remove from room inventory
+                        view.displayItemPickup(targetItem);
+                    }
                     break;
+
                 case String s when input.matches("^DROP\\s.*$"): // drop item
                     x = this.model.getPlayer().dropItem(s.substring(5).trim());
                     this.view.displayItemDropped(x, s);
@@ -133,66 +182,6 @@ public class Controller {
             }
         }
 
-        //check if its boundary/loot/normal
-        //after each check add the display.view(add the method in view)
-        //remember if it's an loot/normal your displaying "loot box (solve puzzle to obtain item)"
-        //if its item " *itemName* (solve puzzle to obtain item)
-        //in each puzzle class add extra check (if its loot, if its boundary, if its boundary
-        //
-        //
-        while (puzzle) {
-            this.view.displayPuzzlePrompt(currentPuzzle);
-            String input = this.view.getInput();
-
-            if (input.equalsIgnoreCase("IGNORE")) {
-                currentPuzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), "ignore");
-
-                this.view.displayPuzzleIgnored(currentPuzzle);
-                puzzle = false;
-                continue;
-            }
-
-            int result = currentPuzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), input);
-            if (result == 1) {
-                this.view.displayPuzzleSolved(currentPuzzle);
-                puzzle = false;
-            } else if (result == 0) {
-                this.view.displayPuzzleIncorrect(currentPuzzle);
-            } else {
-                this.view.displayPuzzleLocked(currentPuzzle);
-                puzzle = false;
-            }
-        }
-
-        while (solvePuzzle) {
-
-            if (this.model.getPlayer().getCurrRoom().getRoomPuzzle().isPuzzleIsSolved()) {
-                this.view.displayPuzzleSolved(currentPuzzle);
-                solvePuzzle = false;
-                break;
-            }
-
-            while (currentPuzzle.getMaxAttempts() >= 0) {
-                String input = this.view.getInput();
-                if (input.equals(currentPuzzle.getPuzzleSolution())) {
-                    currentPuzzle.isPuzzleIsSolved();
-                    this.view.displayPuzzleSolved(currentPuzzle);
-                    solvePuzzle = false;
-                    currentPuzzle = null;
-                    break;
-                } else {
-                    currentPuzzle.decrementAttempts();
-                    if (currentPuzzle.getMaxAttempts() >= 0) {
-                        this.view.displayPuzzleIncorrect(currentPuzzle);
-                    } else {
-                        this.view.displayPuzzleFailed(currentPuzzle);
-                        solvePuzzle = false;
-                        break;
-                    }
-                }
-            }
-        }
-
         while (fight) {
 
             if (this.model.getPlayer().getHealth() <= 0) {
@@ -208,7 +197,7 @@ public class Controller {
                     this.view.displayPlayerAttack(currentMonster.getName(), this.model.getPlayer().getAttackPower()); // make getter display item damage if one is equipped
                     break;
                 case "TOOL BELT": // opens tool belt
-                    this.view.displayToolbelt(this.model.getPlayer().getToolBelt);
+                    this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
                     break;
                 case "B": // Shows Inventory
                     this.view.displayInv(this.model.getPlayer().getInventory());
@@ -269,4 +258,85 @@ public class Controller {
             this.model.getPlayer().rest();
         }
     }
+
+    private List<Puzzle> getItemPuzzlesForCurrentRoom(Item item) {
+        List<Puzzle> relevant = new ArrayList<>();
+        if (item.getPuzzleIDs() == null) return relevant;
+
+        String currentRoomId = model.getPlayer().getCurrRoom().getRoomID();
+
+        for (String pid : item.getPuzzleIDs()) {
+            Puzzle p = model.getPuzzles().get(pid);
+            if (p != null && p.getRoomID().equals(currentRoomId)) {
+                relevant.add(p);
+            }
+        }
+        return relevant;  //Only returns puzzles attached to this item in the current room.
+    }
+
+
+    /**
+     * Runs the puzzle solving loop for a specific puzzle.
+     * Returns true if puzzle solved, false if failed or locked.
+     */
+
+    private boolean runPuzzleLoop(Puzzle puzzle) {
+        view.displayPuzzleQuestion(puzzle);
+
+        while (!puzzle.isPuzzleIsSolved() && !puzzle.isPuzzleLocked()) {
+            String input = view.getInput();
+            int result = puzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), input);
+
+            switch (result) {
+                case 1: // Solved
+                    view.displayPuzzleSolved(puzzle);
+                    model.getPlayer().getCurrRoom().getPuzzlePresent().remove(puzzle); // ✅ Clean removal
+                    return true;
+
+                case 0: // Incorrect attempt
+                    view.displayPuzzleIncorrect(puzzle);
+                    break;
+
+                case -1: // Locked, invalid, or no attempts left
+                default:
+                    view.displayPuzzleLocked(puzzle);
+                    return false;
+            }
+        }
+        return puzzle.isPuzzleIsSolved();
+    }
+
+    public void handleBoundaryPuzzle(Room room) {
+        Puzzle boundaryPuzzle = room.getRoomPuzzle(); // One boundary puzzle per room
+
+        if (boundaryPuzzle != null
+                && !boundaryPuzzle.isPuzzleIsSolved()
+                && boundaryPuzzle.getType().equalsIgnoreCase("boundary")) {
+
+            view.displayBoundaryPuzzlePrompt(boundaryPuzzle); // e.g., "This room has a puzzle (Examine / Ignore)"
+            String choice = view.getInput();
+
+            if (choice.equalsIgnoreCase("EXAMINE")) {
+                boolean solved = runPuzzleLoop(boundaryPuzzle);
+                if (!solved) {
+                    view.displayPuzzleFailed(boundaryPuzzle);
+                    movePlayerToPreviousRoom(); // return player to previous room
+                }
+            } else {
+                view.displayPuzzleIgnored(boundaryPuzzle);
+                movePlayerToPreviousRoom(); // return player to previous room
+            }
+        }
+    }
+
+    private void movePlayerToPreviousRoom() {
+        Room previousRoom = model.getPlayer().getPrevRoom();
+        if (previousRoom != null) {
+            model.getPlayer().setCurrRoom(previousRoom);
+            view.displayReturnToPreviousRoom(previousRoom); // optional message
+        } else {
+            view.displayMessage();
+        }
+    }
+
 }

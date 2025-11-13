@@ -95,9 +95,19 @@ public class Player extends Entity {
         return inventory;
     }
 
-    public void addItem(Item item) {
+   /* public void addItem(Item item) {
         inventory.add(item);
     }
+*/
+   public void addItem(Item newItem) {
+       for (Item item : inventory) {
+           if (item.getItemID().equals(newItem.getItemID())) {
+               item.setQuantity(item.getQuantity() + newItem.getQuantity());
+               return;
+           }
+       }
+       inventory.add(newItem);
+   }
 
     private int isInInventory(String s) {
         for (int i = 0; i < inventory.size(); i++) {

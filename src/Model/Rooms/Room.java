@@ -27,7 +27,6 @@ public class Room {
     private HashMap<String, String> exits;// stores exits (direction → roomNumber mapping)
     private ArrayList<Item> roomItems = new ArrayList<>(); // items present in this room
     private ArrayList<Puzzle> puzzlePresent = new ArrayList<>();
-    private List<Monster> monsters;
 
 
     public Room(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop) {

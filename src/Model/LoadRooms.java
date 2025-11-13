@@ -9,6 +9,7 @@ import Model.Rooms.Room;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -213,6 +214,7 @@ public class LoadRooms {
             ResultSet rs8 = stmt8.executeQuery("SELECT * FROM Puzzles;");
 
 
+
             while(rs8.next()) {
 
                 String rewardItemID = rs8.getString("Reward");
@@ -273,11 +275,22 @@ public class LoadRooms {
                         rs10.getInt("ItemDamage"),
                         rs10.getInt("ItemDurability"),
                         rs10.getInt("ItemRestoreHP"),
-                        rs10.getString("ItemEffect"),
-                        rs10.getString("ItemMessage"),
+                        rs10.getString("ItemDescription"),
                         rs10.getInt("ItemUpgrade"),
-                        rs10.getString("ItemNeeded")
+                        rs10.getString("PuzzleID"),
+                        rs10.getInt("Quantity")
                 );
+
+                //  handles multi-puzzle link and quantity ---
+                String puzzleIDs = rs10.getString("PuzzleID"); // assumes your table has this column
+                if (puzzleIDs != null && !puzzleIDs.isEmpty()) {
+                    // split comma-separated PuzzleIDs into list
+                    item.setPuzzleIDs(Arrays.asList(puzzleIDs.split(",")));
+                }
+
+                // optional: initialize quantity field if you add it to Item class
+                item.setQuantity(rs10.getInt("Quantity") == 0 ? 1 : rs10.getInt("Quantity"));
+
 
                 items.put(item.getItemID(), item);
             }
