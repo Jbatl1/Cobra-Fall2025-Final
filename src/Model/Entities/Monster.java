@@ -56,6 +56,9 @@ public class Monster extends Entity {
         return currentRoom;
     }
 
+    public String getDescription() {
+        return description;
+    }
     // Combat
 
     public void attackPlayer(Player player) {

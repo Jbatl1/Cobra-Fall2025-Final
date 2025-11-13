@@ -4,15 +4,12 @@ import Model.Entities.Monster;
 import Model.Entities.Player;
 import Model.Puzzles.Puzzle;
 import Model.Rooms.Room;
-import Model.Rooms.RestRoom;
 import Model.Items.Item;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class View {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public View() {
         scanner = new Scanner(System.in);
@@ -102,10 +99,10 @@ public class View {
     // ==============================
     public void displayRoomEntry(Room room) { //caleb
         printSeparator();
-        System.out.println("🏠 You enter: " + room.getRoomName());
-        System.out.println(room.getRoomDescription());
+        System.out.println("🏠 You enter: " + room.getName());
+        System.out.println(room.getDescription());
 
-        System.out.println("Items here: " + (room.getRoomItems().isEmpty() ? "None" : room.getRoomItems().size()));
+        System.out.println("Items here: " + (room.getItems().isEmpty() ? "None" : room.getItems().size()));
         System.out.println("Monsters here: " + (room.getMonsters().isEmpty() ? "None" : room.getMonsters().size()));
         printSeparator();
     }
@@ -129,6 +126,22 @@ public class View {
 
     }
 
+    public void displaySellItem(int x, String s) {
+        if (x < 0) {
+            System.out.println("❗ You don't have " + s + " to sell.");
+        } else {
+            System.out.println("💰 You sold " + s + " for " + x + " gold.");
+        }
+    }
+
+
+    public void displayPurchaseItem(int x, String s) {
+        if (x < 0) {
+            System.out.println("❗ You don't have enough gold to buy" + s + ".");
+        } else {
+            System.out.println("💰 You purchased " + s + " for " + x + " gold.");
+        }
+    }
     public void displayNotInShop() { //caleb
         System.out.println("❗ You are not in a shop.");
     }
@@ -140,9 +153,9 @@ public class View {
     // ==============================
     // Rest / Healing Output
     // ==============================
-    public void displayRestStart(RestRoom room) {
+    public void displayRest(int before, int after) {
         System.out.println("💤 You take a moment to rest...");
-        System.out.println("(Resting will take " + room.getRestDelay() + " seconds)");
+        System.out.println("Your health went from " + before + " to " + after + ".");
     }
 
     public void displayRestInterrupted() {
@@ -195,7 +208,7 @@ public class View {
 
     public void displayExamineItem(Item i) { //caleb
         if (i != null) {
-            System.out.println(i.getDescription());
+            System.out.println(i.getItemMessage());
         } else {
             System.out.println("❗ Item not found in inventory.");
         }
@@ -207,7 +220,7 @@ public class View {
             System.out.println("  (empty)");
         } else {
             for (Item item : toolBelt) {
-                System.out.println("  - " + item.getName());
+                System.out.println("  - " + item.getItemName());
             }
         }
     }
@@ -218,7 +231,7 @@ public class View {
         } else {
             System.out.println("🎒 Inventory Items:");
             for (Item item : inv) {
-                System.out.println("  - " + item.getName());
+                System.out.println("  - " + item.getItemName());
             }
         }
     }
@@ -229,7 +242,7 @@ public class View {
         } else {
             System.out.println("🚀 Ship Inventory Items:");
             for (Item item : shipInv) {
-                System.out.println("  - " + item.getName());
+                System.out.println("  - " + item.getItemName());
             }
         }
     }
