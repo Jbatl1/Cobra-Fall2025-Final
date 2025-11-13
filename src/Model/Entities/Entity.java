@@ -1,33 +1,28 @@
 package Model.Entities;
 
-/**
- * Base class for all living entities (Players, Monsters, NPCs).
- * Handles shared logic for health, attack, and defense.
- * No print statements — View layer handles all output.
- */
 public abstract class Entity {
 
-    // ==============================
+
     // Fields
-    // ==============================
+
     protected String name;
     protected int health;
     protected int attackPower;
     protected int defense;
 
-    // ==============================
+
     // Constructor
-    // ==============================
+
     public Entity(String name, int health, int attackPower) {
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;
-        this.defense = 0; // default unless overridden
+        this.defense = 0; // Default unless overridden
     }
 
-    // ==============================
+
     // Getters and Setters
-    // ==============================
+
     public String getName() {
         return name;
     }
@@ -56,26 +51,16 @@ public abstract class Entity {
         this.defense = defense;
     }
 
-    // ==============================
-    // Core Combat Logic
-    // ==============================
 
-    /**
-     * Applies incoming damage after accounting for defense.
-     * Ensures health never drops below zero.
-     * Logic-only — no direct printing.
-     */
+    // Core Methods
+
     public void receiveDamage(int amount) {
         int damageTaken = Math.max(0, amount - defense);
         health -= damageTaken;
-        if (health < 0) {
-            health = 0;
-        }
+        if (health < 0) health = 0;
+        System.out.println(name + " took " + damageTaken + " damage (" + health + " HP left).");
     }
 
-    /**
-     * Checks if this entity is still alive.
-     */
     public boolean isAlive() {
         return health > 0;
     }

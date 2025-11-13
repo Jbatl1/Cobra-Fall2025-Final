@@ -4,9 +4,17 @@ import java.util.ArrayList;
 import Model.Items.Item;
 import Model.Rooms.Room;
 import Model.Entities.Monster;
-import Model.Puzzle;
+import Model.Puzzles.Puzzle;
 
 public class Player extends Entity {
+
+    //ANITA MODIFIED
+    //getName()  --> getItemName()
+    //getDescription() --> getPuzzleQuestion()
+    //getDamageValue() --> getItemDamage()
+    //getName() --> getRoomName()
+    //deleted hint method
+
 
     // ==============================
     // Fields
@@ -15,7 +23,8 @@ public class Player extends Entity {
     private ArrayList<Item> toolBelt;
     private Item equippedItem;
     private Room currRoom;
-    private ArrayList<String> narrativeMemory;
+    private Room prevRoom;
+    private ArrayList<String> narrativeMemory; // FR-005.3
     private int health;
 
     // Ship storage (capacity 20)
@@ -105,11 +114,26 @@ public class Player extends Entity {
     // ==============================
     // Inventory / ToolBelt Management
     // ==============================
+
     public ArrayList<Item> getInventory() {
         return inventory;
     }
+    public ArrayList<Item> getToolBelt() {
+        return toolBelt;
+    }
 
-    private int isInInventory(String s) {
+   public void addItem(Item newItem) {
+       for (Item item : inventory) {
+           if (item.getItemID().equals(newItem.getItemID())) {
+               item.setQuantity(item.getQuantity() + newItem.getQuantity());
+               return;
+           }
+       }
+       inventory.add(newItem);
+   }
+
+
+    public int isInInventory(String s) {
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i).getName().equalsIgnoreCase(s)) {
                 return i;
@@ -123,7 +147,7 @@ public class Player extends Entity {
         int idx = isInInventory(s);
         if (idx >= 0) {
             equippedItem = inventory.get(idx);
-            return 1;
+            return 1; // success
         }
         return 0;
     }
@@ -145,6 +169,8 @@ public class Player extends Entity {
         }
         return 0;
     }
+
+
 
     public int removeItemFromToolBelt(String s) {
         return toolBelt.removeIf(i -> i.getName().equalsIgnoreCase(s)) ? 1 : 0;
@@ -177,6 +203,8 @@ public class Player extends Entity {
         }
         return 0;
     }
+
+
 
     // ==============================
     // Combat System
@@ -286,11 +314,13 @@ public class Player extends Entity {
     // ==============================
     public int move(String direction) {
         Room next = currRoom.getExit(direction);
-        if (next != null) {
+        if (next != null && next.getBoundaryPuzzle() == null) {
             currRoom = next;
             return 1;
+        } else if (next != null && next.getBoundaryPuzzle() != null) {
+            return -2; // boundary puzzle exists
         }
-        return 0;
+        return -1;
     }
 
     public int getHealth() {
@@ -301,8 +331,23 @@ public class Player extends Entity {
         return currRoom;
     }
 
+
     public Item getEquippedItem() {
         return equippedItem;
     }
+    public Room getPrevRoom() {return prevRoom;}
+
+    public void setCurrRoom(Room newRoom) {
+        this.prevRoom = this.currRoom;  // store current as previous
+        this.currRoom = newRoom;        // move to new room
+    }
+
+
+    public void rest() {
+        this.health += 5;
+        if (this.health > 100) {
+            this.health = 100;
+        }
+    }
 }
-//need a arraylist with a ship capacity of 20 items, we going to need a method in the player class to move to a different landing site which will take in a string called landingsite, its going to check if they current room is a landingsite, we also need to check if its an existing landingsite, if it exist update player room to the new landingsite, if its false return -1, if true return 1, if not in landingsite from the start return -2.
+///need a arraylist with a ship capacity of 20 items, we going to need a method in the player class to move to a different landing site which will take in a string called landingsite, its going to check if they current room is a landingsite, we also need to check if its an existing landingsite, if it exist update player room to the new landingsite, if its false return -1, if true return 1, if not in landingsite from the start return -2.

@@ -1,3 +1,4 @@
+/*
 package Model.Rooms;
 
 import Model.Entities.Player;
@@ -7,33 +8,27 @@ public class RestRoom extends Room {
     private int restAmount;
     private int restDelay;
 
-    public RestRoom(String id, String name, String description, int restAmount, int restDelay) {
-        super(id, name, description);
+    public RestRoom(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, int restAmount, int restDelay) {
+        super(roomID, roomName, roomDescription, roomType, northNavigation, eastNavigation, southNavigation, westNavigation, roomVisited);
         this.restAmount = restAmount;
         this.restDelay = restDelay;
     }
 
-    public boolean rest(Player player, View view) {
-        view.displayRestStart();
-
+    public void rest(Player player) {
+        System.out.println("You take a moment to rest...");
         try {
-            Thread.sleep(getRestDelay() * 1000L); // use getter
+            Thread.sleep(restDelay * 1000);
         } catch (InterruptedException e) {
-            view.displayRestInterrupted();
-            return false;
+            System.out.println("You couldn't get comfortable.");
         }
 
-        player.heal(getRestAmount()); // use getter
-
-        view.displayRestComplete(getRestAmount()); // use getter again
-        return true;
+        //player.heal(restAmount);
+        System.out.println("You feel refreshed. +" + restAmount + " HP restored.");
     }
 
-    public int getRestAmount() {
-        return restAmount;
-    }
+    public int getRestAmount() { return restAmount; }
+    public int getRestDelay() { return restDelay; }
 
-    public int getRestDelay() {
-        return restDelay;
-    }
 }
+
+*/
