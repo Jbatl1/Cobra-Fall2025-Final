@@ -30,7 +30,12 @@ public class Controller {
                 // MOVEMENT----------------------
                 case "N": // move north
                     x = model.getPlayer().move("N");
-                    view.enterRoom(x, "North", model.getPlayer().getCurrRoom());
+                    if (x == 1) {
+                        view.displayRoomEntry(model.getPlayer().getCurrRoom());
+                    }
+                    if (x == -1) {
+                        view.displayNoExit();
+                    }
                     if (x == -2) {
                         puzzle = true;
                         currentPuzzle = model.getPlayer().getCurrRoom().getExit("N").getBoundryPuzzle();
@@ -38,15 +43,25 @@ public class Controller {
                     break;
                 case "E": // move east
                     x = model.getPlayer().move("E");
-                    view.enterRoom(x, "East", model.getPlayer().getCurrRoom());
-                    if (x == -2){
+                    if (x == 1) {
+                        view.displayRoomEntry(model.getPlayer().getCurrRoom());
+                    }
+                    if (x == -1) {
+                        view.displayNoExit();
+                    }
+                    if (x == -2) {
                         puzzle = true;
                         currentPuzzle = model.getPlayer().getCurrRoom().getExit("E").getBoundryPuzzle();
                     }
                     break;
                 case "S": // move south
                     x = model.getPlayer().move("S");
-                    view.enterRoom(x, "South", model.getPlayer().getCurrRoom());
+                    if (x == 1) {
+                        view.displayRoomEntry(model.getPlayer().getCurrRoom());
+                    }
+                    if (x == -1) {
+                        view.displayNoExit();
+                    }
                     if (x == -2) {
                         puzzle = true;
                         currentPuzzle = model.getPlayer().getCurrRoom().getExit("S").getBoundryPuzzle();
@@ -54,7 +69,12 @@ public class Controller {
                     break;
                 case "W": // move west
                     x = model.getPlayer().move("W");
-                    view.enterRoom(x, "West", model.getPlayer().getCurrRoom());
+                    if (x == 1) {
+                        view.displayRoomEntry(model.getPlayer().getCurrRoom());
+                    }
+                    if (x == -1) {
+                        view.displayNoExit();
+                    }
                     if (x == -2) {
                         puzzle = true;
                         currentPuzzle = model.getPlayer().getCurrRoom().getExit("W").getBoundryPuzzle();
@@ -65,7 +85,12 @@ public class Controller {
                 // ITEMS---------------------
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item
                     x = this.model.getPlayer().pickupItem(s.substring(7).trim());
-                    this.view.displayItemPickup(x, s);
+                    if (x == 1) {
+                        view.displayItemPickup();
+                    }
+                    if (x == 0) {
+
+                    }
 
                     break;
                 case String s when input.matches("^DROP\\s.*$"): // drop item

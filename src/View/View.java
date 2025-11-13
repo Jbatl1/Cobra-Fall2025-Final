@@ -74,7 +74,7 @@ public class View {
     // ==============================
     // Room / Exploration Output
     // ==============================
-    public static void displayRoomEntry(Room room) {
+    public void displayRoomEntry(Room room) {
         printSeparator();
         System.out.println("🏠 You enter: " + room.getRoomName());
         System.out.println(room.getRoomDescription());
@@ -82,6 +82,9 @@ public class View {
         System.out.println("Items here: " + (room.getRoomItems().isEmpty() ? "None" : room.getRoomItems().size()));
         System.out.println("Monsters here: " + (room.getMonsters().isEmpty() ? "None" : room.getMonsters().size()));
         printSeparator();
+    }
+    public void displayNoExit() {
+        System.out.println("🚫 There is no exit in that direction!");
     }
 
     // ==============================
@@ -104,15 +107,15 @@ public class View {
     // ==============================
     // Inventory / Items
     // ==============================
-    public static void displayItemPickup(Item item) {
+    public void displayItemPickup(Item item) {
         System.out.println("📦 You picked up: " + item.getItemName());
     }
 
-    public static void displayItemDropped(Item item) {
+    public void displayItemDropped(Item item) {
         System.out.println("🗑️ You dropped: " + item.getItemName());
     }
 
-    public static void displayItemDestroyed(Item item) {System.out.println("🔥 You destroyed: " + item.getItemName());}
+    public void displayItemDestroyed(Item item) {System.out.println("🔥 You destroyed: " + item.getItemName());}
 
     // ==============================
     // Puzzle
