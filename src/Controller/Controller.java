@@ -85,13 +85,7 @@ public class Controller {
                 // ITEMS---------------------
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item
                     x = this.model.getPlayer().pickupItem(s.substring(7).trim());
-                    if (x == 1) {
-                        view.displayItemPickup();
-                    }
-                    if (x == 0) {
-
-                    }
-
+                    view.displayItemPickup(x, s);
                     break;
                 case String s when input.matches("^DROP\\s.*$"): // drop item
                     x = this.model.getPlayer().dropItem(s.substring(5).trim());
@@ -247,7 +241,7 @@ public class Controller {
                     this.view.displayPlayerAttack(currentMonster.getName(), this.model.getPlayer().getAttackPower()); // make getter display item damage if one is equipped
                     break;
                 case "TOOL BELT": // opens tool belt
-                    this.view.displayToolbelt(this.model.getPlayer().getToolBelt);
+                    this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
                     break;
                 case "B": // Shows Inventory
                     this.view.displayInv(this.model.getPlayer().getInventory());
@@ -286,7 +280,7 @@ public class Controller {
                     break;
                 case String s when input.matches("^BUY\\s.*$"): // buy item
                     x = this.model.getPlayer().buyItem(s.substring(4).trim()); // -1 = not enough money, -2 = item not found, else return price of item
-                    this.view.DisplayPurchaseItem(x, s);
+                    this.view.DisplayPurchaseItem(x, s); // maybe these should return the amount of money spent / gained and -1 if you don't have enough
                     break;
                 case String s when input.matches("^SELL\\s.*$"): // sell item
                     x = this.model.getPlayer().sellItem(s.substring(5).trim()); // -1 = item not found, else return sell price
