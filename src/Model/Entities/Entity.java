@@ -5,6 +5,7 @@ package Model.Entities;
  * Handles shared logic for health, attack, and defense.
  * No print statements — View layer handles all output.
  */
+
 public abstract class Entity {
 
     // ==============================
@@ -71,12 +72,5 @@ public abstract class Entity {
         if (health < 0) {
             health = 0;
         }
-    }
-
-    /**
-     * Checks if this entity is still alive.
-     */
-    public boolean isAlive() {
-        return health > 0;
     }
 }

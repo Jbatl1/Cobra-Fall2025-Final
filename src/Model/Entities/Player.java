@@ -1,20 +1,20 @@
 package Model.Entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import Model.Items.Item;
 import Model.Rooms.Room;
 import Model.Entities.Monster;
 import Model.Puzzles.Puzzle;
+import Model.Rooms.Shop;
+import Model.Rooms.Shop;
 
+/**
+ * Player entity. Uses Entity's health/attack/defense fields and methods.
+ * Model contains no printing; View handles output.
+ */
 public class Player extends Entity {
-
-    //ANITA MODIFIED
-    //getName()  --> getItemName()
-    //getDescription() --> getPuzzleQuestion()
-    //getDamageValue() --> getItemDamage()
-    //getName() --> getRoomName()
-    //deleted hint method
-
 
     // ==============================
     // Fields
@@ -25,7 +25,6 @@ public class Player extends Entity {
     private Room currRoom;
     private Room prevRoom;
     private ArrayList<String> narrativeMemory; // FR-005.3
-    private int health;
 
     // Ship storage (capacity 20)
     private ArrayList<Item> shipStorage;
@@ -45,7 +44,6 @@ public class Player extends Entity {
         this.equippedItem = null;
         this.narrativeMemory = new ArrayList<>();
         this.shipStorage = new ArrayList<>();
-        this.health = 100;
         this.gold = 100; // starting gold
     }
 
@@ -61,10 +59,7 @@ public class Player extends Entity {
     }
 
     public int removeCargoItem(Item item) {
-        if (shipStorage.remove(item)) {
-            return 1;
-        }
-        return -1;
+        return shipStorage.remove(item) ? 1 : -1;
     }
 
     public ArrayList<Item> getShipStorage() {
@@ -99,50 +94,48 @@ public class Player extends Entity {
     // ==============================
     // Move to a Different Landing Site
     // ==============================
-    public int moveToLandingSite(String landingSite) {
-        if (!currRoom.getName().equalsIgnoreCase("Landing site")) {
-            return -2;
-        }
-        Room target = Room.getRoomByName(landingSite);
-        if (target == null || !target.getName().equalsIgnoreCase("Landing site")) {
-            return -1;
-        }
-        currRoom = target;
-        return 1;
-    }
+//    public int moveToLandingSite(String landingSite) {
+//        if (!currRoom.getRoomName().equalsIgnoreCase("Landing site")) {
+//            return -2;
+//        }
+//        Room target = Room.getRoomByName(landingSite);
+//        if (target == null || !target.getRoomName().equalsIgnoreCase("Landing site")) {
+//            return -1;
+//        }
+//        currRoom = target;
+//        return 1;
+//    }
 
     // ==============================
     // Inventory / ToolBelt Management
     // ==============================
-
     public ArrayList<Item> getInventory() {
         return inventory;
     }
+
     public ArrayList<Item> getToolBelt() {
         return toolBelt;
     }
 
-   public void addItem(Item newItem) {
-       for (Item item : inventory) {
-           if (item.getItemID().equals(newItem.getItemID())) {
-               item.setQuantity(item.getQuantity() + newItem.getQuantity());
-               return;
-           }
-       }
-       inventory.add(newItem);
-   }
-
+    public void addItem(Item newItem) {
+        for (Item item : inventory) {
+            if (item.getItemID().equals(newItem.getItemID())) {
+                item.setQuantity(item.getQuantity() + newItem.getQuantity());
+                return;
+            }
+        }
+        inventory.add(newItem);
+    }
 
     public int isInInventory(String s) {
         for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i).getName().equalsIgnoreCase(s)) {
+            if (inventory.get(i).getItemName().equalsIgnoreCase(s)) {
                 return i;
             }
         }
         return -1;
     }
 
-    // Equip item to hands but keep it in inventory
     public int equipItemToHands(String s) {
         int idx = isInInventory(s);
         if (idx >= 0) {
@@ -152,7 +145,6 @@ public class Player extends Entity {
         return 0;
     }
 
-    // Add item to toolbelt but keep it in inventory
     public int equipItemToToolBelt(String s) {
         int idx = isInInventory(s);
         if (idx >= 0 && !toolBelt.contains(inventory.get(idx))) {
@@ -163,17 +155,15 @@ public class Player extends Entity {
     }
 
     public int removeItemFromHands(String s) {
-        if (equippedItem != null && equippedItem.getName().equalsIgnoreCase(s)) {
+        if (equippedItem != null && equippedItem.getItemName().equalsIgnoreCase(s)) {
             equippedItem = null;
             return 1;
         }
         return 0;
     }
 
-
-
     public int removeItemFromToolBelt(String s) {
-        return toolBelt.removeIf(i -> i.getName().equalsIgnoreCase(s)) ? 1 : 0;
+        return toolBelt.removeIf(i -> i.getItemName().equalsIgnoreCase(s)) ? 1 : 0;
     }
 
     public int dropItem(String s) {
@@ -204,21 +194,12 @@ public class Player extends Entity {
         return 0;
     }
 
-
-
     // ==============================
     // Combat System
     // ==============================
-    public void receiveDamage(int amount) {
-        health -= amount;
-        if (health < 0) {
-            health = 0;
-        }
-    }
-
     public int inflictDamage(Monster enemy) {
         if (equippedItem == null) return 0; // no weapon equipped
-        int damage = equippedItem.getDamageValue();
+        int damage = equippedItem.getItemDamage();
         enemy.receiveDamage(damage);
         return damage;
     }
@@ -233,28 +214,6 @@ public class Player extends Entity {
         inventory.add(item);
     }
 
-    // Main combat logic — called externally when "fight" command is issued
-    public int startCombatLoop(Monster enemy) {
-        if (enemy == null) return -1;
-
-        while (health > 0 && enemy.getHealth() > 0) {
-            int damageDealt = inflictDamage(enemy);
-
-            if (enemy.getHealth() <= 0) {
-                receiveRewardItem(new Item("Trophy"));
-                addGold(20);
-                return 1; // win
-            }
-
-            receiveDamage(enemy.getAttackPower());
-            if (health <= 0) {
-                loseItemOnDefeat();
-                return 0; // lose
-            }
-        }
-        return -1; // unexpected
-    }
-
     // ==============================
     // Player Memory & Bartering
     // ==============================
@@ -266,82 +225,76 @@ public class Player extends Entity {
         return narrativeMemory;
     }
 
-    // barterType = "buy", "sell", or "trade"
-    // price = gold amount for buy/sell
-    public int barterItem(String offerItem, String receiveItem, String barterType, int price) {
-        if (barterType.equalsIgnoreCase("sell")) {
-            int idx = isInInventory(offerItem);
-            if (idx >= 0) {
-                inventory.remove(idx);
-                addGold(price);
-                return 1;
+    public int buyItem( String itemName) {
+        // Find item in shop stock
+        Item item = null;
+        for (Item i : ((Shop) currRoom).getStock()) {
+            if (i.getItemName().equalsIgnoreCase(itemName)) {
+                item = i;
+                break;
             }
-            return 0;
         }
 
-        if (barterType.equalsIgnoreCase("buy")) {
-            if (spendGold(price)) {
-                inventory.add(new Item(receiveItem));
-                return 1;
-            }
-            return -1;
-        }
+        if (item == null) return -1; // not sold here
 
-        if (barterType.equalsIgnoreCase("trade")) {
-            int idx = isInInventory(offerItem);
-            if (idx >= 0) {
-                inventory.remove(idx);
-                inventory.add(new Item(receiveItem));
-                return 1;
-            }
-            return 0;
-        }
-
-        return 0;
+        return -1;
     }
+
+    public int sellItem(String itemName) {
+        int idx = isInInventory(itemName);
+        if (((Shop) currRoom).getStock().contains(inventory.get(idx))) {
+            inventory.remove(idx);
+            return 1;
+        }
+        return -1;
+    }
+
 
     // ==============================
     // Puzzle Interaction
     // ==============================
-    public void examinePuzzle(Puzzle p) { }
+    public void examinePuzzle(Puzzle p) {
+        // logic-only; View handles display
+    }
 
     public void skipPuzzle(Puzzle p) {
         receiveDamage(10);
     }
 
+
     // ==============================
     // Movement
     // ==============================
     public int move(String direction) {
-        Room next = currRoom.getExit(direction);
-        if (next != null && next.getBoundaryPuzzle() == null) {
-            currRoom = next;
-            return 1;
-        } else if (next != null && next.getBoundaryPuzzle() != null) {
-            return -2; // boundary puzzle exists
+        HashMap<String, Room> exits = currRoom.getExits();
+        if (exits.containsKey(direction) && currRoom.getBoundaryPuzzleInDirection(direction, exits) != null) {
+            return -2;
         }
-        return -1;
-    }
-
-    public int getHealth() {
-        return health;
+        else if(exits.containsKey(direction) && exits.get(direction).getBoundaryPuzzleInDirection(direction, exits) == null) {
+            this.currRoom = currRoom.getExits().get(direction);
+            return 1;
+        }
+        else {
+            return -1;
+        }
     }
 
     public Room getCurrRoom() {
         return currRoom;
     }
 
-
     public Item getEquippedItem() {
         return equippedItem;
     }
-    public Room getPrevRoom() {return prevRoom;}
+
+    public Room getPrevRoom() {
+        return prevRoom;
+    }
 
     public void setCurrRoom(Room newRoom) {
         this.prevRoom = this.currRoom;  // store current as previous
         this.currRoom = newRoom;        // move to new room
     }
-
 
     public void rest() {
         this.health += 5;

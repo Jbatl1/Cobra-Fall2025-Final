@@ -28,9 +28,11 @@ public class Room {
     private boolean isRaider;
     private boolean isShop;
     private Puzzle roomPuzzle;  // the puzzle in this room, can be null
-    private HashMap<String, String> exits;// stores exits (direction → roomNumber mapping)
+    private HashMap<String, Room> exits;// stores exits (direction → roomNumber mapping)
     private ArrayList<Item> roomItems = new ArrayList<>(); // items present in this room
     private ArrayList<Puzzle> puzzlePresent = new ArrayList<>();
+    private List<Monster> monsters;
+
 
     // ==============================
     // Constructor
@@ -52,6 +54,10 @@ public class Room {
         this.exits = new HashMap<>();  // <<< REQUIRED
     }
 
+    public void setRoomPuzzle(Puzzle p){
+        this.roomPuzzle = p;
+    }
+
     public String getRoomID() {
         return roomID;
     }
@@ -66,6 +72,13 @@ public class Room {
 
     public String getRoomType() {
         return roomType;
+    }
+
+    public boolean isRestRoom(){
+        if (this.roomType.equalsIgnoreCase("Rest")){
+            return true;
+        }
+        return false;
     }
 
     public String getNorthNavigation() {
@@ -96,23 +109,41 @@ public class Room {
         return roomItems;
     }
 
+    public List<Monster> getMonsters() {
+        return monsters;
+    }
+
+    public Puzzle getBoundaryPuzzleInDirection(String direction, HashMap<String, Room> roomsMap) {
+        if (direction == null || roomsMap == null) return null;
+
+        Room targetRoomID = exits.get(direction.toUpperCase());
+        if (targetRoomID == null) return null;
+
+        Room targetRoom = roomsMap.get(targetRoomID);
+        if (targetRoom == null) return null;
+
+        return targetRoom.getRoomPuzzle();  // could be null
+    }
+
+
     // ==============================
     // Player Interaction Logic
     // ==============================
-    public String enter(Player player) {
-        visited = true;
-        player.setCurrRoom(this);
 
 
-
-
-        public HashMap<String, String> getExits () {
+        public HashMap<String, Room> getExits () {
             return exits;
         }
+/*
+        public void addRoomExit (String direction, Room room){
+            exits.put(direction, room.getRoomID());   //In LoadRooms the exits have been added to correspond with the navigation for each room
+        }*/
 
-        public void addRoomExit (String direction, String roomID){
-            exits.put(direction, roomID);
+    public void addRoomExit(String direction, Room room) {
+        if (room != null) {
+            exits.put(direction.toUpperCase(), room);
         }
+    }
 
         public boolean isRaider () {
             return isRaider;
@@ -122,13 +153,6 @@ public class Room {
             return isShop;
         }
 
-        public ArrayList<Item> getRoomItems () {
-            return roomItems;
-        }
-
-        public List<Monster> getMonsters () {
-            return monsters;
-        }
         public void addItem (Item item){
             roomItems.add(item);
         }
@@ -143,13 +167,33 @@ public class Room {
             return null;
         }
 
-        public Room getExit (String direction){
-            // TODO: Map directions to connected rooms (if using a direction table)
-            return null;
-        }
+
+
+    public Puzzle getRoomPuzzle() {
+        return roomPuzzle;
     }
 
 
+    public int getMonsterByName(String name) {
+        if (name == null || monsters == null) return 0;
+
+        for (Monster m : monsters) {
+            if (m.getName().equalsIgnoreCase(name)) {
+                return 1;   // yes monster was found
+            }
+        }
+
+        return -1; // not found
+    }
+
+    public void removeMonster(Monster monster) {
+        if (monster == null || monsters == null) return;
+        monsters.remove(monster);
+    }
 
 }
+
+
+
+
 

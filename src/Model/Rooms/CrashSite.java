@@ -16,7 +16,7 @@ public class CrashSite {
 
     public void storeItems(Item item){
         storage.add(item);
-        System.out.println(item.getName() + "stored");
+        System.out.println(item.getItemName() + "stored");
     }
 
     public ArrayList<Item> getItems(){
@@ -24,7 +24,7 @@ public class CrashSite {
     }
     public boolean retrieveItems(String itemName, Player player){
         for(int i =0;i<storage.size();i++){
-            if(storage.get(i).getName().equalsIgnoreCase(itemName)){
+            if(storage.get(i).getItemName().equalsIgnoreCase(itemName)){
                 Item item = storage.remove(i);
                 player.getInventory().add(item);
                 return true;

@@ -6,11 +6,8 @@ import Model.Puzzles.Puzzle;
 import Model.Rooms.CrashSite;
 import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
-import Model.Rooms.RestRoom;
 import Model.Items.Item;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class View {
@@ -104,10 +101,10 @@ public class View {
     // ==============================
     public void displayRoomEntry(Room room) { //caleb
         printSeparator();
-        System.out.println("🏠 You enter: " + room.getName());
-        System.out.println(room.getDescription());
+        System.out.println("🏠 You enter: " + room.getRoomName());
+        System.out.println(room.getRoomDescription());
 
-        System.out.println("Items here: " + (room.getItems().isEmpty() ? "None" : room.getItems().size()));
+        System.out.println("Items here: " + (room.getRoomItems().isEmpty() ? "None" : room.getRoomItems().size()));
         System.out.println("Monsters here: " + (room.getMonsters().isEmpty() ? "None" : room.getMonsters().size()));
         printSeparator();
     }
@@ -136,6 +133,13 @@ public class View {
                 - EXIT
                 """);
 
+    }
+
+    public void displayStock(ArrayList<Item> stock) { // Kai
+        System.out.println("Items for sale:");
+        for (Item item : stock){
+            System.out.println("- " + item.getItemName());
+        }
     }
     public void displaySellItem(int x, String s) {
         if (x < 0) {
@@ -269,7 +273,7 @@ public class View {
     // ==============================
 
 
-        public void displayPuzzleBeforePickup (Puzzle puzzle){
+        public void displayPuzzleBeforePickup (Puzzle puzzle){ //Anita Philip
             System.out.println("You must solve a puzzle before you can pickup this Item! (Examine or Ignore)");
         }
 
@@ -278,60 +282,53 @@ public class View {
         }
 
 
-        public void displayBoundaryPuzzlePrompt (Puzzle puzzle){
+        public void displayBoundaryPuzzlePrompt (Puzzle puzzle){ //Anita Philip
             System.out.println("❓: " + puzzle.getPuzzleQuestion());
         }
 
-        public void displayLootPuzzlePrompt (Puzzle puzzle){
+        public void displayLootPuzzlePrompt (Puzzle puzzle){//Anita Philip
             System.out.println("❓: " + puzzle.getPuzzleQuestion());
         }
 
-
-
-        public void displayPuzzleSolved (Puzzle puzzle){
+        public void displayPuzzleSolved (Puzzle puzzle){//Anita Philip
             System.out.println("🧩 You have correctly solved the puzzle!");
             System.out.println("Item ♦️ " + puzzle.getReward().getItemName() + " has been added to your inventory! ");
 
         }
 
-        public static void displayPuzzleIncorrect (Puzzle puzzle){
+        public static void displayPuzzleIncorrect (Puzzle puzzle){//Anita Philip
             System.out.println("That answer is not correct! ");
         }
 
-        public static void displayPuzzleLocked (Puzzle puzzle){
+        public static void displayPuzzleLocked (Puzzle puzzle){//Anita Philip
             System.out.println("You have have failed to solve the puzzle! Leave and comeback to try again");
         }
 
-        // =========================
-
-
-
-        public void displayPuzzleBlockedPickup (Item i){
+        public void displayPuzzleBlockedPickup (Item i){//Anita Philip
             System.out.println("You cannot pick up " + i.getItemName() + " until the puzzle is solved.");
         }
 
-        public void displayPuzzleQuestion(Puzzle puzzle){
+        public void displayPuzzleQuestion(Puzzle puzzle){//Anita Philip
             System.out.println("Puzzle Question: " + puzzle.getPuzzleQuestion());
         }
 
-        public void displayPuzzleIgnored (Puzzle p){
+        public void displayPuzzleIgnored (Puzzle p){//Anita Philip
             System.out.println("You decided to ignore the puzzle.");
         }
 
-        public void displayPuzzleFailed (Puzzle p){
+        public void displayPuzzleFailed (Puzzle p){//Anita Philip
             System.out.println("You failed to solve the puzzle. The item remains locked.");
         }
 
-        public void displayReturnToPreviousRoom (Room m){
+        public void displayReturnToPreviousRoom (Room m){//Anita Philip
             System.out.println("You have been moved back to previous room");
         }
 
-        public void displayMessage () {
+        public void displayMessage () {//Anita Philip
             System.out.println("You cannot move back, no previous room recorded.");
         }
 
 
-    public void displayPuzzlePrompt(Puzzle p) {
 
     }
     //game save

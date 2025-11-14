@@ -9,37 +9,38 @@ public class Shop extends Room{
 
     //Anita Modified getName() --> getItemName
 
-    public Shop(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop, ArrayList<Item> stock) {
+    private String item_ID;
+    private String name;
+    private String type;
+    private String rarity;
+    private int cost;
+
+  /*  public Shop(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop, ArrayList<Item> stock) {
         super(roomID, roomName, roomDescription, roomType, northNavigation, eastNavigation, southNavigation, westNavigation, roomVisited, isRaider, isShop);
         this.stock = stock;
     }
+*/
+    public Shop(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop, ArrayList<Item> stock, String item_ID, String name, String type, String rarity, int cost) {
+        super(roomID, roomName, roomDescription, roomType, northNavigation, eastNavigation, southNavigation, westNavigation, roomVisited, isRaider, isShop);
+        this.item_ID = item_ID;
+        this.name = name;
+        this.type = type;
+        this.rarity = rarity;
+        this.cost = cost;
+        this.stock = stock;
+    }
+
+
+
+    public int getCost() { return cost; }
 
     public void addItemToStock(Item item){
         stock.add(item);
     }
 
- public void displayStock(){
-        System.out.println("Items for sale:");
-        for (Item item : stock){
-            System.out.println("- " + item.getItemName());
-        }
-    }
-    public boolean buyItem(Player player, Item item) {
-        if (stock.contains(item)) {
-            player.addToInventory(item);
-            stock.remove(item);
-            System.out.println("You bought " + item.getItemName() + "!");
-            return true;
-        }
-        System.out.println("Item not found.");
-        return false;
-    }
 
-    public void sellItem(Player player, Item item) {
-        if (player.removeFromInventory(item)) {
-            stock.add(item);
-            System.out.println("You sold " + item.getItemName() + ".");
-        }
+    public ArrayList<Item> getStock() {
+        return stock;
     }
 
 
