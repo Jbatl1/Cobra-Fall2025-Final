@@ -56,7 +56,7 @@ public class LandingSite {
     }
 
     public void addRoomConnection(Room room) {
-        roomConnections.put(room.getId(), room);
+        roomConnections.put(room.getRoomID(), room);
     }
 
     public Map<String, LandingSite> getLandingSiteConnections() {
@@ -87,7 +87,7 @@ public class LandingSite {
             System.out.println("  None");
         } else {
             for (Room room : roomConnections.values()) {
-                System.out.println("  - " + room.getName());
+                System.out.println("  - " + room.getRoomName());
             }
         }
     }

@@ -4,7 +4,7 @@ import Model.Entities.Player;
 import Model.Items.Item;
 import Model.Rooms.Room;
 
-public class Puzzle {
+public class Puzzle { //Anita Philip
     private String puzzleID;
     private String puzzleQuestion;
     private int puzzleMaxAttempts;
@@ -18,7 +18,7 @@ public class Puzzle {
 
     // Constructor
     public Puzzle(String puzzleID, String puzzleQuestion, int puzzleMaxAttempts,
-                  String puzzleSolution, Item reward, String roomID, String type) {
+                  String puzzleSolution, Item reward, String roomID, String type) { //Anita Philip
         this.puzzleID = puzzleID;
         this.puzzleQuestion = puzzleQuestion;
         this.puzzleMaxAttempts = puzzleMaxAttempts;
@@ -43,11 +43,12 @@ public class Puzzle {
     public boolean isPuzzleIsSolved() { return puzzleIsSolved; }
     public int getMaxAttempts() { return puzzleMaxAttempts; }
 
-    /**
-     * Decrements the remaining attempts and locks the puzzle if none remain.
-     * @return Remaining attempts after decrement.
-     */
-    public int decrementAttempts() {
+
+    /* * Decrements the remaining attempts and locks the puzzle if none remain.
+     * @return Remaining attempts after decrement.*/
+
+
+    public int decrementAttempts() { //Anita Philip
         if (attemptsLeft > 0) {
             attemptsLeft--;
         }
@@ -57,24 +58,26 @@ public class Puzzle {
         return attemptsLeft;
     }
 
-    /**
-     * Adds the reward to the player's inventory if it exists.
-     */
-    public void addLootToInventory(Player player) {
+/**
+     * Adds the reward to the player's inventory if it exists.*/
+
+
+    public void addLootToInventory(Player player) { //Anita Philip
         if (reward != null) {
             player.addItem(reward);
         }
     }
 
-    /**
+/**
      * Main puzzle-solving logic.
      *
      * Return codes:
      *  1 → Solved successfully
      *  0 → Incorrect attempt (still can try)
-     * -1 → Locked, invalid, or not applicable
-     */
-    public int solvePuzzle(Room room, Player player, String userInput) {
+     * -1 → Locked, invalid, or not applicable*/
+
+
+    public int solvePuzzle(Room room, Player player, String userInput) { //Anita Philip
         // Only "normal" puzzles are directly solvable
         if (!"normal".equalsIgnoreCase(this.type)) return -1;
         if (puzzleLocked) return -1;

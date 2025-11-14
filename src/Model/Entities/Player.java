@@ -100,11 +100,11 @@ public class Player extends Entity {
     // Move to a Different Landing Site
     // ==============================
     public int moveToLandingSite(String landingSite) {
-        if (!currRoom.getName().equalsIgnoreCase("Landing site")) {
+        if (!currRoom.getRoomName().equalsIgnoreCase("Landing site")) {
             return -2;
         }
         Room target = Room.getRoomByName(landingSite);
-        if (target == null || !target.getName().equalsIgnoreCase("Landing site")) {
+        if (target == null || !target.getRoomName().equalsIgnoreCase("Landing site")) {
             return -1;
         }
         currRoom = target;
@@ -135,7 +135,7 @@ public class Player extends Entity {
 
     public int isInInventory(String s) {
         for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i).getName().equalsIgnoreCase(s)) {
+            if (inventory.get(i).getItemName().equalsIgnoreCase(s)) {
                 return i;
             }
         }
@@ -163,7 +163,7 @@ public class Player extends Entity {
     }
 
     public int removeItemFromHands(String s) {
-        if (equippedItem != null && equippedItem.getName().equalsIgnoreCase(s)) {
+        if (equippedItem != null && equippedItem.getItemName().equalsIgnoreCase(s)) {
             equippedItem = null;
             return 1;
         }
@@ -173,7 +173,7 @@ public class Player extends Entity {
 
 
     public int removeItemFromToolBelt(String s) {
-        return toolBelt.removeIf(i -> i.getName().equalsIgnoreCase(s)) ? 1 : 0;
+        return toolBelt.removeIf(i -> i.getItemName().equalsIgnoreCase(s)) ? 1 : 0;
     }
 
     public int dropItem(String s) {
@@ -218,7 +218,7 @@ public class Player extends Entity {
 
     public int inflictDamage(Monster enemy) {
         if (equippedItem == null) return 0; // no weapon equipped
-        int damage = equippedItem.getDamageValue();
+        int damage = equippedItem.getItemDamage();
         enemy.receiveDamage(damage);
         return damage;
     }
@@ -341,7 +341,6 @@ public class Player extends Entity {
         this.prevRoom = this.currRoom;  // store current as previous
         this.currRoom = newRoom;        // move to new room
     }
-
 
     public void rest() {
         this.health += 5;

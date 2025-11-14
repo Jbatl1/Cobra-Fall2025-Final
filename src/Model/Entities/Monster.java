@@ -61,6 +61,8 @@ public class Monster extends Entity {
     }
     // Combat
 
+
+
     public void attackPlayer(Player player) {
         int damage = Math.max(0, attackPower - player.getDefense());
         player.receiveDamage(damage);
