@@ -5,13 +5,12 @@ import Model.Entities.Player;
 import Model.Items.Item;
 import Model.Puzzles.Puzzle;
 import Model.Rooms.Room;
+import Model.Rooms.Shop;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map;
 
 public class LoadRooms { //Anita Philip
@@ -69,6 +68,8 @@ public class LoadRooms { //Anita Philip
             assignPuzzlesToRooms(); // Assign after items are loaded
             loadAllMonsters(conn);
             setupRoomExits();
+
+            loadAllShops(conn);   // <-- ADD THIS LINE
 
         } catch (Exception e) {
             System.out.println("Room loading failed: " + e.getMessage());
@@ -223,13 +224,97 @@ public class LoadRooms { //Anita Philip
 
     // ------------------ ROOM EXITS ------------------
     private void setupRoomExits() {
-        for (Room room : roomsInfo.values()) { //Anita Philip
-            room.addRoomExit("NORTH", room.getNorthNavigation());
-            room.addRoomExit("EAST", room.getEastNavigation());
-            room.addRoomExit("SOUTH", room.getSouthNavigation());
-            room.addRoomExit("WEST", room.getWestNavigation());
+        for (Room room : roomsInfo.values()) {
+
+            String northID = room.getNorthNavigation();
+            String eastID = room.getEastNavigation();
+            String southID = room.getSouthNavigation();
+            String westID = room.getWestNavigation();
+
+            if (northID != null && roomsInfo.containsKey(northID))
+                room.addRoomExit("NORTH", roomsInfo.get(northID));
+
+            if (eastID != null && roomsInfo.containsKey(eastID))
+                room.addRoomExit("EAST", roomsInfo.get(eastID));
+
+            if (southID != null && roomsInfo.containsKey(southID))
+                room.addRoomExit("SOUTH", roomsInfo.get(southID));
+
+            if (westID != null && roomsInfo.containsKey(westID))
+                room.addRoomExit("WEST", roomsInfo.get(westID));
         }
     }
+    // ------------------ SHOP LOADING ------------------
+    // ------------------ SHOP LOADING (MATCHES YOUR CONSTRUCTOR) ------------------
+    private void loadAllShops(Connection conn) throws Exception {
+
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Shops;");
+
+        // Store multiple items per shop
+        HashMap<String, ArrayList<Item>> shopStocks = new HashMap<>();
+
+        while (rs.next()) {
+            String roomID = rs.getString("RoomID");
+
+            // Convert Shop row into actual Item object
+            String itemID = rs.getString("Item_ID");
+            Item stockItem = items.get(itemID);
+
+            if (stockItem == null) {
+                System.out.println("WARNING: Shop row references invalid item: " + itemID);
+                continue;
+            }
+
+            // Add item to the room's stock list
+            shopStocks.computeIfAbsent(roomID, k -> new ArrayList<>()).add(stockItem);
+        }
+
+        // ---------- Now create the actual Shop objects ----------
+        for (Map.Entry<String, ArrayList<Item>> entry : shopStocks.entrySet()) {
+
+            String roomID = entry.getKey();
+            ArrayList<Item> stock = entry.getValue();
+
+            Room baseRoom = roomsInfo.get(roomID);
+
+            if (baseRoom == null) {
+                System.out.println("WARNING: Shop references missing RoomID: " + roomID);
+                continue;
+            }
+
+            // Replace the Room object with a Shop object
+            Shop shop = new Shop(
+                    baseRoom.getRoomID(),
+                    baseRoom.getRoomName(),
+                    baseRoom.getRoomDescription(),
+                    baseRoom.getRoomType(),
+                    baseRoom.getNorthNavigation(),
+                    baseRoom.getEastNavigation(),
+                    baseRoom.getSouthNavigation(),
+                    baseRoom.getWestNavigation(),
+                    baseRoom.isRoomVisited(),
+                    baseRoom.isRaider(),
+                    baseRoom.isShop(),
+
+                    // Stock list
+                    stock,
+
+                    // Only the first row's item info stored at shop-level (optional but required by your constructor)
+                    stock.get(0).getItemID(),
+                    stock.get(0).getItemName(),
+                    stock.get(0).getItemType(),
+                    stock.get(0).getItemRarity(),
+                    stock.get(0).getCost() //
+
+
+            );
+
+            // Replace room with Shop
+            roomsInfo.put(roomID, shop);
+        }
+    }
+
 
     public HashMap<String, Room> getRoomsInfo() {
         return roomsInfo;

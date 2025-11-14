@@ -5,6 +5,7 @@ package Model.Entities;
  * Handles shared logic for health, attack, and defense.
  * No print statements — View layer handles all output.
  */
+
 public abstract class Entity {
 
     // ==============================

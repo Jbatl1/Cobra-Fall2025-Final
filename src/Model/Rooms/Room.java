@@ -28,7 +28,7 @@ public class Room {
     private boolean isRaider;
     private boolean isShop;
     private Puzzle roomPuzzle;  // the puzzle in this room, can be null
-    private HashMap<String, String> exits;// stores exits (direction → roomNumber mapping)
+    private HashMap<String, Room> exits;// stores exits (direction → roomNumber mapping)
     private ArrayList<Item> roomItems = new ArrayList<>(); // items present in this room
     private ArrayList<Puzzle> puzzlePresent = new ArrayList<>();
     private List<Monster> monsters;
@@ -116,7 +116,7 @@ public class Room {
     public Puzzle getBoundaryPuzzleInDirection(String direction, HashMap<String, Room> roomsMap) {
         if (direction == null || roomsMap == null) return null;
 
-        String targetRoomID = exits.get(direction.toUpperCase());
+        Room targetRoomID = exits.get(direction.toUpperCase());
         if (targetRoomID == null) return null;
 
         Room targetRoom = roomsMap.get(targetRoomID);
@@ -130,13 +130,19 @@ public class Room {
     // ==============================
 
 
-        public HashMap<String, String> getExits () {
+        public HashMap<String, Room> getExits () {
             return exits;
         }
+/*
+        public void addRoomExit (String direction, Room room){
+            exits.put(direction, room.getRoomID());   //In LoadRooms the exits have been added to correspond with the navigation for each room
+        }*/
 
-        public void addRoomExit (String direction, String roomID){
-            exits.put(direction, roomID);   //In LoadRooms the exits have been added to correspond with the navigation for each room
+    public void addRoomExit(String direction, Room room) {
+        if (room != null) {
+            exits.put(direction.toUpperCase(), room);
         }
+    }
 
         public boolean isRaider () {
             return isRaider;

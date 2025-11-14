@@ -22,6 +22,7 @@ public  class Item { //Anita Philip
 
     private List<String> puzzleIDs;        // IDs from DB
     private List<Puzzle> lootPuzzles;     // Actual Puzzle objects
+    private int cost;
 
 
     public Item(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity) { //Anita Philip
@@ -80,4 +81,6 @@ public  class Item { //Anita Philip
             lootPuzzles.clear();
         }
     }
+
+    public int getCost() { return cost; }
 }
