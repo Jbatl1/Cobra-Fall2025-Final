@@ -72,11 +72,4 @@ public abstract class Entity {
             health = 0;
         }
     }
-
-    /**
-     * Checks if this entity is still alive.
-     */
-    public boolean isAlive() {
-        return health > 0;
-    }
 }
