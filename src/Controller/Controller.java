@@ -7,6 +7,7 @@ import Model.Rooms.Room;
 import Model.Rooms.Shop;
 import View.View;
 import Model.Puzzles.Puzzle;
+import Model.GameSaveManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -215,9 +216,35 @@ public class Controller {
                     }
                     break;
                 case "QUIT":
-                    //when player quit, gamesavemanager will create new tables where it saves all the game progress,
-                    //remove entities or items that player added or
-                    // make tables for player inventories as well,
+                    String saveId = "1"; // Later you can add multiple save slots
+
+                    // ----- Save player -----
+                    GameSaveManager.savePlayer(
+                            saveId,
+                            model.getPlayer().getHealth(),
+                            model.getPlayer().getAttackPower(),
+                            model.getPlayer().getDefense(),
+                            model.getPlayer().getCurrRoom().getRoomID(),        // Already String
+                            model.getPlayer().getEquippedItem() != null ?
+                                    model.getPlayer().getEquippedItem().getItemName() : "NONE"
+                    );
+
+                    // ----- Save solved puzzles -----
+                    for (Puzzle p : model.getPuzzles().values()) {
+                        if (p.isPuzzleIsSolved()) {
+                            GameSaveManager.markPuzzleSolved(saveId, p.getPuzzleID()); // puzzleID is String
+                        }
+                    }
+
+                    // ----- Save inventory -----
+                    for (Item i : model.getPlayer().getInventory()) {
+                        GameSaveManager.addItemToInventory(saveId, i.getItemID(), "inventory"); // itemID is String
+                    }
+                    view.displayGameSaved();
+                    System.exit(0);
+                    break;
+
+
                 default:
                     this.view.displayInvalidCommand();
                     break;

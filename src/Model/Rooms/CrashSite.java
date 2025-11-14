@@ -27,18 +27,14 @@ public class CrashSite {
             if(storage.get(i).getName().equalsIgnoreCase(itemName)){
                 Item item = storage.remove(i);
                 player.getInventory().add(item);
-                System.out.println("You added " + item.getName() + " to the inventory");
                 return true;
             }
         }
-        System.out.println("Item not found");
         return false;
     }
     public void listItems(){
-        for(int i =0;i<storage.size();i++){
-            System.out.println(storage.get(i).getName());
-        }
     }
+
     public Room getCrashSite(){
         return crashSite;
     }

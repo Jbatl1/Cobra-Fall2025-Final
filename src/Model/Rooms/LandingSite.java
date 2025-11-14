@@ -67,28 +67,5 @@ public class LandingSite {
         return roomConnections;
     }
 
-    // --- Display Information ---
-    public void printLandingSiteInfo() {
-        System.out.println("Planet: " + planetName);
-        System.out.println("Landing Site: " + landingSiteName);
-        System.out.println("Description: " + desc);
 
-        System.out.println("\nConnected Landing Sites:");
-        if (landingSiteConnections.isEmpty()) {
-            System.out.println("  None");
-        } else {
-            for (String name : landingSiteConnections.keySet()) {
-                System.out.println("  - " + name);
-            }
-        }
-
-        System.out.println("\nConnected Rooms:");
-        if (roomConnections.isEmpty()) {
-            System.out.println("  None");
-        } else {
-            for (Room room : roomConnections.values()) {
-                System.out.println("  - " + room.getName());
-            }
-        }
-    }
 }
