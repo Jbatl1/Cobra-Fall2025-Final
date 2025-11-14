@@ -46,7 +46,8 @@ public class LoadRooms { //Anita Philip
             "Jungle_Ruins",
             "Frozen_Waste",
             "Echo_Deserts",
-            "Crystal_Canyons"
+            "Crystal_Canyons",
+            "Celestial_Citadel"
     );
     public LoadRooms(HashMap<String, Room> roomsInfo, HashMap<String, Puzzle> puzzles, HashMap<String, Item> items,
                      HashMap<String, Player> player1, HashMap<String, Integer> inventory, HashMap<String, Monster> monsters) { //Anita Philip
@@ -247,74 +248,51 @@ public class LoadRooms { //Anita Philip
     // ------------------ SHOP LOADING ------------------
     // ------------------ SHOP LOADING (MATCHES YOUR CONSTRUCTOR) ------------------
     private void loadAllShops(Connection conn) throws Exception {
+        // Map of item -> cost for all shops
+        HashMap<Item, Integer> universalShopStock = new HashMap<>();
 
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Shops;");
-
-        // Store multiple items per shop
-        HashMap<String, ArrayList<Item>> shopStocks = new HashMap<>();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Shop;");
 
         while (rs.next()) {
-            String roomID = rs.getString("RoomID");
-
-            // Convert Shop row into actual Item object
             String itemID = rs.getString("Item_ID");
+            int cost = rs.getInt("Cost");
             Item stockItem = items.get(itemID);
 
-            if (stockItem == null) {
-                System.out.println("WARNING: Shop row references invalid item: " + itemID);
-                continue;
+            if (stockItem != null) {
+                universalShopStock.put(stockItem, cost);
+            } else {
+                System.out.println("WARNING: Shop table references invalid item: " + itemID);
             }
-
-            // Add item to the room's stock list
-            shopStocks.computeIfAbsent(roomID, k -> new ArrayList<>()).add(stockItem);
         }
 
-        // ---------- Now create the actual Shop objects ----------
-        for (Map.Entry<String, ArrayList<Item>> entry : shopStocks.entrySet()) {
+        if (universalShopStock.isEmpty()) {
+            System.out.println("WARNING: Shop table is empty — no shop items loaded!");
+            return;
+        }
 
-            String roomID = entry.getKey();
-            ArrayList<Item> stock = entry.getValue();
+        // Assign same stock to all rooms marked as shops
+        for (Room room : roomsInfo.values()) {
+            if (room.isShop()) {
+                Shop shop = new Shop(
+                        room.getRoomID(),
+                        room.getRoomName(),
+                        room.getRoomDescription(),
+                        room.getRoomType(),
+                        room.getNorthNavigation(),
+                        room.getEastNavigation(),
+                        room.getSouthNavigation(),
+                        room.getWestNavigation(),
+                        room.isRoomVisited(),
+                        room.isRaider(),
+                        true, // isShop
+                        new HashMap<>(universalShopStock) // copy of stock
+                );
 
-            Room baseRoom = roomsInfo.get(roomID);
-
-            if (baseRoom == null) {
-                System.out.println("WARNING: Shop references missing RoomID: " + roomID);
-                continue;
+                roomsInfo.put(room.getRoomID(), shop);
             }
-
-            // Replace the Room object with a Shop object
-            Shop shop = new Shop(
-                    baseRoom.getRoomID(),
-                    baseRoom.getRoomName(),
-                    baseRoom.getRoomDescription(),
-                    baseRoom.getRoomType(),
-                    baseRoom.getNorthNavigation(),
-                    baseRoom.getEastNavigation(),
-                    baseRoom.getSouthNavigation(),
-                    baseRoom.getWestNavigation(),
-                    baseRoom.isRoomVisited(),
-                    baseRoom.isRaider(),
-                    baseRoom.isShop(),
-
-                    // Stock list
-                    stock,
-
-                    // Only the first row's item info stored at shop-level (optional but required by your constructor)
-                    stock.get(0).getItemID(),
-                    stock.get(0).getItemName(),
-                    stock.get(0).getItemType(),
-                    stock.get(0).getItemRarity(),
-                    stock.get(0).getCost() //
-
-
-            );
-
-            // Replace room with Shop
-            roomsInfo.put(roomID, shop);
         }
     }
-
 
     public HashMap<String, Room> getRoomsInfo() {
         return roomsInfo;
