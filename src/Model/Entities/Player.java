@@ -249,39 +249,26 @@ public class Player extends Entity {
         return narrativeMemory;
     }
 
-    // barterType = "buy", "sell", or "trade"
-    // price = gold amount for buy/sell
-    public int barterItem(String offerItem, String receiveItem, String barterType, int price) {
-        if (barterType.equalsIgnoreCase("sell")) {
-            int idx = isInInventory(offerItem);
-            if (idx >= 0) {
-                inventory.remove(idx);
-                addGold(price);
-                return 1;
+    public int buyItem( String itemName) {
+        // Find item in shop stock
+        Item item = null;
+        for (Item i : shop.getStock()) {
+            if (i.getName().equalsIgnoreCase(itemName)) {
+                item = i;
+                break;
             }
-            return -1;
         }
 
-        if (barterType.equalsIgnoreCase("buy")) {
-            if (spendGold(price)) {
-                inventory.add(new Item(receiveItem));
-                return 1;
-            }
-            return -1;
-        }
+        if (item == null) return -1; // not sold here
 
-        if (barterType.equalsIgnoreCase("trade")) {
-            int idx = isInInventory(offerItem);
-            if (idx >= 0) {
-                inventory.remove(idx);
-                inventory.add(new Item(receiveItem));
-                return 1;
-            }
-            return -1;
-        }
+        if (!spendGold(price)) return -2; // not enough gold
 
-        return -1;
+        // Successful purchase
+        inventory.add(item);
+        shop.getStock().remove(item);
+        return 1;
     }
+
 
     // ==============================
     // Puzzle Interaction
