@@ -16,7 +16,7 @@ public class CrashSite {
 
     public void storeItems(Item item){
         storage.add(item);
-        System.out.println(item.getName() + "stored");
+        System.out.println(item.getItemName() + "stored");
     }
 
     public ArrayList<Item> getItems(){
@@ -24,10 +24,10 @@ public class CrashSite {
     }
     public boolean retrieveItems(String itemName, Player player){
         for(int i =0;i<storage.size();i++){
-            if(storage.get(i).getName().equalsIgnoreCase(itemName)){
+            if(storage.get(i).getItemName().equalsIgnoreCase(itemName)){
                 Item item = storage.remove(i);
                 player.getInventory().add(item);
-                System.out.println("You added " + item.getName() + " to the inventory");
+                System.out.println("You added " + item.getItemName() + " to the inventory");
                 return true;
             }
         }
@@ -36,7 +36,7 @@ public class CrashSite {
     }
     public void listItems(){
         for(int i =0;i<storage.size();i++){
-            System.out.println(storage.get(i).getName());
+            System.out.println(storage.get(i).getItemName());
         }
     }
     public Room getCrashSite(){

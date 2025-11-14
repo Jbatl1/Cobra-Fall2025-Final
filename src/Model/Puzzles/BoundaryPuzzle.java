@@ -23,7 +23,7 @@ public class BoundaryPuzzle extends Puzzle {
     public boolean isPuzzleLocked() {return puzzleLocked;}
 
     @Override
-    public int solvePuzzle(Room room, Player player, String userInput) {
+    public int solvePuzzle(Room room, Player player, String userInput) { //Anita Philip
         Puzzle currentPuzzle = null;
         for (Puzzle p : room.getPuzzlePresent()) {
             if (p.getRoomID().equals(room.getRoomID())) {
