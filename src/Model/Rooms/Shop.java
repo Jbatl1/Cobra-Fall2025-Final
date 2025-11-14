@@ -24,6 +24,7 @@ public class Shop extends Room{
             System.out.println("- " + item.getItemName());
         }
     }
+
     public boolean buyItem(Player player, Item item) {
         if (stock.contains(item)) {
             player.addToInventory(item);
