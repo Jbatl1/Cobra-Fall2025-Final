@@ -4,11 +4,8 @@ import Model.Entities.Monster;
 import Model.Entities.Player;
 import Model.Puzzles.Puzzle;
 import Model.Rooms.Room;
-import Model.Rooms.RestRoom;
 import Model.Items.Item;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class View {
@@ -102,10 +99,10 @@ public class View {
     // ==============================
     public void displayRoomEntry(Room room) { //caleb
         printSeparator();
-        System.out.println("🏠 You enter: " + room.getName());
-        System.out.println(room.getDescription());
+        System.out.println("🏠 You enter: " + room.getRoomName());
+        System.out.println(room.getRoomDescription());
 
-        System.out.println("Items here: " + (room.getItems().isEmpty() ? "None" : room.getItems().size()));
+        System.out.println("Items here: " + (room.getRoomItems().isEmpty() ? "None" : room.getRoomItems().size()));
         System.out.println("Monsters here: " + (room.getMonsters().isEmpty() ? "None" : room.getMonsters().size()));
         printSeparator();
     }
@@ -114,8 +111,8 @@ public class View {
     }
 
     public void displayExploreRoom(Room room) {
-        System.out.println("🔍 Exploring " + room.getName() + ":");
-        System.out.println(room.getDescription());
+        System.out.println("🔍 Exploring " + room.getRoomName() + ":");
+        System.out.println(room.getRoomDescription());
     }
 
     public void displayOpenShop() { //caleb
@@ -127,6 +124,13 @@ public class View {
                 - EXIT
                 """);
 
+    }
+
+    public void displayStock(ArrayList<Item> stock) { // Kai
+        System.out.println("Items for sale:");
+        for (Item item : stock){
+            System.out.println("- " + item.getItemName());
+        }
     }
     public void displaySellItem(int x, String s) {
         if (x < 0) {
