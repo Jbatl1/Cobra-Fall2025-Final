@@ -13,6 +13,11 @@ public class Model {
     private HashMap<String, Puzzle> puzzles = new HashMap<>();
     private HashMap<String, Room> rooms = new HashMap<>();
 
+    public Model(Player player) {
+        this.player = player;
+    }
+
+
     // ---------------- Player ----------------
     public Player getPlayer() {
         return this.player;

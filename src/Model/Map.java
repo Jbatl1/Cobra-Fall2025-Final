@@ -20,10 +20,7 @@ public class Map {
     }
 
     // === Optional: Database Test ===
-    public static void main(String[] args) {
-        LoadRooms M = new LoadRooms(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
-        M.loadRooms();
-    }
+
 
 
 

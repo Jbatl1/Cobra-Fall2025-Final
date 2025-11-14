@@ -17,6 +17,11 @@ public class Controller {
     private View view;
 
 
+    public Controller(Model model, View view) {
+        this.model = model;
+        this.view = view;
+    }
+
     private boolean shop = model.getPlayer().getCurrRoom() instanceof Shop;
     private boolean fight = false;
     private boolean puzzle = false;

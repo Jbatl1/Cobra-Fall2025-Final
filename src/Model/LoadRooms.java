@@ -334,4 +334,7 @@ public class LoadRooms { //Anita Philip
     public HashMap<String, Integer> getInventory() {
         return inventory;
     }
+    public Room getStartRoom() {
+        return roomsInfo.get("SW1");
+    }
 }
