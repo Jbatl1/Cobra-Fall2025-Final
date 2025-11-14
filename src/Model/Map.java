@@ -21,9 +21,8 @@ public class Map {
 
     // === Optional: Database Test ===
     public static void main(String[] args) {
-        LoadRooms m = new LoadRooms(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
-        m.loadRooms();
-
+        LoadRooms M = new LoadRooms(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
+        M.loadRooms();
     }
 
 
