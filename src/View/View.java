@@ -116,14 +116,14 @@ public class View {
     }
 
     public void displayExploreRoom(Room room) {
-        if (room instanceof LandingSiteRoom) { // assuming you have a subclass that links room to LandingSite
-            LandingSite landingSite = ((LandingSiteRoom) room).getLandingSite();
+        if (room instanceof LandingSite) { // assuming you have a subclass that links room to LandingSite
+            LandingSite landingSite = (LandingSite) room;
             System.out.println("Planet: " + landingSite.getPlanetName());
             System.out.println("Landing Site: " + landingSite.getLandingSiteName());
             System.out.println("Description: " + landingSite.getDesc());
         } else {
-            System.out.println("🔍 Exploring " + room.getName() + ":");
-            System.out.println(room.getDescription());
+            System.out.println("🔍 Exploring " + room.getRoomName() + ":");
+            System.out.println(room.getRoomDescription());
         }
     }
 

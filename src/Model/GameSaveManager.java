@@ -1,5 +1,7 @@
 package Model;
 
+import Model.Entities.Player;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +132,7 @@ public class GameSaveManager {
 
 
     // LOAD PLAYER
-    public static PlayerData loadPlayer(String saveId) {
+    public static Player loadPlayer(String saveId) {
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(
                      "SELECT * FROM player_progress WHERE save_id = ?")) {
@@ -145,7 +147,7 @@ public class GameSaveManager {
                 String location = rs.getString("location");
                 String equipment = rs.getString("equipment");
 
-                return new PlayerData(health, attack, defense, location, equipment);
+                return new Player(health, attack, defense, location, equipment);
             }
 
         } catch (SQLException e) {
