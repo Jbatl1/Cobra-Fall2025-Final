@@ -5,7 +5,6 @@ import Model.Entities.Player;
 import Model.Puzzles.Puzzle;
 import Model.Rooms.Room;
 import Model.Items.Item;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -125,6 +124,13 @@ public class View {
                 - EXIT
                 """);
 
+    }
+
+    public void displayStock(ArrayList<Item> stock) { // Kai
+        System.out.println("Items for sale:");
+        for (Item item : stock){
+            System.out.println("- " + item.getItemName());
+        }
     }
     public void displaySellItem(int x, String s) {
         if (x < 0) {

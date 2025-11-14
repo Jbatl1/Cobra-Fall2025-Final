@@ -18,29 +18,9 @@ public class Shop extends Room{
         stock.add(item);
     }
 
- public void displayStock(){
-        System.out.println("Items for sale:");
-        for (Item item : stock){
-            System.out.println("- " + item.getItemName());
-        }
-    }
 
-    public boolean buyItem(Player player, Item item) {
-        if (stock.contains(item)) {
-            player.addToInventory(item);
-            stock.remove(item);
-            System.out.println("You bought " + item.getItemName() + "!");
-            return true;
-        }
-        System.out.println("Item not found.");
-        return false;
-    }
-
-    public void sellItem(Player player, Item item) {
-        if (player.removeFromInventory(item)) {
-            stock.add(item);
-            System.out.println("You sold " + item.getItemName() + ".");
-        }
+    public ArrayList<Item> getStock() {
+        return stock;
     }
 
 

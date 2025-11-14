@@ -128,11 +128,6 @@ public class Room {
     // ==============================
     // Player Interaction Logic
     // ==============================
-    public String enter(Player player) {
-       roomVisited = true;
-       player.setCurrRoom(this);
-       return "s"; //just added line so itd stop complaining
-    }
 
 
         public HashMap<String, String> getExits () {

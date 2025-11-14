@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LandingSite {
+public class LandingSite extends Room{
     private String planetName;  // The planet this landing site belongs to
     private String landingSiteName; // Name of the landing site itself
     private String desc; // Description of this landing site
@@ -18,6 +18,7 @@ public class LandingSite {
     private Map<String, Room> roomConnections;
 
     public LandingSite(String planetName, String landingSiteName, String desc) {
+        super(landingSiteName + "_ID", landingSiteName, desc, "LandingSite", null, null, null, null, false, false, false);
         this.planetName = planetName;
         this.landingSiteName = landingSiteName;
         this.desc = desc;

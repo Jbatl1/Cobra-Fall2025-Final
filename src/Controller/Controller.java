@@ -3,6 +3,7 @@ package Controller;
 import Model.Entities.Monster;
 import Model.Items.Item;
 import Model.Model;
+import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
 import Model.Rooms.Shop;
 import View.View;
@@ -169,7 +170,7 @@ public class Controller {
                     this.view.displayItemDropped(x, itemName);  // need to update player dropItem method to return -1 when item cant be dropped
                     break;
                 case "SHIP": // Opens Ship Inventory
-                    if (this.model.getPlayer().getCurrRoom() instanceof LaunchSite) {
+                    if (this.model.getPlayer().getCurrRoom() instanceof LandingSite) {
                         this.view.displayShipInv(this.model.getPlayer().getShipStorage());
                     }
                     break;
@@ -274,7 +275,8 @@ public class Controller {
             String input = this.view.getInput();
             switch (input) {
                 case "VIEW ITEMS": // displays items for sale
-                    (Shop)(this.model.getPlayer().getCurrRoom()).displayStock();
+                    ArrayList<Item> stock = ((Shop)(this.model.getPlayer().getCurrRoom())).getStock();
+                    this.view.displayStock(stock);
                     break;
                 case String s when input.matches("^BUY\\s.*$"): // buy item
                     x = this.model.getPlayer().buyItem(s.substring(4).trim()); // -1 = not enough money, -2 = item not found, else return price of item
