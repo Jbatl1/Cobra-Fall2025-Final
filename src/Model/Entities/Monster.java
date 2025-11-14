@@ -19,9 +19,15 @@ public class Monster extends Entity {
 
 
     // Constructor
-    public Monster(String name, int health, int attackPower, int defense, String monsterID, String abilityEffect, Item dropItem, boolean isBoss, boolean isRaider, Room currentRoom) {
-        super(name, health, attackPower, defense);
+    public Monster(String name, int health, int attackPower, int defense,
+                   String monsterID, String abilityEffect, Item dropItem,
+                   boolean isBoss, boolean isRaider, Room currentRoom) {
 
+        // Call the 3-parameter Entity constructor
+        super(name, health, attackPower);
+
+        // Manually set defense because Entity doesn't take defense in the constructor
+        this.defense = defense;
 
         this.monsterID = monsterID;
         this.abilityEffect = abilityEffect;
@@ -93,20 +99,5 @@ public class Monster extends Entity {
     public boolean canFlee() {
         return !isBoss;
     }
-
-  /*  public void fleeAttempt(Player player) {
-        if (!canFlee()) {
-            System.out.println("You cannot flee from this boss monster!");
-        } else {
-            Random rand = new Random();
-            if (rand.nextBoolean()) {
-                System.out.println("You successfully fled from " + name + "!");
-            } else {
-                int penalty = 10;
-                player.receiveDamage(penalty);
-                System.out.println("You failed to flee and lost " + penalty + " HP!");
-            }
-        }
-    }*/
 }
 
