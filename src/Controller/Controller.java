@@ -103,7 +103,7 @@ public class Controller {
                     Item targetItem = model.findItemInCurrentRoom(itemName);
 
                     if (targetItem == null) {
-                        view.displayItemNotFound(itemName);
+                        view.displayItemNotFound(targetItem);
                         break;
                     }
 
@@ -137,7 +137,7 @@ public class Controller {
                     if (!blocked) {
                         model.getPlayer().pickupItem(targetItem.getItemName());
                         model.getPlayer().getCurrRoom().getRoomItems().remove(targetItem); // ✅ Remove from room inventory
-                        view.displayItemPickup(targetItem);
+                        view.displayItemPickup(x,targetItem.getItemName());
                     }
                     break;
 
@@ -160,7 +160,7 @@ public class Controller {
                     this.view.displayInv(this.model.getPlayer().getInventory());
                     break;
                 case "G": // drop held item
-                    String itemName = this.model.getPlayer().getEquippedItem().getName();
+                    String itemName = this.model.getPlayer().getEquippedItem().getItemName();
                     x = this.model.getPlayer().dropItem(itemName);
                     this.view.displayItemDropped(x, itemName);  // need to update player dropItem method to return -1 when item cant be dropped
                     break;
@@ -235,7 +235,7 @@ public class Controller {
                     this.view.displayPlayerAttack(currentMonster.getName(), this.model.getPlayer().getAttackPower()); // make getter display item damage if one is equipped
                     break;
                 case "TOOL BELT": // opens tool belt
-                    this.view.displayToolbelt(this.model.getPlayer().getToolBelt);
+                    this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
                     break;
                 case "B": // Shows Inventory
                     this.view.displayInv(this.model.getPlayer().getInventory());

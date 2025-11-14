@@ -128,7 +128,6 @@ public class View {
                 """);
 
     }
-
     public void displaySellItem(int x, String s) {
         if (x < 0) {
             System.out.println("❗ You don't have " + s + " to sell.");
@@ -173,6 +172,10 @@ public class View {
     // ==============================
     // Inventory / Items
     // ==============================
+
+    public void displayItemNotFound(Item item ){
+        System.out.println("Sorry could not find item");
+    }
     public void displayItemPickup(int x, String itemName) { //caleb
         switch (x) {
             case 1:
@@ -211,7 +214,7 @@ public class View {
 
     public void displayExamineItem(Item i) { //caleb
         if (i != null) {
-            System.out.println(i.getItemMessage());
+            System.out.println(i.getItemDescription());
         } else {
             System.out.println("❗ Item not found in inventory.");
         }
@@ -256,17 +259,13 @@ public class View {
     // Puzzle
     // ==============================
 
-    public static void displayBoundaryPuzzlePrompt(Puzzle puzzle) {
+
         public void displayPuzzleBeforePickup (Puzzle puzzle){
             System.out.println("You must solve a puzzle before you can pickup this Item! (Examine or Ignore)");
         }
 
         public void displayPuzzleChoice () {
             System.out.println("Type 'EXAMINE' to try solving the puzzle or 'IGNORE' to leave it.");
-        }
-
-        public void displayPuzzleQuestion (Puzzle puzzle){
-            System.out.println("🧩 Puzzle: " + puzzle.getPuzzleQuestion());
         }
 
 
@@ -277,9 +276,7 @@ public class View {
         public void displayLootPuzzlePrompt (Puzzle puzzle){
             System.out.println("❓: " + puzzle.getPuzzleQuestion());
         }
-        public void displayItemPuzzlePrompt (Puzzle puzzle){
-            System.out.println("❓: " + puzzle.getPuzzleQuestion());
-        }
+
 
 
         public void displayPuzzleSolved (Puzzle puzzle){
@@ -297,22 +294,15 @@ public class View {
         }
 
         // =========================
-        public void displayItemNotFound (String itemName){
-            System.out.println("There is no item named '" + itemName + "' here.");
-        }
 
-        public void displayPuzzlePrompt (Puzzle p){
-            System.out.println("A puzzle blocks your access!");
-            System.out.println("Puzzle Type: " + p.getType());
-            System.out.println("Type EXAMINE to solve or IGNORE to leave it.");
-        }
+
 
         public void displayPuzzleBlockedPickup (Item i){
             System.out.println("You cannot pick up " + i.getItemName() + " until the puzzle is solved.");
         }
 
-        public void displayPuzzleQuestion (Puzzle p){
-            System.out.println("Puzzle Question: " + p.getPuzzleQuestion());
+        public void displayPuzzleQuestion(Puzzle puzzle){
+            System.out.println("Puzzle Question: " + puzzle.getPuzzleQuestion());
         }
 
         public void displayPuzzleIgnored (Puzzle p){
@@ -330,6 +320,9 @@ public class View {
         public void displayMessage () {
             System.out.println("You cannot move back, no previous room recorded.");
         }
+
+
+    public void displayPuzzlePrompt(Puzzle p) {
 
     }
 }

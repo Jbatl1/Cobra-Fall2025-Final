@@ -88,6 +88,14 @@ public class Room {
         return roomVisited;
     }
 
+    public ArrayList<Puzzle> getPuzzlePresent() {
+        return puzzlePresent;
+    }
+
+    public ArrayList<Item> getRoomItems() {
+        return roomItems;
+    }
+
     // ==============================
     // Player Interaction Logic
     // ==============================
@@ -97,48 +105,48 @@ public class Room {
 
 
 
-    public Puzzle getRoomPuzzle() {return roomPuzzle;}
 
-    public HashMap<String, String> getExits() {
-        return exits;
-    }
+        public HashMap<String, String> getExits () {
+            return exits;
+        }
 
-    public void addRoomExit(String direction,String roomID) {
-        exits.put(direction, roomID);
-    }
+        public void addRoomExit (String direction, String roomID){
+            exits.put(direction, roomID);
+        }
 
-    public boolean isRaider() {
-        return isRaider;
-    }
+        public boolean isRaider () {
+            return isRaider;
+        }
 
-    public boolean isShop() {
-        return isShop;
-    }
+        public boolean isShop () {
+            return isShop;
+        }
 
-    public ArrayList<Item> getRoomItems() {
-        return roomItems;
-    }
+        public ArrayList<Item> getRoomItems () {
+            return roomItems;
+        }
 
-    public List<Monster> getMonsters() {
-        return monsters;
-    }
- public void addItem(Item item) {
-     roomItems.add(item);
-      }
+        public List<Monster> getMonsters () {
+            return monsters;
+        }
+        public void addItem (Item item){
+            roomItems.add(item);
+        }
 
-      public Item removeItem(String itemName) {
-          for (Item i : roomItems) {
-              if (i.getItemName().equalsIgnoreCase(itemName)) {
-                  roomItems.remove(i);
-                  return i;
-              }
-          }
-          return null;
-      }
+        public Item removeItem (String itemName){
+            for (Item i : roomItems) {
+                if (i.getItemName().equalsIgnoreCase(itemName)) {
+                    roomItems.remove(i);
+                    return i;
+                }
+            }
+            return null;
+        }
 
-    public Room getExit(String direction) {
-        // TODO: Map directions to connected rooms (if using a direction table)
-        return null;
+        public Room getExit (String direction){
+            // TODO: Map directions to connected rooms (if using a direction table)
+            return null;
+        }
     }
 
 
