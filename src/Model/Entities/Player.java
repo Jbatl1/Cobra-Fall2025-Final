@@ -1,10 +1,13 @@
 package Model.Entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import Model.Items.Item;
 import Model.Rooms.Room;
 import Model.Entities.Monster;
 import Model.Puzzles.Puzzle;
+import Model.Rooms.Shop;
 
 /**
  * Player entity. Uses Entity's health/attack/defense fields and methods.
@@ -90,17 +93,17 @@ public class Player extends Entity {
     // ==============================
     // Move to a Different Landing Site
     // ==============================
-    public int moveToLandingSite(String landingSite) {
-        if (!currRoom.getRoomName().equalsIgnoreCase("Landing site")) {
-            return -2;
-        }
-        Room target = Room.getRoomByName(landingSite);
-        if (target == null || !target.getRoomName().equalsIgnoreCase("Landing site")) {
-            return -1;
-        }
-        currRoom = target;
-        return 1;
-    }
+//    public int moveToLandingSite(String landingSite) {
+//        if (!currRoom.getRoomName().equalsIgnoreCase("Landing site")) {
+//            return -2;
+//        }
+//        Room target = Room.getRoomByName(landingSite);
+//        if (target == null || !target.getRoomName().equalsIgnoreCase("Landing site")) {
+//            return -1;
+//        }
+//        currRoom = target;
+//        return 1;
+//    }
 
     // ==============================
     // Inventory / ToolBelt Management
@@ -206,37 +209,6 @@ public class Player extends Entity {
         }
     }
 
-    public void receiveRewardItem(Item item) {
-        inventory.add(item);
-    }
-
-    // Main combat logic — called externally when "fight" command is issued
-    // Return codes:
-    //  1 = win, 0 = lose, -1 = invalid
-    public int startCombatLoop(Monster enemy) {
-        if (enemy == null) return -1;
-
-        while (health > 0 && enemy.getHealth() > 0) {
-            int damageDealt = inflictDamage(enemy);
-
-            if (enemy.getHealth() <= 0) {
-                Item reward = enemy.getReward();
-                if (reward != null) receiveRewardItem(reward);
-                addGold(20);
-                return 1; // win
-            }
-
-            // enemy attacks
-            int enemyDamage = enemy.attackPlayer(this); // returns damage dealt
-            // player.receiveDamage is called inside attackPlayer, nothing else to do here
-
-            if (health <= 0) {
-                loseItemOnDefeat();
-                return 0; // lose
-            }
-        }
-        return -1; // unexpected
-    }
 
     // ==============================
     // Player Memory & Bartering
@@ -249,37 +221,13 @@ public class Player extends Entity {
         return narrativeMemory;
     }
 
-    // barterType = "buy", "sell", or "trade"
-    // price = gold amount for buy/sell
-    public int barterItem(String offerItem, String receiveItem, String barterType, int price) {
-        if (barterType.equalsIgnoreCase("sell")) {
-            int idx = isInInventory(offerItem);
-            if (idx >= 0) {
-                inventory.remove(idx);
-                addGold(price);
-                return 1;
-            }
-            return -1;
-        }
 
-        if (barterType.equalsIgnoreCase("buy")) {
-            if (spendGold(price)) {
-                inventory.add(new Item(receiveItem));
-                return 1;
-            }
-            return -1;
+    public int sellItem(String itemName) {
+        int idx = isInInventory(itemName);
+        if (((Shop) currRoom).getStock().contains(inventory.get(idx))) {
+            inventory.remove(idx);
+            return 1;
         }
-
-        if (barterType.equalsIgnoreCase("trade")) {
-            int idx = isInInventory(offerItem);
-            if (idx >= 0) {
-                inventory.remove(idx);
-                inventory.add(new Item(receiveItem));
-                return 1;
-            }
-            return -1;
-        }
-
         return -1;
     }
 
@@ -299,15 +247,17 @@ public class Player extends Entity {
     // Movement
     // ==============================
     public int move(String direction) {
-        Room next = currRoom.getExit(direction);
-        if (next != null && next.getBoundaryPuzzle() == null) {
-            prevRoom = currRoom;
-            currRoom = next;
-            return 1;
-        } else if (next != null && next.getBoundaryPuzzle() != null) {
-            return -2; // boundary puzzle exists
+        HashMap<String, Room> exits = currRoom.getExits();
+        if (exits.containsKey(direction) && currRoom.getBoundaryPuzzleInDirection(direction, exits) != null) {
+            return -2;
         }
-        return -1;
+        else if(exits.containsKey(direction) && exits.get(direction).getBoundaryPuzzleInDirection(direction, exits) == null) {
+            this.currRoom = currRoom.getExits().get(direction);
+            return 1;
+        }
+        else {
+            return -1;
+        }
     }
 
     public Room getCurrRoom() {

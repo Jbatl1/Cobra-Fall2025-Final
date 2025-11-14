@@ -250,8 +250,8 @@ public class Controller {
                     this.view.displayEquipItem(x, s);
                     break;
                 case "FLEE":
-                    this.model.getPlayer().flee();
                     this.view.displayFlee(currentMonster.getName());
+                    currentMonster = null;
                     fight = false;
                 default:
                     this.view.displayInvalidCommand();
