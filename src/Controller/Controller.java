@@ -214,6 +214,10 @@ public class Controller {
                         this.view.displayNotInShop();
                     }
                     break;
+                case "QUIT":
+                    //when player quit, gamesavemanager will create new tables where it saves all the game progress,
+                    //remove entities or items that player added or
+                    // make tables for player inventories as well,
                 default:
                     this.view.displayInvalidCommand();
                     break;

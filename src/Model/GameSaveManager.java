@@ -11,6 +11,8 @@ public class GameSaveManager {
         try (Connection conn = DatabaseConnection.connect();
              Statement stmt = conn.createStatement()) {
 
+            //ADD TABLE:
+            //crash ship, traveling ship, tool belt, (maybe add one for ech planet/room to keep track if items currently htere?),
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS player_progress (
                     id INTEGER PRIMARY KEY,
@@ -18,8 +20,8 @@ public class GameSaveManager {
                     health INTEGER,
                     attack INTEGER,
                     defense INTEGER,
-                    level INTEGER,
-                    location TEXT
+                    location TEXT,
+                    equipment TEXT,
                 );
             """);
 
@@ -35,11 +37,6 @@ public class GameSaveManager {
                 );
             """);
 
-            stmt.execute("""
-                CREATE TABLE IF NOT EXISTS owned_artifacts (
-                    artifact_id INTEGER PRIMARY KEY
-                );
-            """);
 
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS defeated_monsters (
@@ -55,16 +52,18 @@ public class GameSaveManager {
 
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS inventory (
-                    item_id INTEGER PRIMARY KEY,
+                    Item_Id INTEGER PRIMARY KEY,
                     location TEXT
                 );
             """);
 
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS purchased_items (
-                    item_id INTEGER PRIMARY KEY
+                    Item_Id INTEGER PRIMARY KEY
                 );
             """);
+
+
 
             System.out.println("✅ Game progress tables initialized.");
 
@@ -78,16 +77,16 @@ public class GameSaveManager {
     public static void savePlayer(String name, int health, int attack, int defense, int level, String location) {
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(
-                     "INSERT INTO player_progress (id, name, health, attack, defense, level, location) " +
-                             "VALUES (1, ?, ?, ?, ?, ?, ?) " +
-                             "ON CONFLICT(id) DO UPDATE SET name=excluded.name, health=excluded.health, attack=excluded.attack, defense=excluded.defense, level=excluded.level, location=excluded.location;"
+                     "INSERT INTO player_progress (id, name, health, attack, defense, location, equipment)"+
+                             "VALUES (1, ?, ?, ?, ?, ?, ?, ) " +
+                             "ON CONFLICT(id) DO UPDATE SET name=excluded.name, health=excluded.health, attack=excluded.attack, defense=excluded.defense, location=excluded.location, equipment=excluded.equipment;"
              )) {
             stmt.setString(1, name);
             stmt.setInt(2, health);
             stmt.setInt(3, attack);
             stmt.setInt(4, defense);
-            stmt.setInt(5, level);
-            stmt.setString(6, location);
+            stmt.setString(5, location);
+            stmt.setString(6, equipment);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -104,10 +103,10 @@ public class GameSaveManager {
                 int health = rs.getInt("health");
                 int attack = rs.getInt("attack");
                 int defense = rs.getInt("defense");
-                int level = rs.getInt("level");
                 String location = rs.getString("location");
+                String equipment = rs.getString("equipment");
 
-                return new PlayerData(name, health, attack, defense, level, location);
+                return new PlayerData(name, health, attack, defense, location, equipment);
             }
 
         } catch (SQLException e) {
