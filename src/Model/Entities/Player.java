@@ -6,15 +6,11 @@ import Model.Rooms.Room;
 import Model.Entities.Monster;
 import Model.Puzzles.Puzzle;
 
+/**
+ * Player entity. Uses Entity's health/attack/defense fields and methods.
+ * Model contains no printing; View handles output.
+ */
 public class Player extends Entity {
-
-    //ANITA MODIFIED
-    //getName()  --> getItemName()
-    //getDescription() --> getPuzzleQuestion()
-    //getDamageValue() --> getItemDamage()
-    //getName() --> getRoomName()
-    //deleted hint method
-
 
     // ==============================
     // Fields
@@ -25,7 +21,6 @@ public class Player extends Entity {
     private Room currRoom;
     private Room prevRoom;
     private ArrayList<String> narrativeMemory; // FR-005.3
-    private int health;
 
     // Ship storage (capacity 20)
     private ArrayList<Item> shipStorage;
@@ -45,7 +40,6 @@ public class Player extends Entity {
         this.equippedItem = null;
         this.narrativeMemory = new ArrayList<>();
         this.shipStorage = new ArrayList<>();
-        this.health = 100;
         this.gold = 100; // starting gold
     }
 
@@ -61,10 +55,7 @@ public class Player extends Entity {
     }
 
     public int removeCargoItem(Item item) {
-        if (shipStorage.remove(item)) {
-            return 1;
-        }
-        return -1;
+        return shipStorage.remove(item) ? 1 : -1;
     }
 
     public ArrayList<Item> getShipStorage() {
@@ -114,24 +105,23 @@ public class Player extends Entity {
     // ==============================
     // Inventory / ToolBelt Management
     // ==============================
-
     public ArrayList<Item> getInventory() {
         return inventory;
     }
+
     public ArrayList<Item> getToolBelt() {
         return toolBelt;
     }
 
-   public void addItem(Item newItem) {
-       for (Item item : inventory) {
-           if (item.getItemID().equals(newItem.getItemID())) {
-               item.setQuantity(item.getQuantity() + newItem.getQuantity());
-               return;
-           }
-       }
-       inventory.add(newItem);
-   }
-
+    public void addItem(Item newItem) {
+        for (Item item : inventory) {
+            if (item.getItemID().equals(newItem.getItemID())) {
+                item.setQuantity(item.getQuantity() + newItem.getQuantity());
+                return;
+            }
+        }
+        inventory.add(newItem);
+    }
 
     public int isInInventory(String s) {
         for (int i = 0; i < inventory.size(); i++) {
@@ -142,7 +132,6 @@ public class Player extends Entity {
         return -1;
     }
 
-    // Equip item to hands but keep it in inventory
     public int equipItemToHands(String s) {
         int idx = isInInventory(s);
         if (idx >= 0) {
@@ -152,7 +141,6 @@ public class Player extends Entity {
         return 0;
     }
 
-    // Add item to toolbelt but keep it in inventory
     public int equipItemToToolBelt(String s) {
         int idx = isInInventory(s);
         if (idx >= 0 && !toolBelt.contains(inventory.get(idx))) {
@@ -169,8 +157,6 @@ public class Player extends Entity {
         }
         return 0;
     }
-
-
 
     public int removeItemFromToolBelt(String s) {
         return toolBelt.removeIf(i -> i.getItemName().equalsIgnoreCase(s)) ? 1 : 0;
@@ -204,18 +190,9 @@ public class Player extends Entity {
         return 0;
     }
 
-
-
     // ==============================
     // Combat System
     // ==============================
-    public void receiveDamage(int amount) {
-        health -= amount;
-        if (health < 0) {
-            health = 0;
-        }
-    }
-
     public int inflictDamage(Monster enemy) {
         if (equippedItem == null) return 0; // no weapon equipped
         int damage = equippedItem.getItemDamage();
@@ -234,6 +211,8 @@ public class Player extends Entity {
     }
 
     // Main combat logic — called externally when "fight" command is issued
+    // Return codes:
+    //  1 = win, 0 = lose, -1 = invalid
     public int startCombatLoop(Monster enemy) {
         if (enemy == null) return -1;
 
@@ -241,12 +220,16 @@ public class Player extends Entity {
             int damageDealt = inflictDamage(enemy);
 
             if (enemy.getHealth() <= 0) {
-                receiveRewardItem(new Item("Trophy"));
+                Item reward = enemy.getReward();
+                if (reward != null) receiveRewardItem(reward);
                 addGold(20);
                 return 1; // win
             }
 
-            receiveDamage(enemy.getAttackPower());
+            // enemy attacks
+            int enemyDamage = enemy.attackPlayer(this); // returns damage dealt
+            // player.receiveDamage is called inside attackPlayer, nothing else to do here
+
             if (health <= 0) {
                 loseItemOnDefeat();
                 return 0; // lose
@@ -276,7 +259,7 @@ public class Player extends Entity {
                 addGold(price);
                 return 1;
             }
-            return 0;
+            return -1;
         }
 
         if (barterType.equalsIgnoreCase("buy")) {
@@ -294,20 +277,23 @@ public class Player extends Entity {
                 inventory.add(new Item(receiveItem));
                 return 1;
             }
-            return 0;
+            return -1;
         }
 
-        return 0;
+        return -1;
     }
 
     // ==============================
     // Puzzle Interaction
     // ==============================
-    public void examinePuzzle(Puzzle p) { }
+    public void examinePuzzle(Puzzle p) {
+        // logic-only; View handles display
+    }
 
     public void skipPuzzle(Puzzle p) {
         receiveDamage(10);
     }
+
 
     // ==============================
     // Movement
@@ -315,6 +301,7 @@ public class Player extends Entity {
     public int move(String direction) {
         Room next = currRoom.getExit(direction);
         if (next != null && next.getBoundaryPuzzle() == null) {
+            prevRoom = currRoom;
             currRoom = next;
             return 1;
         } else if (next != null && next.getBoundaryPuzzle() != null) {
@@ -323,19 +310,17 @@ public class Player extends Entity {
         return -1;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
     public Room getCurrRoom() {
         return currRoom;
     }
 
-
     public Item getEquippedItem() {
         return equippedItem;
     }
-    public Room getPrevRoom() {return prevRoom;}
+
+    public Room getPrevRoom() {
+        return prevRoom;
+    }
 
     public void setCurrRoom(Room newRoom) {
         this.prevRoom = this.currRoom;  // store current as previous
