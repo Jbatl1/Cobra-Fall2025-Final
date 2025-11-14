@@ -270,11 +270,12 @@ public class Controller {
             String input = this.view.getInput();
             switch (input) {
                 case "VIEW ITEMS": // displays items for sale
-                    (Shop)(this.model.getPlayer().getCurrRoom()).displayStock();
+                    ArrayList<Item> stock = ((Shop)(this.model.getPlayer().getCurrRoom())).getStock();
+                    this.view.displayStock(stock);
                     break;
                 case String s when input.matches("^BUY\\s.*$"): // buy item
                     x = this.model.getPlayer().buyItem(s.substring(4).trim()); // -1 = not enough money, -2 = item not found, else return price of item
-                    this.view.DisplayPurchaseItem(x, s);
+                    this.view.displayPurchaseItem(x, s);
                     break;
                 case String s when input.matches("^SELL\\s.*$"): // sell item
                     x = this.model.getPlayer().sellItem(s.substring(5).trim()); // -1 = item not found, else return sell price

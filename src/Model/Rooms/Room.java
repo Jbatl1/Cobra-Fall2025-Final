@@ -99,11 +99,6 @@ public class Room {
     // ==============================
     // Player Interaction Logic
     // ==============================
-    public String enter(Player player) {
-        visited = true;
-        player.setCurrRoom(this);
-
-
 
 
         public HashMap<String, String> getExits () {
