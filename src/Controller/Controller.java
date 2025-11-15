@@ -92,7 +92,7 @@ public class Controller {
                     }
                     break;
                 case "W": // move west
-                    x = model.getPlayer().move("WEAST");
+                    x = model.getPlayer().move("WEST");
                     handleBoundaryPuzzle(model.getPlayer().getCurrRoom());
 
                     if (x == 1) {
