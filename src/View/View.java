@@ -3,6 +3,8 @@ package View;
 import Model.Entities.Monster;
 import Model.Entities.Player;
 import Model.Puzzles.Puzzle;
+import Model.Rooms.CrashSite;
+import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
 import Model.Items.Item;
 import java.util.ArrayList;
@@ -111,8 +113,15 @@ public class View {
     }
 
     public void displayExploreRoom(Room room) {
-        System.out.println("🔍 Exploring " + room.getRoomName() + ":");
-        System.out.println(room.getRoomDescription());
+        if (room instanceof LandingSite) { // assuming you have a subclass that links room to LandingSite
+            LandingSite landingSite = (LandingSite) room;
+            System.out.println("Planet: " + landingSite.getPlanetName());
+            System.out.println("Landing Site: " + landingSite.getLandingSiteName());
+            System.out.println("Description: " + landingSite.getDesc());
+        } else {
+            System.out.println("🔍 Exploring " + room.getRoomName() + ":");
+            System.out.println(room.getRoomDescription());
+        }
     }
 
     public void displayOpenShop() { //caleb
@@ -330,5 +339,52 @@ public class View {
         }
 
 
+
+    }
+    //game save
+    public void displayGameSaved() {
+        System.out.println("Game saved successfully.");
+    }
+    //landing site
+    public void displayLandingSiteInfo(LandingSite site) {
+        System.out.println("Planet: " + site.getPlanetName());
+        System.out.println("Landing Site: " + site.getLandingSiteName());
+        System.out.println("Description: " + site.getDesc());
+
+        System.out.println("\nConnected Landing Sites:");
+        if (site.getLandingSiteConnections().isEmpty()) {
+            System.out.println("  None");
+        } else {
+            for (String name : site.getLandingSiteConnections().keySet()) {
+                System.out.println("  - " + name);
+            }
+        }
+
+        System.out.println("\nConnected Rooms:");
+        if (site.getRoomConnections().isEmpty()) {
+            System.out.println("  None");
+        } else {
+            for (Room room : site.getRoomConnections().values()) {
+                System.out.println("  - " + room.getName());
+            }
+        }
+    }
+
+    //crash site display
+    public void displayItemRetrieved(Item item) {
+        System.out.println("You added " + item.getName() + " to your inventory.");
+    }
+    public void displayItemNotFound(String itemName) {
+        System.out.println("Item '" + itemName + "' not found in the crashed ship.");
+    }
+    public void displayCrashSiteItems(CrashSite crashSite) {
+        if (crashSite.getItems().isEmpty()) {
+            System.out.println("The crashed ship has no items.");
+        } else {
+            System.out.println("Items at the crashed ship:");
+            for (Item item : crashSite.getItems()) {
+                System.out.println("  - " + item.getName());
+            }
+        }
 
 }
