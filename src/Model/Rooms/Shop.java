@@ -3,46 +3,37 @@ package Model.Rooms;
 import Model.Entities.Player;
 import Model.Items.Item;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Shop extends Room{
-    private ArrayList<Item> stock;
+    private HashMap<Item, Integer> stockWithCost;
 
-    //Anita Modified getName() --> getItemName
-
-    private String item_ID;
-    private String name;
-    private String type;
-    private String rarity;
-    private int cost;
-
-  /*  public Shop(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop, ArrayList<Item> stock) {
-        super(roomID, roomName, roomDescription, roomType, northNavigation, eastNavigation, southNavigation, westNavigation, roomVisited, isRaider, isShop);
-        this.stock = stock;
-    }
-*/
-    public Shop(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop, ArrayList<Item> stock, String item_ID, String name, String type, String rarity, int cost) {
-        super(roomID, roomName, roomDescription, roomType, northNavigation, eastNavigation, southNavigation, westNavigation, roomVisited, isRaider, isShop);
-        this.item_ID = item_ID;
-        this.name = name;
-        this.type = type;
-        this.rarity = rarity;
-        this.cost = cost;
-        this.stock = stock;
+    public Shop(String roomID, String roomName, String roomDescription, String roomType,
+                String northNavigation, String eastNavigation, String southNavigation, String westNavigation,
+                boolean roomVisited, boolean isRaider, boolean isShop,
+                HashMap<Item, Integer> stockWithCost) {
+        super(roomID, roomName, roomDescription, roomType,
+                northNavigation, eastNavigation, southNavigation, westNavigation,
+                roomVisited, isRaider, isShop);
+        this.stockWithCost = stockWithCost;
     }
 
-
-
-    public int getCost() { return cost; }
-
-    public void addItemToStock(Item item){
-        stock.add(item);
+    public HashMap<Item, Integer> getStockWithCost() {
+        return stockWithCost;
     }
 
+    public void setStockWithCost(HashMap<Item, Integer> stockWithCost) {
+        this.stockWithCost = stockWithCost;
+    }
 
+    // Optional helper: get cost of a specific item
+    public int getCost(Item item) {
+        return stockWithCost.getOrDefault(item, 0);
+    }
+
+    // ✅ NEW METHOD: return just the items as a list
     public ArrayList<Item> getStock() {
-        return stock;
+        return new ArrayList<>(stockWithCost.keySet());
     }
-
-
 
 }

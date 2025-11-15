@@ -17,17 +17,21 @@ public class Controller {
     private View view;
 
 
-    public Controller(Model model, View view) {
-        this.model = model;
-        this.view = view;
-    }
+    private boolean shop; // just declare, no initialization
 
-    private boolean shop = model.getPlayer().getCurrRoom() instanceof Shop;
     private boolean fight = false;
     private boolean puzzle = false;
     private boolean solvePuzzle = false;
     private Monster currentMonster = null;
     private Puzzle currentPuzzle = null;
+
+
+    public Controller(Model model, View view) {
+        this.model = model;
+        this.view = view;
+        this.shop = model.getPlayer() != null && model.getPlayer().getCurrRoom() instanceof Shop;
+    }
+
 
     public void processInput () { // Caleb
 

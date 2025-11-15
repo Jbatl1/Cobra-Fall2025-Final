@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="NEXUS-ESCAPE-DATABASE.db" uuid="c77f2323-37ef-4890-acf3-719f293d65ec">
+    <data-source source="LOCAL" name="NEXUS-ESCAPE-DATABASE.db" uuid="0471bebd-e130-4d6b-85df-5e414f7c1a94">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
