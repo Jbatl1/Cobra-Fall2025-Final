@@ -50,6 +50,8 @@ public class LandingSite extends Room{
         this.isAtLandingSite = atLandingSite;
     }
 
+
+
     // --- Connections ---
 
     public void addLandingSiteConnection(LandingSite site) {

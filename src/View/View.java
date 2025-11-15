@@ -156,6 +156,14 @@ public class View {
         System.out.println("👋 You exit the shop.");
     }
 
+    public void displayNotAtLandingSite() {
+        System.out.println("❗ You can travel at a landing site!");
+    }
+
+    public void displayLandingSiteNotFound(String siteName) {
+        System.out.println("❗ You can't travel to " + siteName + " from here!");
+    }
+
     // ==============================
     // Rest / Healing Output
     // ==============================
@@ -172,6 +180,8 @@ public class View {
         System.out.println("✨ You feel refreshed! +" + amountHealed + " HP restored.");
         System.out.println("Your current health is now: " + currentHealth);
     }
+
+
 
     // ==============================
     // Inventory / Items
