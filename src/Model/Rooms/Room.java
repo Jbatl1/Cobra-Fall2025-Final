@@ -31,7 +31,7 @@ public class Room {
     private HashMap<String, Room> exits;// stores exits (direction → roomNumber mapping)
     private ArrayList<Item> roomItems = new ArrayList<>(); // items present in this room
     private ArrayList<Puzzle> puzzlePresent = new ArrayList<>();
-    private List<Monster> monsters;
+    private List<Monster> monsters = new ArrayList<Monster>();
 
 
     // ==============================
