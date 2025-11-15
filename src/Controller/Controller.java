@@ -39,12 +39,12 @@ public class Controller {
         boolean rest = model.getPlayer().getCurrRoom().isRestRoom();
 
         while (!shop && !fight && !puzzle && !solvePuzzle) {
-            String input = this.view.getInput();
+            String input = this.view.getInput().toUpperCase();
             switch (input) {
 
                 // MOVEMENT----------------------
                 case "N": // move north
-                    x = model.getPlayer().move("N");
+                    x = model.getPlayer().move("NORTH");
                     handleBoundaryPuzzle(model.getPlayer().getCurrRoom());
 
                     if (x == 1) {
@@ -55,12 +55,12 @@ public class Controller {
                     }
                     if (x == -2) {
                         puzzle = true;
-                       //currentPuzzle = model.getPlayer().getCurrRoom().getExits("N").getBoundryPuzzle();
+                       //currentPuzzle = model.getPlayer().getCurrRoom().getExits("N").getBoundaryPuzzle();
                          currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("N", model.getRooms());
                     }
                     break;
                 case "E": // move east
-                    x = model.getPlayer().move("E");
+                    x = model.getPlayer().move("EAST");
                     handleBoundaryPuzzle(model.getPlayer().getCurrRoom());
 
                     if (x == 1) {
@@ -71,12 +71,12 @@ public class Controller {
                     }
                     if (x == -2) {
                         puzzle = true;
-                       // currentPuzzle = model.getPlayer().getCurrRoom().getExits("E").getBoundryPuzzle();
+                       // currentPuzzle = model.getPlayer().getCurrRoom().getExits("E").getBoundaryPuzzle();
                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("E", model.getRooms());
                     }
                     break;
                 case "S": // move south
-                    x = model.getPlayer().move("S");
+                    x = model.getPlayer().move("SOUTH");
                     handleBoundaryPuzzle(model.getPlayer().getCurrRoom());
 
                     if (x == 1) {
@@ -87,12 +87,12 @@ public class Controller {
                     }
                     if (x == -2) {
                         puzzle = true;
-                        //currentPuzzle = model.getPlayer().getCurrRoom().getExits("S").getBoundryPuzzle();
+                        //currentPuzzle = model.getPlayer().getCurrRoom().getExits("S").getBoundaryPuzzle();
                          currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("S", model.getRooms());
                     }
                     break;
                 case "W": // move west
-                    x = model.getPlayer().move("W");
+                    x = model.getPlayer().move("WEAST");
                     handleBoundaryPuzzle(model.getPlayer().getCurrRoom());
 
                     if (x == 1) {
@@ -103,7 +103,7 @@ public class Controller {
                     }
                     if (x == -2) {
                         puzzle = true;
-                      //  currentPuzzle = model.getPlayer().getCurrRoom().getExits("W").getBoundryPuzzle();
+                      //  currentPuzzle = model.getPlayer().getCurrRoom().getExits("W").getBoundaryPuzzle();
                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("W", model.getRooms());
                     }
                     break;
