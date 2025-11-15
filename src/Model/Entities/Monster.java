@@ -62,12 +62,19 @@ public class Monster extends Entity {
         return currentRoom;
     }
 
+    public String getRoomID() {
+        return roomID;
+    }
+
     public String getDescription() {
         return description;
     }
     // Combat
 
 
+    public void setRoomID(String roomID) {
+        this.roomID = roomID;
+    }
 
     public void attackPlayer(Player player) {
         int damage = Math.max(0, attackPower - player.getDefense());
