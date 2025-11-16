@@ -238,6 +238,7 @@ public class View {
         }
     }
 
+
     public void displayItemDropped(int x, String itemName) { //caleb
         switch (x) {
             case 1:
@@ -263,6 +264,14 @@ public class View {
         }
     }
 
+ /*   public void displayExamineItem(Item i) { //caleb
+        if (i != null) {
+            System.out.println(i.getItemDescription());
+        } else {
+            System.out.println("❗ Item not found in inventory.");
+        }
+    }
+*/
     public void displayExamineItem(Item i) { //caleb
         if (i != null) {
             System.out.println(i.getItemDescription());
@@ -270,7 +279,6 @@ public class View {
             System.out.println("❗ Item not found in inventory.");
         }
     }
-
 
     public void displayToolbelt(java.util.List<Item> toolBelt) { //caleb
         System.out.println("🧰 Tool Belt Items:");

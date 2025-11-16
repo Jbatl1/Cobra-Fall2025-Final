@@ -139,9 +139,20 @@ public class Controller {
                     this.view.displayEquipItem(x, s);
                     break;
                 case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
-                    x = this.model.getPlayer().isInInventory(s);
-                    this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
-                    break;
+                  /*  String tri = s.substring(8).trim();
+                    Item found = model.getPlayer().isItemInInventory(tri);
+
+                    if (this.model.getPlayer().isItemInInventory(trim) == null) {
+                        this.view.displayMessage1();
+                    } else {
+                        this.view.displayExamineItem(this.model.getPlayer().isItemInInventory(trim));
+                    }
+                    break;*/
+
+                x = this.model.getPlayer().isInInventory(s);
+                this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
+                break;
+
                 case "TOOL BELT": // opens tool belt
                     this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
                     break;
@@ -339,7 +350,6 @@ public class Controller {
      * Runs the puzzle solving loop for a specific puzzle.
      * Returns true if puzzle solved, false if failed or locked.
 */
-
 
     private boolean runPuzzleLoop(Puzzle puzzle) { //Anita Philip
         view.displayPuzzleQuestion(puzzle);
