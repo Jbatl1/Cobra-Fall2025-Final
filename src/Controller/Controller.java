@@ -3,6 +3,7 @@ package Controller;
 import Model.Entities.Monster;
 import Model.Items.Item;
 import Model.Model;
+import Model.Rooms.CrashSite;
 import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
 import Model.Rooms.Shop;
@@ -107,7 +108,6 @@ public class Controller {
                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("W", model.getRooms());
                     }
                     break;
-
                 case String s when input.matches("^TRAVEL\\s.*$"): // travel to landing site
                     x = this.model.getPlayer().moveToLandingSite(s.substring(7).trim());
                     if (x == 1) {
@@ -195,6 +195,11 @@ public class Controller {
                         this.view.displayShipInv(this.model.getPlayer().getShipStorage());
                     }
                     break;
+                case "CRASH SHIP": // Opens Crash Site Ship Inventory
+                    if (this.model.getPlayer().getCurrRoom() instanceof CrashSite) {
+                        this.view.displayShipInv(((CrashSite) this.model.getPlayer().getCurrRoom()).getShipStorage());
+                    }
+                    break;
 
                 // MONSTER -----------------------
 
@@ -224,6 +229,9 @@ public class Controller {
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
+                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
+                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
+
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
 

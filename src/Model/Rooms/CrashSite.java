@@ -5,41 +5,22 @@ import Model.Items.Item;
 
 import java.util.ArrayList;
 
-public class CrashSite {
-    private Room crashSite;
-    private ArrayList<Item> storage;
+public class CrashSite extends LandingSite{
 
-    public CrashSite() {
-        this.storage=new ArrayList<>();
-    }
+    private ArrayList<Item> shipStorage;
 
-
-    public void storeItems(Item item){
-        storage.add(item);
-        System.out.println(item.getItemName() + "stored");
+    public CrashSite(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop) { // Caleb
+        super(roomID, roomName, roomDescription, roomType, northNavigation, eastNavigation, southNavigation, westNavigation, roomVisited, isRaider, isShop);
+        this.shipStorage = new ArrayList<>();
     }
 
-    public ArrayList<Item> getItems(){
-        return storage;
+    public ArrayList<Item> getShipStorage() { // Caleb
+        return shipStorage;
     }
-    public boolean retrieveItems(String itemName, Player player){
-        for(int i =0;i<storage.size();i++){
-            if(storage.get(i).getItemName().equalsIgnoreCase(itemName)){
-                Item item = storage.remove(i);
-                player.getInventory().add(item);
-                System.out.println("You added " + item.getItemName() + " to the inventory");
-                return true;
-            }
-        }
-        System.out.println("Item not found");
-        return false;
+
+    public void addShipStorageItem(Item item) { // Caleb
+        shipStorage.add(item);
     }
-    public void listItems(){
-        for(int i =0;i<storage.size();i++){
-            System.out.println(storage.get(i).getItemName());
-        }
-    }
-    public Room getCrashSite(){
-        return crashSite;
-    }
+
+
 }

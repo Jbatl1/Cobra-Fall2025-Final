@@ -157,7 +157,7 @@ public class View {
     }
 
     public void displayNotAtLandingSite() {
-        System.out.println("❗ You can travel at a landing site!");
+        System.out.println("❗ You can only travel at a landing site!");
     }
 
     public void displayLandingSiteNotFound(String siteName) {
