@@ -350,16 +350,21 @@ public class Player extends Entity {
     // ==============================
     public int move(String direction) {
         HashMap<String, Room> exits = currRoom.getExits();
-        if (exits.containsKey(direction) && currRoom.getBoundaryPuzzleInDirection(direction, exits) != null) {
-            return -2;
+        Room nextRoom = exits.get(direction);
+
+        if (nextRoom == null) {
+            return -1; // no exit
         }
-        else if(exits.containsKey(direction) && exits.get(direction).getBoundaryPuzzleInDirection(direction, exits) == null) {
-            this.currRoom = currRoom.getExits().get(direction);
-            return 1;
+
+        // Check for boundary puzzle in that direction
+        Puzzle boundaryPuzzle = currRoom.getBoundaryPuzzleInDirection(direction, exits);
+        if (boundaryPuzzle != null && !boundaryPuzzle.isPuzzleIsSolved()) {
+            return -2; // boundary puzzle exists
         }
-        else {
-            return -1;
-        }
+
+        // Normal movement
+        setCurrRoom(nextRoom); // updates prevRoom automatically
+        return 1;
     }
 
     public Room getCurrRoom() {
