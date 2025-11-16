@@ -12,30 +12,21 @@ public  class Item { //Anita Philip
     private String ItemName;
     private String ItemType;
     private String ItemRarity;
-    private int ItemDamage;
-    private int ItemDurability;
-    private int ItemRestoreHP;
     private String ItemDescription;
-    private int ItemUpgrade;
     private String PuzzleID;
     private int quantity;
-
     private List<String> puzzleIDs;        // IDs from DB
     private List<Puzzle> lootPuzzles;     // Actual Puzzle objects
     private int cost;
 
 
-    public Item(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity, int cost) { //Anita Philip
+    public Item(String itemID, String roomID, String itemName, String itemType, String itemRarity, String itemDescription, String puzzleID, int quantity, int cost) { //Anita Philip
         ItemID = itemID;
         RoomID = roomID;
         ItemName = itemName;
         ItemType = itemType;
         ItemRarity = itemRarity;
-        ItemDamage = itemDamage;
-        ItemDurability = itemDurability;
-        ItemRestoreHP = itemRestoreHP;
         ItemDescription = itemDescription;
-        ItemUpgrade = itemUpgrade;
         PuzzleID = puzzleID;
         this.quantity = quantity;
         this.cost = cost;
@@ -46,10 +37,6 @@ public  class Item { //Anita Philip
     public String getRoomID() {return RoomID;}
     public String getItemType() {return ItemType;}
     public String getItemRarity() {return ItemRarity;}
-    public int getItemDamage() {return ItemDamage;}
-    public int getItemDurability() {return ItemDurability;}
-    public int getItemRestoreHP() {return ItemRestoreHP;}
-    public int getItemUpgrade() {return ItemUpgrade;}
     public String getItemDescription() {return ItemDescription;}
     public String getPuzzleID() {return PuzzleID;}
     public int getQuantity() { return quantity; }

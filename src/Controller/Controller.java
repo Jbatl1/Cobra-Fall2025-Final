@@ -136,6 +136,11 @@ public class Controller {
                     x = this.model.getPlayer().equipItemToHands(trim);
                     this.view.displayEquipItem(x, trim);
                     break;
+                case String s when input.matches("^UNEQUIP\\s.*$"): //UnEquip Item
+                    trim = s.substring(8).trim();
+                    x = this.model.getPlayer().unEquipItemFromHands(trim);
+                    this.view.displayUnEquipItem(x, trim);
+                    break;
                 case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
                     x = this.model.getPlayer().isInInventory(s);
                     this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
@@ -250,6 +255,9 @@ public class Controller {
             }
         }
 
+        // ================================
+        //          FIGHT LOOP
+        // ================================
         while (fight) {
 
             if (this.model.getPlayer().getHealth() <= 0) {
@@ -258,11 +266,12 @@ public class Controller {
                 fight = false;
                 break;
             }
-            String input = this.view.getInput();
+            String input = this.view.getInput().toUpperCase();
+            String trim = "";
             switch (input) {
                 case "ATTACK":
-                    this.model.getPlayer().inflictDamage(currentMonster);
-                    this.view.displayPlayerAttack(currentMonster.getName(), this.model.getPlayer().getAttackPower()); // make getter display item damage if one is equipped
+                    x = this.model.getPlayer().inflictDamage(currentMonster);
+                    this.view.displayPlayerAttack(currentMonster.getName(), x);
                     break;
                 case "TOOL BELT": // opens tool belt
                     this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
@@ -271,8 +280,14 @@ public class Controller {
                     this.view.displayInv(this.model.getPlayer().getInventory());
                     break;
                 case String s when input.matches("^EQUIP\\s.*$"): //Equip Item
-                    x = this.model.getPlayer().equipItemToHands(s);
-                    this.view.displayEquipItem(x, s);
+                    trim = s.substring(6).trim();
+                    x = this.model.getPlayer().equipItemToHands(trim);
+                    this.view.displayEquipItem(x, trim);
+                    break;
+                case String s when input.matches("^UNEQUIP\\s.*$"): //UnEquip Item
+                    trim = s.substring(6).trim();
+                    x = this.model.getPlayer().unEquipItemFromHands(trim);
+                    this.view.displayUnEquipItem(x, s);
                     break;
                 case "FLEE":
                     this.view.displayFlee(currentMonster.getName());

@@ -2,6 +2,7 @@ package Main;
 
 import Controller.Controller;
 import Model.Entities.Player;
+import Model.Items.Weapon;
 import Model.LoadRooms;
 import Model.Model;
 import View.View;
@@ -18,7 +19,7 @@ public class Main {
        M = new LoadRooms(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>());
        M.loadRooms();
 
-        Controller controller = new Controller(new Model(new Player(M.getStartRoom(), "Player", 100, 10)), new View());
+        Controller controller = new Controller(new Model(new Player(M.getStartRoom(), "Player", 100, 10, (Weapon) M.getItems().get("ar_rSword"))), new View());
 
         while (true) {
             controller.processInput();

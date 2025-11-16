@@ -5,8 +5,22 @@ public class EnergyWeapon extends Weapon{
     private int maxCharge;
 
 
-    public EnergyWeapon(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity, int damage, int durability, int charge, int maxCharge, int cost) {
-        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemRestoreHP, itemDescription, itemUpgrade, puzzleID, quantity, damage, durability, cost);
+    public EnergyWeapon(
+            String itemID,
+            String roomID,
+            String itemName,
+            String itemType,
+            String itemRarity,
+            int itemDamage,
+            int itemDurability,
+            String itemDescription,
+            String puzzleID,
+            int quantity,
+            int charge,
+            int maxCharge,
+            int cost)
+    {
+        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemDescription, puzzleID, quantity, cost);
         this.charge = charge;
         this.maxCharge = maxCharge;
     }

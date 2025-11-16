@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Model.Items.Consumable;
+import Model.Items.EnergyWeapon;
 import Model.Items.Item;
 import Model.Items.Weapon;
 import Model.Rooms.CrashSite;
@@ -37,7 +39,7 @@ public class Player extends Entity {
     // ==============================
     // Constructor
     // ==============================
-    public Player(Room startingRoom, String name, int health, int attackPower) {
+    public Player(Room startingRoom, String name, int health, int attackPower, Weapon starterItem) {
         super(name, health, attackPower);
         this.inventory = new ArrayList<>();
         this.toolBelt = new ArrayList<>();
@@ -46,6 +48,7 @@ public class Player extends Entity {
         this.narrativeMemory = new ArrayList<>();
         this.shipStorage = new ArrayList<>();
         this.gold = 100; // starting gold
+        this.equippedItem = starterItem;
     }
 
     // ==============================
@@ -113,12 +116,12 @@ public class Player extends Entity {
 
     public int equipItemToHands(String s) {
         int idx = isInInventory(s);
-        System.out.println(idx);
         if (idx < 0) {
             return -1; // item not in inventory
         }
         if (equippedItem == null && this.inventory.get(idx) instanceof Weapon) {
             equippedItem = inventory.get(idx);
+            this.inventory.remove(idx);
             return 1; // success
         }
         return -2; // item is not a weapon and hands are occupied
@@ -136,12 +139,13 @@ public class Player extends Entity {
 
     }
 
-    public int removeItemFromHands(String s) {
+    public int unEquipItemFromHands(String s) {
         if (equippedItem != null && equippedItem.getItemName().equalsIgnoreCase(s)) {
+            addItem(equippedItem);
             equippedItem = null;
             return 1;
         }
-        return 0;
+        return -1;
     }
 
     public int removeItemFromToolBelt(String s) {
@@ -173,7 +177,7 @@ public class Player extends Entity {
 
     private int consumeItem(Item item) {
         if (item.getItemType().equalsIgnoreCase("Consumable")) {
-            int restoreHP = item.getItemRestoreHP();
+            int restoreHP = ((Consumable) item).getHealth();
             this.health += restoreHP;
             if (this.health > 100) {
                 this.health = 100;
@@ -216,7 +220,14 @@ public class Player extends Entity {
     // ==============================
     public int inflictDamage(Monster enemy) {
         if (equippedItem == null) return 0; // no weapon equipped
-        int damage = equippedItem.getItemDamage();
+        int damage = ((Weapon)equippedItem).getDamage();
+        int weaponStatus = ((Weapon) equippedItem).useDurability();
+        if (weaponStatus == -1 && !(equippedItem instanceof EnergyWeapon)) {
+            return -1; // weapon broke
+        }
+        if (weaponStatus == -1 && equippedItem instanceof EnergyWeapon) {
+            return -2; // out of energy
+        }
         enemy.receiveDamage(damage);
         return damage;
     }

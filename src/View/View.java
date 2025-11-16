@@ -61,7 +61,15 @@ public class View {
     }
 
     public void displayPlayerAttack(String monsterName, int damage) { //caleb
-        System.out.println("You attack " + monsterName + " for " + damage + " damage!");
+        if (damage > 0) {
+            System.out.println("You strike " + monsterName + " for " + damage + " damage!");
+        }
+        if (damage == -1) {
+            System.out.println("Your weapon is broken and cannot deal damage!");
+        }
+        if (damage == -2) {
+            System.out.println("Your energy weapons are depleted and cannot deal damage!");
+        }
     }
 
     public void displayMonsterAttack(String monsterName, int damage) { //caleb
@@ -427,6 +435,14 @@ public class View {
         }
         else if (x == -2) {
             System.out.println("❗ " + item + " is not in your tool belt.");
+        }
+    }
+
+    public void displayUnEquipItem(int x, String s) {
+        if (x == 1) {
+            System.out.println("🛠️ You unequipped: " + s);
+        } else if (x == -1) {
+            System.out.println("❗ You don't have " + s + " equipped.");
         }
     }
 }

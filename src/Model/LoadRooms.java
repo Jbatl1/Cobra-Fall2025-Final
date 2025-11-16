@@ -2,7 +2,7 @@ package Model;
 
 import Model.Entities.Monster;
 import Model.Entities.Player;
-import Model.Items.Item;
+import Model.Items.*;
 import Model.Puzzles.Puzzle;
 import Model.Rooms.CrashSite;
 import Model.Rooms.LandingSite;
@@ -138,21 +138,91 @@ public class LoadRooms { //Anita Philip
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM Artifacts;");
         while (rs.next()) {
-            Item item = new Item(
-                    rs.getString("ItemID"),
-                    rs.getString("RoomID"),
-                    rs.getString("ItemName"),
-                    rs.getString("ItemType"),
-                    rs.getString("ItemRarity"),
-                    rs.getInt("ItemDamage"),
-                    rs.getInt("ItemDurability"),
-                    rs.getInt("ItemRestoreHP"),
-                    rs.getString("ItemDescription"),
-                    rs.getInt("ItemUpgrade"),
-                    rs.getString("PuzzleID"),
-                    rs.getInt("Quantity"),
-                    rs.getInt("Cost")
-            );
+            Item item = null;
+            switch (rs.getString("ItemType")) {
+                case "Weapon":
+                    item = new Weapon(
+                            rs.getString("ItemID"),
+                            rs.getString("RoomID"),
+                            rs.getString("ItemName"),
+                            rs.getString("ItemType"),
+                            rs.getString("ItemRarity"),
+                            rs.getInt("ItemDamage"),
+                            rs.getInt("ItemDurability"),
+                            rs.getString("ItemDescription"),
+                            rs.getString("PuzzleID"),
+                            rs.getInt("Quantity"),
+                            rs.getInt("Cost")
+                    );
+                    break;
+                case "Consumable":
+                    item = new Consumable(
+                            rs.getString("ItemID"),
+                            rs.getString("RoomID"),
+                            rs.getString("ItemName"),
+                            rs.getString("ItemType"),
+                            rs.getString("ItemRarity"),
+                            rs.getString("ItemDescription"),
+                            rs.getString("PuzzleID"),
+                            rs.getInt("Quantity"),
+                            rs.getInt("ItemRestoreHP"),
+                            rs.getInt("Cost")
+                    );
+                    break;
+                case "Artifact":
+                    item = new Artifact(
+                            rs.getString("ItemID"),
+                            rs.getString("RoomID"),
+                            rs.getString("ItemName"),
+                            rs.getString("ItemType"),
+                            rs.getString("ItemRarity"),
+                            rs.getString("ItemDescription"),
+                            rs.getString("PuzzleID"),
+                            rs.getInt("Quantity"),
+                            rs.getInt("Cost")
+                    );
+                    break;
+                case "Key Item":
+                    item = new Key(
+                            rs.getString("ItemID"),
+                            rs.getString("RoomID"),
+                            rs.getString("ItemName"),
+                            rs.getString("ItemType"),
+                            rs.getString("ItemRarity"),
+                            rs.getString("ItemDescription"),
+                            rs.getString("PuzzleID"),
+                            rs.getInt("Quantity"),
+                            rs.getInt("Cost")
+                    );
+                    break;
+                case "Material":
+                    item = new Material(
+                            rs.getString("ItemID"),
+                            rs.getString("RoomID"),
+                            rs.getString("ItemName"),
+                            rs.getString("ItemType"),
+                            rs.getString("ItemRarity"),
+                            rs.getString("ItemDescription"),
+                            rs.getInt("ItemUpgrade"),
+                            rs.getString("PuzzleID"),
+                            rs.getInt("Quantity"),
+                            rs.getInt("Cost")
+                    );
+                    break;
+                default:
+                    item = new Item(
+                            rs.getString("ItemID"),
+                            rs.getString("RoomID"),
+                            rs.getString("ItemName"),
+                            rs.getString("ItemType"),
+                            rs.getString("ItemRarity"),
+                            rs.getString("ItemDescription"),
+                            rs.getString("PuzzleID"),
+                            rs.getInt("Quantity"),
+                            rs.getInt("Cost")
+                    );
+            }
+
 
             String puzzleIDs = rs.getString("PuzzleID");
             if (puzzleIDs != null && !puzzleIDs.isEmpty()) {
