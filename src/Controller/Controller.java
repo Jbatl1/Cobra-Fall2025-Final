@@ -440,25 +440,35 @@ public class Controller {
         return puzzle.isPuzzleIsSolved();
     }
 
-    public void handleBoundaryPuzzle(Room room) { //Anita Philip
+    public void handleBoundaryPuzzle(Room room) {
         Puzzle boundaryPuzzle = room.getRoomPuzzle(); // One boundary puzzle per room
 
+        // Only handle unsolved boundary puzzles
         if (boundaryPuzzle != null
                 && !boundaryPuzzle.isPuzzleIsSolved()
                 && boundaryPuzzle.getType().equalsIgnoreCase("boundary")) {
 
-            view.displayBoundaryPuzzlePrompt(boundaryPuzzle); // e.g., "This room has a puzzle (Examine / Ignore)"
+            view.displayBoundaryPuzzlePrompt(boundaryPuzzle); // "This room has a puzzle (Examine / Ignore)"
             String choice = view.getInput();
 
             if (choice.equalsIgnoreCase("EXAMINE")) {
                 boolean solved = runPuzzleLoop(boundaryPuzzle);
+
                 if (!solved) {
+                    // Player failed the puzzle; move back
                     view.displayPuzzleFailed(boundaryPuzzle);
-                    movePlayerToPreviousRoom(); // return player to previous room
+                    movePlayerToPreviousRoom();
                 }
-            } else {
+                // If solved, no need to move player; runPuzzleLoop already handles display
+            }
+            else if (choice.equalsIgnoreCase("IGNORE")) {
+                boundaryPuzzle.solvePuzzle(room, model.getPlayer(), "IGNORE"); // apply penalty
                 view.displayPuzzleIgnored(boundaryPuzzle);
-                movePlayerToPreviousRoom(); // return player to previous room
+                movePlayerToPreviousRoom(); // move player back after ignoring
+            }
+            else {
+                // Optional: handle invalid input
+                view.displayInvalidCommand();
             }
         }
     }

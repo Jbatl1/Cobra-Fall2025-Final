@@ -6,47 +6,35 @@ import Model.Rooms.Room;
 
 public class BoundaryPuzzle extends Puzzle {
 
-    private int puzzleMaxAttempts;
-    private boolean puzzleIsSolved;
-    private boolean puzzleLocked;
-    private int attemptsLeft;
-    private String puzzleSolution;
-
-    public BoundaryPuzzle(String puzzleID, String puzzleQuestion, int puzzleMaxAttempts, String puzzleSolution, Item reward, String roomID, String type, int puzzleMaxAttempts1, boolean puzzleIsSolved, boolean puzzleLocked, int attemptsLeft) {
+    public BoundaryPuzzle(String puzzleID, String puzzleQuestion, int puzzleMaxAttempts,
+                          String puzzleSolution, Item reward, String roomID, String type) {
         super(puzzleID, puzzleQuestion, puzzleMaxAttempts, puzzleSolution, reward, roomID, type);
-        this.puzzleMaxAttempts = puzzleMaxAttempts1;
-        this.puzzleIsSolved = puzzleIsSolved;
-        this.puzzleLocked = puzzleLocked;
-        this.attemptsLeft = attemptsLeft;
     }
-
-    public boolean isPuzzleLocked() {return puzzleLocked;}
 
     @Override
     public int solvePuzzle(Room room, Player player, String userInput) {
-        if (puzzleIsSolved) return 1; // already solved
-        if (puzzleLocked || attemptsLeft <= 0) {
-            puzzleLocked = true;
-            return -1;
-        }
+        // Already solved
+        if (isPuzzleIsSolved()) return 1;
 
-        if (userInput.equalsIgnoreCase("ignore")) {
+        // Puzzle locked
+        if (isPuzzleLocked()) return -1;
+
+        // Player chooses to ignore puzzle
+        if (userInput.equalsIgnoreCase("IGNORE")) {
             player.receiveDamage(20);
+            setPuzzleLocked(true);
             return -1;
         }
 
-        if (userInput.equalsIgnoreCase(puzzleSolution)) {
-            puzzleIsSolved = true;
+        // Correct answer
+        if (userInput.equalsIgnoreCase(getPuzzleSolution())) {
             addLootToInventory(player);
+            setPuzzleSolved(true);
             return 1;
-        } else {
-            attemptsLeft--;
-            if (attemptsLeft <= 0) {
-                puzzleLocked = true;
-                player.receiveDamage(20);
-            }
-            return 0; // incorrect attempt
         }
-    }
 
+        // Incorrect attempt
+        decrementAttempts();
+        return isPuzzleLocked() ? -1 : 0;
+    }
 }
