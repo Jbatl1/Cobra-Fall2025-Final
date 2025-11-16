@@ -69,7 +69,7 @@ public class Puzzle { //Anita Philip
     }
 
 /**
-     * Main puzzle-solving logic.
+     * Main.Main puzzle-solving logic.
      *
      * Return codes:
      *  1 → Solved successfully

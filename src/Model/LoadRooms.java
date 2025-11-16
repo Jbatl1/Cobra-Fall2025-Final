@@ -27,18 +27,6 @@ public class LoadRooms { //Anita Philip
     HashMap<String, Puzzle> normalPuzzles = new HashMap<>();
     HashMap<String, Puzzle> lootPuzzles = new HashMap<>();
 
-   /* public LoadRooms(HashMap<String, Room> roomsInfo, HashMap<String, Puzzle> puzzles, HashMap<String, Item> items, HashMap<String, Player> player1, HashMap<String, Integer> inventory, HashMap<String, Monster> monsters) {
-        this.roomsInfo = roomsInfo;
-        this.puzzles = puzzles;
-        this.items = items;
-        this.player1 = player1;
-        this.inventory = inventory;
-        this.monsters = monsters;
-
-
-    }*/
-
-
     private static final List<String> ROOM_TABLES = Arrays.asList( //Anita Philip
             "Volcanic_Inferno",
             "Survivors_World",
@@ -64,10 +52,11 @@ public class LoadRooms { //Anita Philip
         try (Connection conn = DatabaseConnection.connect()) {
 
             loadAllRooms(conn);
+            loadAllPuzzles(conn);  // load puzzles first
             loadAllItems(conn);
-            loadAllPuzzles(conn);
             assignPuzzlesToRooms(); // Assign after items are loaded
             loadAllMonsters(conn);
+            assignMonstersToRooms(); // <-- Add this call here
             setupRoomExits();
 
             loadAllShops(conn);   // <-- ADD THIS LINE
@@ -213,13 +202,23 @@ public class LoadRooms { //Anita Philip
                     rs.getInt("DEF"),
                     rs.getString("MonsterID"),
                     rs.getString("Ability_Effect"),
-                    dropItem,
+                    rs.getString("RoomID"),
                     rs.getBoolean("isBoss"),
+                    dropItem,
                     rs.getBoolean("isRaider"),
                     room
             );
 
             monsters.put(monster.getMonsterID(), monster);
+        }
+    }
+
+    private void assignMonstersToRooms() {
+        for (Monster m : monsters.values()) {
+            Room r = roomsInfo.get(m.getRoomID());
+            if (r != null) {
+                r.addMonster(m);  // <-- Use your new method
+            }
         }
     }
 
@@ -294,6 +293,7 @@ public class LoadRooms { //Anita Philip
         }
     }
 
+
     public HashMap<String, Room> getRoomsInfo() {
         return roomsInfo;
     }
@@ -315,4 +315,5 @@ public class LoadRooms { //Anita Philip
     public Room getStartRoom() {
         return roomsInfo.get("SW1");
     }
+    //public HashMap<String, Monster> getMonstersInfo() {return monsters;}
 }
