@@ -108,6 +108,18 @@ public class Controller {
                     }
                     break;
 
+                case String s when input.matches("^TRAVEL\\s.*$"): // travel to landing site
+                    x = this.model.getPlayer().moveToLandingSite(s.substring(7).trim());
+                    if (x == 1) {
+                        view.displayRoomEntry(model.getPlayer().getCurrRoom());
+                    } else if (x == -1) {
+                        view.displayLandingSiteNotFound(s.substring(7).trim());
+                    }
+                    else if (x == -2) {
+                        view.displayNotAtLandingSite();
+                    }
+                    break;
+
 
                 // ITEMS---------------------
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item //Anita Philip lines 104 - 146

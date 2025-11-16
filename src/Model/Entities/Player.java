@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import Model.Items.Item;
+import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
 import Model.Entities.Monster;
 import Model.Puzzles.Puzzle;
@@ -94,17 +95,19 @@ public class Player extends Entity {
     // ==============================
     // Move to a Different Landing Site
     // ==============================
-//    public int moveToLandingSite(String landingSite) {
-//        if (!currRoom.getRoomName().equalsIgnoreCase("Landing site")) {
-//            return -2;
-//        }
-//        Room target = Room.getRoomByName(landingSite);
-//        if (target == null || !target.getRoomName().equalsIgnoreCase("Landing site")) {
-//            return -1;
-//        }
-//        currRoom = target;
-//        return 1;
-//    }
+    public int moveToLandingSite(String landingSite) {
+        if (!currRoom.getRoomName().equalsIgnoreCase("Landing site") || !currRoom.getRoomType().equalsIgnoreCase("Crash site")) {
+            return -2; // not currently at a landing site
+        }
+        ArrayList<LandingSite> connections = new ArrayList<>(((LandingSite) currRoom).getLandingSiteConnections().values());
+        for (LandingSite l : connections) {
+            if (l.getLandingSiteName().equalsIgnoreCase(landingSite)) {
+                currRoom = l;
+                return 1; // success
+            }
+        }
+        return -1; // landing site does not exist
+    }
 
     // ==============================
     // Inventory / ToolBelt Management
