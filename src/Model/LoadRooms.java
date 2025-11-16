@@ -202,8 +202,9 @@ public class LoadRooms { //Anita Philip
                     rs.getInt("DEF"),
                     rs.getString("MonsterID"),
                     rs.getString("Ability_Effect"),
-                    dropItem,
+                    rs.getString("RoomID"),
                     rs.getBoolean("isBoss"),
+                    dropItem,
                     rs.getBoolean("isRaider"),
                     room
             );

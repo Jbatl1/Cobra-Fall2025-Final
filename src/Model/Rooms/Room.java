@@ -159,21 +159,6 @@ public class Room {
             return null;
         }
 
-
-/*    public Monster getMonsters(Room room) {
-
-        Main.M.getMonsters().values();
-
-        for(Monster m :  Main.M.getMonsters().values()){
-            if (m.getRoomID().equals(room.getRoomID())){
-                return m;
-
-            }
-        }
-        return null;
-
-    }*/
-
     public String getMonsters1(Room room) {
 
         for (Monster m : Main.M.getMonsters().values()) { // monsters should return
@@ -201,12 +186,15 @@ public class Room {
 
     }
 
-
     public List<String> getMonsterNames() {
         List<String> names = new ArrayList<>();
-        for (Monster m : monsters) {
-            names.add(m.getName());
+
+        for (Monster m : Main.M.getMonsters().values()) {
+            if (this.roomID.equals(m.getRoomID())) {
+                names.add(m.getName());
+            }
         }
+
         return names;
     }
 
@@ -222,13 +210,14 @@ public class Room {
         return -1; // not found
     }
 
-    public String monsterInRoom(){
+    public String monsterInRoom() {
 
         for (Monster m : monsters) { // monsters should return
             return m.getName();
         }
         return null;
     }
+
     public void removeMonster(Monster monster) {
         if (monster == null || monsters == null) return;
         monsters.remove(monster);

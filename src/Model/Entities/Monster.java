@@ -18,11 +18,37 @@ public class Monster extends Entity {
 
 
 
+    public Monster(String name, int health, int attackPower, int defense,
+                   String monsterID, String abilityEffect, String roomID,
+                   boolean isBoss, Item dropItem, boolean isRaider, Room currentRoom) {
+
+        super(name, health, attackPower);
+        this.monsterID = monsterID;
+        this.abilityEffect = abilityEffect;
+        this.defense = defense;
+        this.roomID = roomID;         // from DB
+        this.isBoss = isBoss;
+        this.dropItem = dropItem;
+        this.isRaider = isRaider;
+        this.currentRoom = currentRoom;  // actual Room object
+    }
+
+   /* public Monster(String name, int health, int attackPower, String monsterID, String abilityEffect, String roomID, String description, boolean isBoss, Item dropItem, boolean isRaider, Room currentRoom) {
+        super(name, health, attackPower);
+        this.monsterID = monsterID;
+        this.abilityEffect = abilityEffect;
+        this.roomID = roomID;
+        this.description = description;
+        this.isBoss = isBoss;
+        this.dropItem = dropItem;
+        this.isRaider = isRaider;
+        this.currentRoom = currentRoom;
+    }
+
     // Constructor
     public Monster(String name, int health, int attackPower, int defense,
                    String monsterID, String abilityEffect, Item dropItem,
                    boolean isBoss, boolean isRaider, Room currentRoom) {
-
         // Call the 3-parameter Entity constructor
         super(name, health, attackPower);
 
@@ -35,7 +61,7 @@ public class Monster extends Entity {
         this.isBoss = isBoss;
         this.isRaider = isRaider;
         this.currentRoom = currentRoom;
-    }
+    }*/
 
     // Getters / Setters
     public String getMonsterID() {
