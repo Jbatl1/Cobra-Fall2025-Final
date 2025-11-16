@@ -119,21 +119,21 @@ public class View {
 
         List<String> monsterNames = room.getMonsterNames();
         if (monsterNames.isEmpty()) {
-            System.out.println("");
+
         } else {
             System.out.println("Monsters here: " + monsterNames);
         }
 
         List<String> puzzleQuestions = room.getPuzzleNames();
         if (puzzleQuestions.isEmpty()) {
-            System.out.println("");
+
         } else {
             System.out.println("MYSTERY ITEM: (" + puzzleQuestions + ") \n");
         }
 
         List<String> itemNames = room.getItemPresent();
         if (itemNames.isEmpty()) {
-            System.out.println("");
+
         } else {
             System.out.println("Items here: " + itemNames);
         }
