@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Model.Items.Item;
+import Model.Items.Weapon;
+import Model.Rooms.CrashSite;
 import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
 import Model.Puzzles.Puzzle;
@@ -139,7 +141,8 @@ public class Player extends Entity {
 
     public int equipItemToHands(String s) {
         int idx = isInInventory(s);
-        if (idx >= 0) {
+
+        if (idx >= 0 && (equippedItem == null || this.inventory.get(idx) instanceof Weapon)) {
             equippedItem = inventory.get(idx);
             return 1; // success
         }
@@ -322,6 +325,59 @@ public class Player extends Entity {
         if (this.health > 100) {
             this.health = 100;
         }
+    }
+
+    public int storeItemInShip(String item) {
+        if (!(this.currRoom instanceof LandingSite)) return -3; // not at landing site
+        int idx = isInInventory(item);
+        if (idx >= 0) {
+            if (shipStorage.size() >= SHIP_CAPACITY) {
+                return -2; // ship storage full
+            }
+            Item itemToStore = inventory.remove(idx);
+            shipStorage.add(itemToStore);
+            return 1; // success
+        }
+        return -1; // item not in inventory
+    }
+
+    public int storeItemInCrashedShip(String item) {
+        if (!(this.currRoom instanceof CrashSite)) return -3; // not at crash site
+        int idx = isInInventory(item);
+        if (idx >= 0) {
+            Item itemToStore = inventory.remove(idx);
+            ((CrashSite) this.currRoom).addShipStorageItem(itemToStore);
+            return 1; // success
+        }
+        return -1; // item not in inventory
+
+    }
+
+    public int getFromCrashedShip(String item) { // Caleb
+        if (!(this.currRoom instanceof CrashSite)) return -2; // not at crash site
+        ArrayList<Item> crashStorage = ((CrashSite) this.currRoom).getShipStorage();
+        if (crashStorage.isEmpty()) return -3; // crash ship storage empty
+        for (int i = 0; i < crashStorage.size(); i++) {
+            if (crashStorage.get(i).getItemName().equalsIgnoreCase(item)) {
+                Item itemToRetrieve = crashStorage.remove(i);
+                inventory.add(itemToRetrieve);
+                return 1; // success
+            }
+        }
+        return -1; // item not in crash ship storage
+    }
+
+    public int getFromShip(String item) { // Caleb
+        if (!(this.currRoom instanceof LandingSite)) return -2; // not at landing site
+        if (shipStorage.isEmpty()) return -3; // ship storage empty
+        for (int i = 0; i < shipStorage.size(); i++) {
+            if (shipStorage.get(i).getItemName().equalsIgnoreCase(item)) {
+                Item itemToRetrieve = shipStorage.remove(i);
+                inventory.add(itemToRetrieve);
+                return 1; // success
+            }
+        }
+        return -1; // item not in ship storage
     }
 }
 ///need a arraylist with a ship capacity of 20 items, we going to need a method in the player class to move to a different landing site which will take in a string called landingsite, its going to check if they current room is a landingsite, we also need to check if its an existing landingsite, if it exist update player room to the new landingsite, if its false return -1, if true return 1, if not in landingsite from the start return -2.
