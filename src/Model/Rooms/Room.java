@@ -204,9 +204,9 @@ public class Room {
     public List<String> getPuzzleNames() {
         List<String> puzzleNames = new ArrayList<>();
 
-        for (Puzzle p : Main.M.getPuzzles().values()) {
+        for (Puzzle p : Main.M.getAllPuzzles().values()) { // <--- use getAllPuzzles()
             if (this.roomID.equals(p.getRoomID())) {
-                if(p.getType().equalsIgnoreCase("Normal") || p.getType().equalsIgnoreCase("Loot")){
+                if (p.getType().equalsIgnoreCase("Normal") || p.getType().equalsIgnoreCase("Loot")) {
                     puzzleNames.add(p.getPuzzleQuestion());
                 }
             }
@@ -214,7 +214,7 @@ public class Room {
         return puzzleNames;
     }
 
-    public List<String> getItemPresent() {
+        public List<String> getItemPresent() {
         List<String> itemNames = new ArrayList<>();
 
         for (Item i : Main.M.getItems().values()) {
