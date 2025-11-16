@@ -193,7 +193,6 @@ public class Room {
 
     public List<String> getMonsterNames() {
         List<String> names = new ArrayList<>();
-
         for (Monster m : Main.M.getMonsters().values()) {
             if (this.roomID.equals(m.getRoomID())) {
                 names.add(m.getName());
