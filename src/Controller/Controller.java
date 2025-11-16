@@ -245,10 +245,10 @@ public class Controller {
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
-                   System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
-                  System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
-                  System.out.println("-------------------");
-                  System.out.println(model.getPlayer().getCurrRoom().isShop());
+//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
+//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
+//                    System.out.println("-------------------");
+//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
 
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
@@ -440,8 +440,8 @@ public class Controller {
         return puzzle.isPuzzleIsSolved();
     }
 
-    public void handleBoundaryPuzzle(Room room) {
-        Puzzle boundaryPuzzle = room.getRoomPuzzle();
+    public void handleBoundaryPuzzle(Room room) { //Anita Philip
+        Puzzle boundaryPuzzle = room.getRoomPuzzle(); // One boundary puzzle per room
 
         if (boundaryPuzzle != null
                 && !boundaryPuzzle.isPuzzleIsSolved()
@@ -453,10 +453,10 @@ public class Controller {
             if (choice.equalsIgnoreCase("EXAMINE")) {
                 boolean solved = runPuzzleLoop(boundaryPuzzle);
                 if (!solved) {
-                    // Failed the puzzle → return to previous room
-                    movePlayerToPreviousRoom();
+                    view.displayPuzzleFailed(boundaryPuzzle);
+                    movePlayerToPreviousRoom(); // return player to previous room
                 }
-            } else { // IGNORED
+            } else {
                 view.displayPuzzleIgnored(boundaryPuzzle);
                 movePlayerToPreviousRoom(); // return player to previous room
             }
