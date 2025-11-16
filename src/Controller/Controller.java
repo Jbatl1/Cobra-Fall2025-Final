@@ -59,7 +59,6 @@ public class Controller {
                     }
                     if (x == -2) {
                         puzzle = true;
-                       //currentPuzzle = model.getPlayer().getCurrRoom().getExits("N").getBoundaryPuzzle();
                          currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("N", model.getRooms());
                     }
                     break;
@@ -75,7 +74,6 @@ public class Controller {
                     }
                     if (x == -2) {
                         puzzle = true;
-                       // currentPuzzle = model.getPlayer().getCurrRoom().getExits("E").getBoundaryPuzzle();
                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("E", model.getRooms());
                     }
                     break;
@@ -91,8 +89,7 @@ public class Controller {
                     }
                     if (x == -2) {
                         puzzle = true;
-                        //currentPuzzle = model.getPlayer().getCurrRoom().getExits("S").getBoundaryPuzzle();
-                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("S", model.getRooms());
+                        currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("S", model.getRooms());
                     }
                     break;
                 case "W": // move west
@@ -398,6 +395,7 @@ public class Controller {
         }
         return relevant;  //Only returns puzzles attached to this item in the current room.
     }
+
 
 /*
      * Runs the puzzle solving loop for a specific puzzle.

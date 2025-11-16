@@ -129,7 +129,7 @@ public class Room {
         Room targetRoom = roomsMap.get(targetRoomID);
         if (targetRoom == null) return null;
 
-        return targetRoom.getRoomPuzzle();  // could be null
+        return targetRoom.getRoomPuzzle();  // could be null,
     }
 
 

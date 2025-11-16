@@ -144,7 +144,7 @@ public class View {
         if (puzzleQuestions.isEmpty()) {
 
         } else {
-            System.out.println("MYSTERY ITEM: (" + puzzleQuestions + ") \n");
+            System.out.println("LOOT BOX: (EXAMINE PUZZLE TO SEE YOUR CHALLENGE ) \n");
         }
 
         List<String> itemNames = room.getItemPresent();
