@@ -28,6 +28,14 @@ public class View {
         System.out.println(msg);
     }
 
+    public void displayWelcome(){
+        System.out.println("WELCOME TO NEXUS ESCAPE! (N,E,S,W)" + '\n');
+    }
+
+    public void pointerForInput(){
+        System.out.print("\n> ");
+    }
+
     public void displayInvalidCommand() { //caleb
         System.out.println("❗ Invalid command. Please try again.");
     }
@@ -220,6 +228,7 @@ public class View {
     public void displayItemNotFound(Item item ){
         System.out.println("Sorry could not find item");
     }
+
     public void displayItemPickup(int x, String itemName) { //caleb
         switch (x) {
             case 1:
@@ -228,6 +237,14 @@ public class View {
             case -1:
                 System.out.println("❗ You can't pick up " + itemName + ". It's not here.");
                 break;
+        }
+    }
+
+    public void displayItemPickup(Item item, String input) {
+        if (item != null) {
+            System.out.println("📦 You picked up: " + item.getItemName());
+        } else {
+            System.out.println("❗ You can't pick up " + input + ". It's not here.");
         }
     }
 
@@ -263,6 +280,7 @@ public class View {
             System.out.println("❗ Item not found in inventory.");
         }
     }
+
 
     public void displayToolbelt(java.util.List<Item> toolBelt) { //caleb
         System.out.println("🧰 Tool Belt Items:");

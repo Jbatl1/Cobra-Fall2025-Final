@@ -1,47 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="NEXUS-ESCAPE-DATABASE.db" uuid="0471bebd-e130-4d6b-85df-5e414f7c1a94">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/Driver/NEXUS-ESCAPE-DATABASE.db</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="NEXUS-ESCAPE-DATABASE.db [2]" uuid="67a9d60d-9e48-46c2-bb30-f1897ca22e69">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/Driver/NEXUS-ESCAPE-DATABASE.db</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="NEXUS-ESCAPE-DATABASE.db [3]" uuid="df3f87a2-3473-4d4e-9c63-170c2b89af3b">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/Driver/NEXUS-ESCAPE-DATABASE.db</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="NEXUS-ESCAPE-DATABASE.db [4]" uuid="7e2c8950-96be-43e8-be4f-71e7f1ed8481">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/Driver/NEXUS-ESCAPE-DATABASE.db</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="NEXUS-ESCAPE-DATABASE.db [5]" uuid="13d7fcc8-dafb-467a-a9e2-29a9cbd63e10">
+    <data-source source="LOCAL" name="NEXUS-ESCAPE-DATABASE.db" uuid="2d56fd99-3f8b-4e44-94b1-eb5f5e6d4119">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>

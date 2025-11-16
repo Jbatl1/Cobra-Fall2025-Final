@@ -37,9 +37,12 @@ public class Controller {
 
         int x;
         boolean rest = model.getPlayer().getCurrRoom().isRestRoom();
+        view.displayWelcome();
 
         while (!shop && !fight && !puzzle && !solvePuzzle) {
+            view.pointerForInput();
             String input = this.view.getInput().toUpperCase();
+
             switch (input) {
 
                 // MOVEMENT----------------------
@@ -177,6 +180,13 @@ public class Controller {
                 case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
                     x = this.model.getPlayer().isInInventory(s);
                     this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
+
+                    if (x != -1) {
+                        this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
+                    } else {
+                        this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
+                    }
+
                     break;
                 case "TOOL BELT": // opens tool belt
                     this.view.displayToolbelt(this.model.getPlayer().getToolBelt());

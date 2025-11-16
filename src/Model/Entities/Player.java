@@ -186,8 +186,10 @@ public class Player extends Entity {
         return 0;
     }
 
+
     public int destroyItem(String s) {
         int idx = isInInventory(s);
+
         if (idx >= 0) {
             inventory.remove(idx);
             return 1;
