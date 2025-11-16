@@ -40,6 +40,7 @@ public class Controller {
 
         while (!shop && !fight && !puzzle && !solvePuzzle) {
             String input = this.view.getInput().toUpperCase();
+            String trim = "";
             switch (input) {
 
                 // MOVEMENT----------------------
@@ -125,47 +126,7 @@ public class Controller {
                     x = this.model.getPlayer().pickupItem(s.substring(7).trim());
                     view.displayItemPickup(x, s);
                     String itemNameToPickup = input.substring(7).trim();
-                    Item targetItem = model.findItemInCurrentRoom(itemNameToPickup);
-
-                    if (targetItem == null) {
-                        view.displayItemNotFound(targetItem);
-                        break;
-                    }
-
-                    // Get puzzles for this item in the current room
-                    List<Puzzle> puzzlesInThisRoom = getItemPuzzlesForCurrentRoom(targetItem);
-                    boolean blocked = false;
-
-                    for (Puzzle p : puzzlesInThisRoom) {
-                        if (!p.isPuzzleIsSolved()) {
-                            view.displayPuzzleQuestion(p);
-                            String choice = view.getInput();
-
-                            if (choice.equalsIgnoreCase("EXAMINE")) {
-                                boolean solved = runPuzzleLoop(p);
-                                if (!solved) {
-                                    view.displayPuzzleFailed(p);
-                                    view.displayPuzzleBlockedPickup(targetItem);
-                                    blocked = true;
-                                    break;
-                                }
-                            } else { // IGNORE
-                                view.displayPuzzleIgnored(p);
-                                view.displayPuzzleBlockedPickup(targetItem);
-                                blocked = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    // If not blocked, allow pickup
-                    if (!blocked) {
-                        model.getPlayer().pickupItem(targetItem.getItemName());
-                        model.getPlayer().getCurrRoom().getRoomItems().remove(targetItem); // Remove from room inventory
-                        view.displayItemPickup(x,targetItem.getItemName());
-                    }
                     break;
-
                 case String s when input.matches("^DROP\\s.*$"): // drop item
                     x = this.model.getPlayer().dropItem(s.substring(5).trim());
                     this.view.displayItemDropped(x, s);
@@ -194,10 +155,30 @@ public class Controller {
                         this.view.displayShipInv(this.model.getPlayer().getShipStorage());
                     }
                     break;
-                case "CRASH SHIP": // Opens Crash Site Ship Inventory
+                case "CRASHED SHIP": // Opens Crash Site Ship Inventory
                     if (this.model.getPlayer().getCurrRoom() instanceof CrashSite) {
                         this.view.displayShipInv(((CrashSite) this.model.getPlayer().getCurrRoom()).getShipStorage());
                     }
+                    break;
+                case String s when input.matches("GET.*?CRASHED_SHIP"): ;
+                    trim = s.substring(4, s.length() - 12).trim();
+                    x = this.model.getPlayer().getFromCrashedShip(trim);
+                    this.view.displayGetFromCrashedShip(x, trim);
+                    break;
+                case String s when input.matches("GET.*?SHIP"):
+                    trim = s.substring(4, s.length() - 4).trim();
+                    x = this.model.getPlayer().getFromShip(trim);
+                    this.view.displayGetFromShip(x, trim);
+                    break;
+                case String s when input.matches("STORE.*?CRASHED_SHIP"): ;
+                    trim = s.substring(6, s.length() - 12).trim();
+                    x = this.model.getPlayer().storeItemInCrashedShip(trim);
+                    this.view.displayStoreInCrashedShip(x, trim);
+                    break;
+                case String s when input.matches("STORE.*?SHIP"):
+                    trim = s.substring(6, s.length() - 4).trim();
+                    x = this.model.getPlayer().storeItemInShip(trim);
+                    this.view.displayStoreInShip(x, trim);
                     break;
 
                 // MONSTER -----------------------

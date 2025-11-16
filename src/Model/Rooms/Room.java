@@ -114,7 +114,7 @@ public class Room {
     } //fix
 
     public boolean isRestRoom(){
-        if (this.roomType.equalsIgnoreCase("Rest")){
+        if (this.roomType != null && this.roomType.equalsIgnoreCase("Rest")){
             return true;
         }
         return false;
