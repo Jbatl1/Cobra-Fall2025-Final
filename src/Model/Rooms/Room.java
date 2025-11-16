@@ -1,15 +1,19 @@
 package Model.Rooms;
 
-import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import Main.Main;
+import Model.DatabaseConnection;
 import Model.Entities.Monster;
 import Model.Items.Item;
+import Model.LoadRooms;
 import Model.Puzzles.Puzzle;
 import Model.Entities.Player;
 import Model.Puzzles.BoundaryPuzzle;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 //items --> roomItems
 //getName() --> getItemName
@@ -78,12 +82,7 @@ public class Room {
         return roomType;
     }
 
-    public boolean isRestRoom(){
-        if (this.roomType.equalsIgnoreCase("Rest")){
-            return true;
-        }
-        return false;
-    }
+    public Puzzle getRoomPuzzle() {return roomPuzzle;}
 
     public String getNorthNavigation() {
         return northNavigation;
@@ -105,16 +104,20 @@ public class Room {
         return roomVisited;
     }
 
-    public ArrayList<Puzzle> getPuzzlePresent() {
-        return puzzlePresent;
-    }
+
+
+
+
 
     public ArrayList<Item> getRoomItems() {
         return roomItems;
-    }
+    } //fix
 
-    public List<Monster> getMonsters() {
-        return monsters;
+    public boolean isRestRoom(){
+        if (this.roomType.equalsIgnoreCase("Rest")){
+            return true;
+        }
+        return false;
     }
 
     public Puzzle getBoundaryPuzzleInDirection(String direction, HashMap<String, Room> roomsMap) {
@@ -138,16 +141,12 @@ public class Room {
         public HashMap<String, Room> getExits () {
             return exits;
         }
-/*
-        public void addRoomExit (String direction, Room room){
-            exits.put(direction, room.getRoomID());   //In LoadRooms the exits have been added to correspond with the navigation for each room
-        }*/
 
-    public void addRoomExit(String direction, Room room) {
+             public void addRoomExit(String direction, Room room) {
         if (room != null) {
             exits.put(direction.toUpperCase(), room);
         }
-    }
+        }
 
         public boolean isRaider () {
             return isRaider;
@@ -171,23 +170,92 @@ public class Room {
             return null;
         }
 
+    public String getMonsters1(Room room) {
 
+        for (Monster m : Main.M.getMonsters().values()) { // monsters should return
+            if (m.getRoomID().equalsIgnoreCase(room.getRoomID())){
+                return m.getName();
+            }
+        }
+        return null;
+    }
 
-    public Puzzle getRoomPuzzle() {
-        return roomPuzzle;
+    public List<Monster> getMonsters() {
+        return monsters;
+    }
+
+    public void addMonster(Monster m) {
+        if (m == null) return;
+
+        // Avoid duplicates
+        if (!monsters.contains(m)) {
+            monsters.add(m);
+
+            // Set the monster's roomID to this room
+           // m.setRoomID(this.roomID);
+        }
+
+    }
+
+    public ArrayList<Puzzle> getPuzzlePresent() {
+        return puzzlePresent;
+    }
+
+    public List<String> getMonsterNames() {
+        List<String> names = new ArrayList<>();
+        for (Monster m : Main.M.getMonsters().values()) {
+            if (this.roomID.equals(m.getRoomID())) {
+                names.add(m.getName());
+            }
+        }
+        return names;
+    }
+
+    public List<String> getPuzzleNames() {
+        List<String> puzzleNames = new ArrayList<>();
+
+        for (Puzzle p : Main.M.getPuzzles().values()) {
+            if (this.roomID.equals(p.getRoomID())) {
+                if(p.getType().equalsIgnoreCase("Normal") || p.getType().equalsIgnoreCase("Loot")){
+                    puzzleNames.add(p.getPuzzleQuestion());
+                }
+            }
+        }
+        return puzzleNames;
+    }
+
+    public List<String> getItemPresent() {
+        List<String> itemNames = new ArrayList<>();
+
+        for (Item i : Main.M.getItems().values()) {
+            if (this.roomID.equals(i.getRoomID())) {
+                itemNames.add(i.getItemName());
+            }
+        }
+        return itemNames;
     }
 
 
     public int getMonsterByName(String name) {
         if (name == null || monsters == null) return 0;
 
-        for (Monster m : monsters) {
+        for (Monster m : monsters) { // monsters should return
             if (m.getName().equalsIgnoreCase(name)) {
                 return 1;   // yes monster was found
             }
         }
 
         return -1; // not found
+    }
+
+
+
+    public String monsterInRoom() {
+
+        for (Monster m : monsters) { // monsters should return
+            return m.getName();
+        }
+        return null;
     }
 
     public void removeMonster(Monster monster) {

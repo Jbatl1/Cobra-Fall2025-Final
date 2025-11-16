@@ -27,18 +27,6 @@ public class LoadRooms { //Anita Philip
     HashMap<String, Puzzle> normalPuzzles = new HashMap<>();
     HashMap<String, Puzzle> lootPuzzles = new HashMap<>();
 
-   /* public LoadRooms(HashMap<String, Room> roomsInfo, HashMap<String, Puzzle> puzzles, HashMap<String, Item> items, HashMap<String, Player> player1, HashMap<String, Integer> inventory, HashMap<String, Monster> monsters) {
-        this.roomsInfo = roomsInfo;
-        this.puzzles = puzzles;
-        this.items = items;
-        this.player1 = player1;
-        this.inventory = inventory;
-        this.monsters = monsters;
-
-
-    }*/
-
-
     private static final List<String> ROOM_TABLES = Arrays.asList( //Anita Philip
             "Volcanic_Inferno",
             "Survivors_World",
@@ -64,13 +52,13 @@ public class LoadRooms { //Anita Philip
         try (Connection conn = DatabaseConnection.connect()) {
 
             loadAllRooms(conn);
+            loadAllPuzzles(conn);  // load puzzles first
             loadAllItems(conn);
-            loadAllPuzzles(conn);
             assignPuzzlesToRooms(); // Assign after items are loaded
             loadAllMonsters(conn);
+            assignMonstersToRooms(); // <-- Add this call here
             setupRoomExits();
 
-            loadAllShops(conn);   // <-- ADD THIS LINE
 
         } catch (Exception e) {
             System.out.println("Room loading failed: " + e.getMessage());
@@ -254,13 +242,23 @@ public class LoadRooms { //Anita Philip
                     rs.getInt("DEF"),
                     rs.getString("MonsterID"),
                     rs.getString("Ability_Effect"),
-                    dropItem,
+                    rs.getString("RoomID"),
                     rs.getBoolean("isBoss"),
+                    dropItem,
                     rs.getBoolean("isRaider"),
                     room
             );
 
             monsters.put(monster.getMonsterID(), monster);
+        }
+    }
+
+    private void assignMonstersToRooms() {
+        for (Monster m : monsters.values()) {
+            Room r = roomsInfo.get(m.getRoomID());
+            if (r != null) {
+                r.addMonster(m);  // <-- Use your new method
+            }
         }
     }
 
@@ -286,39 +284,6 @@ public class LoadRooms { //Anita Philip
                 room.addRoomExit("WEST", roomsInfo.get(westID));
         }
     }
-    // ------------------ SHOP LOADING ------------------
-    // ------------------ SHOP LOADING (MATCHES YOUR CONSTRUCTOR) ------------------
-    private void loadAllShops(Connection conn) throws Exception {
-        // Map of item -> cost for all shops
-        HashMap<Item, Integer> universalShopStock = new HashMap<>();
-
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Shop;");
-
-        while (rs.next()) {
-            String itemID = rs.getString("Item_ID");
-            int cost = rs.getInt("Cost");
-            Item stockItem = items.get(itemID);
-
-            if (stockItem != null) {
-                universalShopStock.put(stockItem, cost);
-            } else {
-                System.out.println("WARNING: Shop table references invalid item: " + itemID);
-            }
-        }
-
-        if (universalShopStock.isEmpty()) {
-            System.out.println("WARNING: Shop table is empty — no shop items loaded!");
-            return;
-        }
-
-        // Assign same stock to all rooms marked as shops
-        for (Room room : roomsInfo.values()) {
-            if (room.isShop()) {
-                room.setStock(new HashMap<>(universalShopStock));
-            }
-        }
-    }
 
     public HashMap<String, Room> getRoomsInfo() {
         return roomsInfo;
@@ -341,4 +306,5 @@ public class LoadRooms { //Anita Philip
     public Room getStartRoom() {
         return roomsInfo.get("SW1");
     }
+    //public HashMap<String, Monster> getMonstersInfo() {return monsters;}
 }

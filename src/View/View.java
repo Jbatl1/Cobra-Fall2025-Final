@@ -7,6 +7,7 @@ import Model.Rooms.Room;
 import Model.Items.Item;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.List;
 import java.util.Scanner;
 
 public class View {
@@ -114,6 +115,32 @@ public class View {
     public void displayExploreRoom(Room room) {
         System.out.println("🔍 Exploring " + room.getRoomName() + ":");
         System.out.println(room.getRoomDescription());
+        //System.out.println(room.getMonsters1(room));
+
+        List<String> monsterNames = room.getMonsterNames();
+        if (monsterNames.isEmpty()) {
+            System.out.println("");
+        } else {
+            System.out.println("Monsters here: " + monsterNames);
+        }
+
+        List<String> puzzleQuestions = room.getPuzzleNames();
+        if (puzzleQuestions.isEmpty()) {
+            System.out.println("");
+        } else {
+            System.out.println("MYSTERY ITEM: (" + puzzleQuestions + ") \n");
+        }
+
+        List<String> itemNames = room.getItemPresent();
+        if (itemNames.isEmpty()) {
+            System.out.println("");
+        } else {
+            System.out.println("Items here: " + itemNames);
+        }
+
+
+
+        printSeparator();
     }
 
     public void displayOpenShop() { //caleb
