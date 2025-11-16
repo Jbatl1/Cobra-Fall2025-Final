@@ -6,12 +6,12 @@ import Model.Model;
 import Model.Rooms.CrashSite;
 import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
-import Model.Rooms.Shop;
 import View.View;
 import Model.Puzzles.Puzzle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Controller {
     private Model model;
@@ -30,7 +30,6 @@ public class Controller {
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
-        this.shop = model.getPlayer() != null && model.getPlayer().getCurrRoom() instanceof Shop;
     }
 
 
@@ -231,6 +230,8 @@ public class Controller {
                 case "EXPLORE": // explore room
                     System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
                     System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
+                    System.out.println("-------------------");
+                    System.out.println(model.getPlayer().getCurrRoom().isShop());
 
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
@@ -240,7 +241,7 @@ public class Controller {
 
                     break;
                 case "SHOP": // opens shop and displays items for sale
-                    if (this.model.getPlayer().getCurrRoom() instanceof Shop) {
+                    if (this.model.getPlayer().getCurrRoom().isShop()) {
                         this.view.displayOpenShop();
                         shop = true;
                     }
@@ -304,7 +305,7 @@ public class Controller {
             String input = this.view.getInput();
             switch (input) {
                 case "VIEW ITEMS": // displays items for sale
-                    ArrayList<Item> stock = ((Shop)(this.model.getPlayer().getCurrRoom())).getStock();
+                    Map<Item, Integer> stock = (this.model.getPlayer().getCurrRoom()).getStock();
                     this.view.displayStock(stock);
                     break;
                 case String s when input.matches("^BUY\\s.*$"): // buy item

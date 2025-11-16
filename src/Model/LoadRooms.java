@@ -7,13 +7,11 @@ import Model.Puzzles.Puzzle;
 import Model.Rooms.CrashSite;
 import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
-import Model.Rooms.Shop;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
-import java.util.Map;
 
 public class LoadRooms { //Anita Philip
 
@@ -163,7 +161,8 @@ public class LoadRooms { //Anita Philip
                     rs.getString("ItemDescription"),
                     rs.getInt("ItemUpgrade"),
                     rs.getString("PuzzleID"),
-                    rs.getInt("Quantity")
+                    rs.getInt("Quantity"),
+                    rs.getInt("Cost")
             );
 
             String puzzleIDs = rs.getString("PuzzleID");
@@ -316,22 +315,7 @@ public class LoadRooms { //Anita Philip
         // Assign same stock to all rooms marked as shops
         for (Room room : roomsInfo.values()) {
             if (room.isShop()) {
-                Shop shop = new Shop(
-                        room.getRoomID(),
-                        room.getRoomName(),
-                        room.getRoomDescription(),
-                        room.getRoomType(),
-                        room.getNorthNavigation(),
-                        room.getEastNavigation(),
-                        room.getSouthNavigation(),
-                        room.getWestNavigation(),
-                        room.isRoomVisited(),
-                        room.isRaider(),
-                        true, // isShop
-                        new HashMap<>(universalShopStock) // copy of stock
-                );
-
-                roomsInfo.put(room.getRoomID(), shop);
+                room.setStock(new HashMap<>(universalShopStock));
             }
         }
     }

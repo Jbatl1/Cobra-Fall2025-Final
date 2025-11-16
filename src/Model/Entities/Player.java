@@ -2,14 +2,12 @@ package Model.Entities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import Model.Items.Item;
 import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
-import Model.Entities.Monster;
 import Model.Puzzles.Puzzle;
-import Model.Rooms.Shop;
-import Model.Rooms.Shop;
 
 /**
  * Player entity. Uses Entity's health/attack/defense fields and methods.
@@ -228,28 +226,46 @@ public class Player extends Entity {
         return narrativeMemory;
     }
 
-    public int buyItem( String itemName) {
+    public int buyItem( String itemName) { // Kai
         // Find item in shop stock
         Item item = null;
-        for (Item i : ((Shop) currRoom).getStock()) {
-            if (i.getItemName().equalsIgnoreCase(itemName)) {
-                item = i;
+
+        for (Map.Entry<Item, Integer> entry : currRoom.getStock().entrySet()) {
+            if (entry.getKey().getItemName().equalsIgnoreCase(itemName)) {
+                item = entry.getKey();
                 break;
             }
         }
 
         if (item == null) return -1; // not sold here
 
-        return -1;
+        if (this.gold < item.getCost()) {
+            return -2; // not enough gold
+        }
+
+        this.inventory.add(item);
+        return item.getCost();
     }
 
-    public int sellItem(String itemName) {
-        int idx = isInInventory(itemName);
-        if (((Shop) currRoom).getStock().contains(inventory.get(idx))) {
-            inventory.remove(idx);
-            return 1;
+    public int sellItem(String itemName) { // Caleb
+        Item item = null;
+        for (Item i : inventory) {
+            if (i.getItemName().equalsIgnoreCase(itemName)) {
+                item = i;
+                break;
+            }
         }
-        return -1;
+        if (item == null) return -1; // item not in inventory
+
+        for (Map.Entry<Item, Integer> entry : currRoom.getStock().entrySet()) {
+            if (entry.getKey().getItemName().equalsIgnoreCase(itemName)) {
+                int sellPrice = entry.getValue();
+                this.gold += sellPrice;
+                inventory.remove(item);
+                return sellPrice;
+            }
+        }
+        return -2; // shop does not buy this item
     }
 
 

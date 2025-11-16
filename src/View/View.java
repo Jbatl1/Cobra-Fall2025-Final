@@ -6,6 +6,7 @@ import Model.Puzzles.Puzzle;
 import Model.Rooms.Room;
 import Model.Items.Item;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 public class View {
@@ -126,10 +127,12 @@ public class View {
 
     }
 
-    public void displayStock(ArrayList<Item> stock) { // Kai
+    public void displayStock(Map<Item, Integer> stock) { // Kai
         System.out.println("Items for sale:");
-        for (Item item : stock){
-            System.out.println("- " + item.getItemName());
+        for (Map.Entry<Item, Integer> entry : stock.entrySet()) {
+            Item item = entry.getKey();
+            Integer price = entry.getValue();
+            System.out.println("- " + item.getItemName() + ": " + price + " gold");
         }
     }
     public void displaySellItem(int x, String s) {

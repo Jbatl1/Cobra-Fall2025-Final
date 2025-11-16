@@ -4,8 +4,8 @@ public class Weapon extends Item{
     private int damage;
     private int durability;
 
-    public Weapon(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity, int damage, int durability) {
-        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemRestoreHP, itemDescription, itemUpgrade, puzzleID, quantity);
+    public Weapon(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity, int damage, int durability, int cost) {
+        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemRestoreHP, itemDescription, itemUpgrade, puzzleID, quantity, cost);
         this.damage = damage;
         this.durability = durability;
     }

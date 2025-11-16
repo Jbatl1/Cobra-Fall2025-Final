@@ -1,8 +1,7 @@
 package Model.Rooms;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import Model.Entities.Monster;
 import Model.Items.Item;
@@ -10,7 +9,6 @@ import Model.Puzzles.Puzzle;
 import Model.Entities.Player;
 import Model.Puzzles.BoundaryPuzzle;
 
-import java.util.HashMap;
 import java.util.List;
 
 //items --> roomItems
@@ -32,6 +30,7 @@ public class Room {
     private ArrayList<Item> roomItems = new ArrayList<>(); // items present in this room
     private ArrayList<Puzzle> puzzlePresent = new ArrayList<>();
     private List<Monster> monsters = new ArrayList<Monster>();
+    private Map<Item, Integer> stock;
 
 
     // ==============================
@@ -53,7 +52,12 @@ public class Room {
 
         this.exits = new HashMap<>();  // <<< REQUIRED
     }
-
+    public void setStock(Map<Item, Integer> stock) {
+        this.stock = stock;
+    }
+    public Map<Item, Integer> getStock() {
+        return stock;
+    }
     public void setRoomPuzzle(Puzzle p){
         this.roomPuzzle = p;
     }

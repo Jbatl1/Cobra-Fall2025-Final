@@ -5,8 +5,8 @@ public class Consumable extends Item{
     private double riskOfPoison;
     private int amount;
 
-    public Consumable(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity, int health, double riskOfPoison, int amount) {
-        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemRestoreHP, itemDescription, itemUpgrade, puzzleID, quantity);
+    public Consumable(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity, int health, double riskOfPoison, int amount, int cost) {
+        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemRestoreHP, itemDescription, itemUpgrade, puzzleID, quantity, cost);
         this.health = health;
         this.riskOfPoison = riskOfPoison;
         this.amount = amount;

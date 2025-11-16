@@ -25,7 +25,7 @@ public  class Item { //Anita Philip
     private int cost;
 
 
-    public Item(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity) { //Anita Philip
+    public Item(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity, int cost) { //Anita Philip
         ItemID = itemID;
         RoomID = roomID;
         ItemName = itemName;
@@ -38,6 +38,7 @@ public  class Item { //Anita Philip
         ItemUpgrade = itemUpgrade;
         PuzzleID = puzzleID;
         this.quantity = quantity;
+        this.cost = cost;
     }
 
     public String getItemID() { return ItemID; }
