@@ -96,12 +96,12 @@ public class Player extends Entity {
     // Move to a Different Landing Site
     // ==============================
     public int moveToLandingSite(String landingSite) {
-        if (!currRoom.getRoomName().equalsIgnoreCase("Landing site") || !currRoom.getRoomType().equalsIgnoreCase("Crash site")) {
+        if (!(currRoom instanceof LandingSite)) {
             return -2; // not currently at a landing site
         }
         ArrayList<LandingSite> connections = new ArrayList<>(((LandingSite) currRoom).getLandingSiteConnections().values());
         for (LandingSite l : connections) {
-            if (l.getLandingSiteName().equalsIgnoreCase(landingSite)) {
+            if (l.getRoomName().equalsIgnoreCase(landingSite)) {
                 currRoom = l;
                 return 1; // success
             }

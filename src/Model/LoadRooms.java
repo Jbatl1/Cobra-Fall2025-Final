@@ -4,6 +4,8 @@ import Model.Entities.Monster;
 import Model.Entities.Player;
 import Model.Items.Item;
 import Model.Puzzles.Puzzle;
+import Model.Rooms.CrashSite;
+import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
 import Model.Rooms.Shop;
 
@@ -86,20 +88,60 @@ public class LoadRooms { //Anita Philip
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM " + table + ";");
             while (rs.next()) {
-                Room room = new Room(
-                        rs.getString("RoomID"),
-                        rs.getString("RoomName"),
-                        rs.getString("Description"),
-                        rs.getString("Type"),
-                        rs.getString("NorthNavigation"),
-                        rs.getString("EastNavigation"),
-                        rs.getString("SouthNavigation"),
-                        rs.getString("WestNavigation"),
-                        rs.getBoolean("isVisited"),
-                        rs.getBoolean("isRaider"),
-                        rs.getBoolean("isShop")
-                );
-                roomsInfo.put(room.getRoomID(), room);
+
+                if (rs.getString("Type") != null && (rs.getString("Type").equalsIgnoreCase("Landing Site"))) {
+                    LandingSite ls = new LandingSite(
+                            rs.getString("RoomID"),
+                            rs.getString("RoomName"),
+                            rs.getString("Description"),
+                            rs.getString("Type"),
+                            rs.getString("NorthNavigation"),
+                            rs.getString("EastNavigation"),
+                            rs.getString("SouthNavigation"),
+                            rs.getString("WestNavigation"),
+                            rs.getBoolean("isVisited"),
+                            rs.getBoolean("isRaider"),
+                            rs.getBoolean("isShop")
+                    );
+                    roomsInfo.put(ls.getRoomID(), ls);
+                }
+                else if (rs.getString("Type") != null && rs.getString("Type").equalsIgnoreCase("Crash Site")) {
+                    CrashSite cs = new CrashSite(
+                            rs.getString("RoomID"),
+                            rs.getString("RoomName"),
+                            rs.getString("Description"),
+                            rs.getString("Type"),
+                            rs.getString("NorthNavigation"),
+                            rs.getString("EastNavigation"),
+                            rs.getString("SouthNavigation"),
+                            rs.getString("WestNavigation"),
+                            rs.getBoolean("isVisited"),
+                            rs.getBoolean("isRaider"),
+                            rs.getBoolean("isShop")
+                    );
+                    roomsInfo.put(cs.getRoomID(), cs);
+                }
+                else {
+                    Room room = new Room(
+                            rs.getString("RoomID"),
+                            rs.getString("RoomName"),
+                            rs.getString("Description"),
+                            rs.getString("Type"),
+                            rs.getString("NorthNavigation"),
+                            rs.getString("EastNavigation"),
+                            rs.getString("SouthNavigation"),
+                            rs.getString("WestNavigation"),
+                            rs.getBoolean("isVisited"),
+                            rs.getBoolean("isRaider"),
+                            rs.getBoolean("isShop")
+                    );
+                    roomsInfo.put(room.getRoomID(), room);
+                }
+            }
+            for (Room room : roomsInfo.values()) {
+                if (room instanceof LandingSite) {
+                    ((LandingSite) room).loadLandingSiteConnections(roomsInfo);
+                }
             }
         }
     }
