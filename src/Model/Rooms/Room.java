@@ -95,9 +95,10 @@ public class Room {
         return roomVisited;
     }
 
-    public ArrayList<Puzzle> getPuzzlePresent() {
-        return puzzlePresent;
-    }
+
+
+
+
 
     public ArrayList<Item> getRoomItems() {
         return roomItems;
@@ -186,6 +187,10 @@ public class Room {
 
     }
 
+    public ArrayList<Puzzle> getPuzzlePresent() {
+        return puzzlePresent;
+    }
+
     public List<String> getMonsterNames() {
         List<String> names = new ArrayList<>();
 
@@ -194,9 +199,33 @@ public class Room {
                 names.add(m.getName());
             }
         }
-
         return names;
     }
+
+    public List<String> getPuzzleNames() {
+        List<String> puzzleNames = new ArrayList<>();
+
+        for (Puzzle p : Main.M.getPuzzles().values()) {
+            if (this.roomID.equals(p.getRoomID())) {
+                if(p.getType().equalsIgnoreCase("Normal") || p.getType().equalsIgnoreCase("Loot")){
+                    puzzleNames.add(p.getPuzzleQuestion());
+                }
+            }
+        }
+        return puzzleNames;
+    }
+
+    public List<String> getItemPresent() {
+        List<String> itemNames = new ArrayList<>();
+
+        for (Item i : Main.M.getItems().values()) {
+            if (this.roomID.equals(i.getRoomID())) {
+                itemNames.add(i.getItemName());
+            }
+        }
+        return itemNames;
+    }
+
 
     public int getMonsterByName(String name) {
         if (name == null || monsters == null) return 0;
@@ -209,6 +238,8 @@ public class Room {
 
         return -1; // not found
     }
+
+
 
     public String monsterInRoom() {
 
