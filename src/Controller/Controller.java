@@ -150,8 +150,30 @@ public class Controller {
                     this.view.displayUnEquipItem(x, trim);
                     break;
                 case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
-                    x = this.model.getPlayer().isInInventory(s);
-                    this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
+                    trim = s.substring(8).trim();   // the thing the player wants to examine
+
+                    // 1. Try to see if it's a puzzle in the current room
+                    Puzzle roomPuzzle = this.model.getPlayer().getCurrRoom().getThePuzzle();
+                    if (roomPuzzle != null &&
+                            roomPuzzle.getPuzzleID().equalsIgnoreCase(trim)) {
+
+                        // Call your puzzle examine method
+                        this.view.displayNormalLootPuzzlePrompt(this.model.getPlayer().getCurrRoom());
+                        break;
+                    }
+
+                    // 2. Not a puzzle → check if it's an inventory item
+                    int index = this.model.getPlayer().isInInventory(trim);
+                    if (index != -1) {
+                        this.view.displayExamineItem(
+                                this.model.getPlayer().getInventory().get(index)
+                        );
+                        break;
+                    }
+
+                    // 3. Not found at all
+                    this.view.displayMessage1();
+
                     break;
                 case "TOOL BELT": // opens tool belt
                     this.view.displayToolbelt(this.model.getPlayer().getToolBelt());

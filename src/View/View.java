@@ -391,6 +391,9 @@ public class View {
         }
 
 
+    public void displayMessage1 () {//Anita Philip
+        System.out.println("Can't examine");
+    }
     public void displayStoreInShip(int x, String s) { // Caleb
         if (x == 1) {
             System.out.println("📦 You stored " + s + " in your ship's inventory.");
