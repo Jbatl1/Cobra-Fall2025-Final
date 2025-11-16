@@ -255,7 +255,7 @@ public class Player extends Entity {
     }
 
     // ==============================
-    // Combat System
+    //          Combat System
     // ==============================
     public int inflictDamage(Monster enemy) {
         if (equippedItem == null) return 0; // no weapon equipped

@@ -32,6 +32,10 @@ public  class Item { //Anita Philip
         this.cost = cost;
     }
 
+    public void setItemDescription(String itemDescription) {
+        ItemDescription = itemDescription;
+    }
+
     public String getItemID() { return ItemID; }
     public String getItemName() {return ItemName;}
     public String getRoomID() {return RoomID;}
@@ -71,4 +75,5 @@ public  class Item { //Anita Philip
     }
 
     public int getCost() { return cost; }
+
 }

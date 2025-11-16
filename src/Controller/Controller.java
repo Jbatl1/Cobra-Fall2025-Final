@@ -59,6 +59,7 @@ public class Controller {
                     }
                     if (x == -2) {
                         puzzle = true;
+                       //currentPuzzle = model.getPlayer().getCurrRoom().getExits("N").getBoundaryPuzzle();
                          currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("N", model.getRooms());
                     }
                     break;
@@ -74,6 +75,7 @@ public class Controller {
                     }
                     if (x == -2) {
                         puzzle = true;
+                       // currentPuzzle = model.getPlayer().getCurrRoom().getExits("E").getBoundaryPuzzle();
                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("E", model.getRooms());
                     }
                     break;
@@ -89,7 +91,8 @@ public class Controller {
                     }
                     if (x == -2) {
                         puzzle = true;
-                        currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("S", model.getRooms());
+                        //currentPuzzle = model.getPlayer().getCurrRoom().getExits("S").getBoundaryPuzzle();
+                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("S", model.getRooms());
                     }
                     break;
                 case "W": // move west
@@ -147,20 +150,9 @@ public class Controller {
                     this.view.displayUnEquipItem(x, trim);
                     break;
                 case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
-                  /*  String tri = s.substring(8).trim();
-                    Item found = model.getPlayer().isItemInInventory(tri);
-
-                    if (this.model.getPlayer().isItemInInventory(trim) == null) {
-                        this.view.displayMessage1();
-                    } else {
-                        this.view.displayExamineItem(this.model.getPlayer().isItemInInventory(trim));
-                    }
-                    break;*/
-
-                x = this.model.getPlayer().isInInventory(s);
-                this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
-                break;
-
+                    x = this.model.getPlayer().isInInventory(s);
+                    this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
+                    break;
                 case "TOOL BELT": // opens tool belt
                     this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
                     break;
@@ -396,11 +388,11 @@ public class Controller {
         return relevant;  //Only returns puzzles attached to this item in the current room.
     }
 
-
 /*
      * Runs the puzzle solving loop for a specific puzzle.
      * Returns true if puzzle solved, false if failed or locked.
 */
+
 
     private boolean runPuzzleLoop(Puzzle puzzle) { //Anita Philip
         view.displayPuzzleQuestion(puzzle);

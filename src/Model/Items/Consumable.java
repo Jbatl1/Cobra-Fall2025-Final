@@ -8,6 +8,7 @@ public class Consumable extends Item{
         super(itemID, roomID, itemName, itemType, itemRarity, itemDescription, puzzleID, quantity, cost);
         this.health = health;
         this.amount = 1;
+        this.setItemDescription("restores " + this.health + " health.");
     }
 
     public int getHealth() {
