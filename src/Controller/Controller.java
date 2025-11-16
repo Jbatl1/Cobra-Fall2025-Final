@@ -125,6 +125,11 @@ public class Controller {
 
 
                 // ITEMS---------------------
+                case String s when input.matches("^DESTROY\\s.*$"):
+                    trim = s.substring(8);
+                    x = model.getPlayer().destroyItem(trim);
+                    model.displayDestroyItem(x, trim);
+                    break;
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item //Anita Philip lines 104 - 146
                     x = this.model.getPlayer().pickupItem(s.substring(7).trim());
                     view.displayItemPickup(x, s);
@@ -135,8 +140,14 @@ public class Controller {
                     this.view.displayItemDropped(x, s);
                     break;
                 case String s when input.matches("^EQUIP\\s.*$"): //Equip Item
-                    x = this.model.getPlayer().equipItemToHands(s);
-                    this.view.displayEquipItem(x, s);
+                    trim = s.substring(6).trim();
+                    x = this.model.getPlayer().equipItemToHands(trim);
+                    this.view.displayEquipItem(x, trim);
+                    break;
+                case String s when input.matches("^UNEQUIP\\s.*$"): //UnEquip Item
+                    trim = s.substring(8).trim();
+                    x = this.model.getPlayer().unEquipItemFromHands(trim);
+                    this.view.displayUnEquipItem(x, trim);
                     break;
                 case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
                   /*  String tri = s.substring(8).trim();
@@ -156,13 +167,27 @@ public class Controller {
                 case "TOOL BELT": // opens tool belt
                     this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
                     break;
+                case String s when input.matches("ADD.*?TOOL BELT"): // add item to tool belt
+                    trim = s.substring(3, s.length() - 10).trim();
+                    x = this.model.getPlayer().equipItemToToolBelt(trim);
+                    this.view.displayAddToToolBelt(x, trim);
+                    break;
+                case String s when input.matches("REMOVE.*?TOOL BELT"): // add item to tool belt
+                    trim = s.substring(7, s.length() - 10).trim();
+                    x = this.model.getPlayer().removeItemFromToolBelt(trim);
+                    this.view.displayRemoveFromToolBelt(x, trim);
+                    break;
+                case "1", "2", "3", "4", "5": // use tool belt item
+                    x = model.getPlayer().useToolBeltItem(Integer.parseInt(input) - 1);
+                    view.displayToolBeltUse(x);
+                    break;
                 case "B": // Shows Inventory
                     this.view.displayInv(this.model.getPlayer().getInventory());
                     break;
                 case "G": // drop held item
                     String itemName = this.model.getPlayer().getEquippedItem().getItemName();
-                    x = this.model.getPlayer().dropItem(itemName);
-                    this.view.displayItemDropped(x, itemName);  // need to update player dropItem method to return -1 when item cant be dropped
+                    x = this.model.getPlayer().dropEquippedItem();
+                    this.view.displayEquippedItemDropped(x, itemName);  // need to update player dropItem method to return -1 when item cant be dropped
                     break;
                 case "SHIP": // Opens Ship Inventory
                     if (this.model.getPlayer().getCurrRoom() instanceof LandingSite) {
@@ -223,10 +248,10 @@ public class Controller {
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
-                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
-                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
-                    System.out.println("-------------------");
-                    System.out.println(model.getPlayer().getCurrRoom().isShop());
+//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
+//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
+//                    System.out.println("-------------------");
+//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
 
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
@@ -250,6 +275,9 @@ public class Controller {
             }
         }
 
+        // ================================
+        //          FIGHT LOOP
+        // ================================
         while (fight) {
 
             if (this.model.getPlayer().getHealth() <= 0) {
@@ -258,11 +286,12 @@ public class Controller {
                 fight = false;
                 break;
             }
-            String input = this.view.getInput();
+            String input = this.view.getInput().toUpperCase();
+            String trim = "";
             switch (input) {
                 case "ATTACK":
-                    this.model.getPlayer().inflictDamage(currentMonster);
-                    this.view.displayPlayerAttack(currentMonster.getName(), this.model.getPlayer().getAttackPower()); // make getter display item damage if one is equipped
+                    x = this.model.getPlayer().inflictDamage(currentMonster);
+                    this.view.displayPlayerAttack(currentMonster.getName(), x);
                     break;
                 case "TOOL BELT": // opens tool belt
                     this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
@@ -271,17 +300,41 @@ public class Controller {
                     this.view.displayInv(this.model.getPlayer().getInventory());
                     break;
                 case String s when input.matches("^EQUIP\\s.*$"): //Equip Item
-                    x = this.model.getPlayer().equipItemToHands(s);
-                    this.view.displayEquipItem(x, s);
+                    trim = s.substring(6).trim();
+                    x = this.model.getPlayer().equipItemToHands(trim);
+                    this.view.displayEquipItem(x, trim);
+                    break;
+                case String s when input.matches("^UNEQUIP\\s.*$"): //UnEquip Item
+                    trim = s.substring(6).trim();
+                    x = this.model.getPlayer().unEquipItemFromHands(trim);
+                    this.view.displayUnEquipItem(x, s);
                     break;
                 case "FLEE":
                     this.view.displayFlee(currentMonster.getName());
                     currentMonster = null;
                     fight = false;
+                    break;
+                case String s when input.matches("ADD.*?TOOL BELT"): // add item to tool belt
+                    trim = s.substring(3, s.length() - 10).trim();
+                    x = this.model.getPlayer().equipItemToToolBelt(trim);
+                    this.view.displayAddToToolBelt(x, trim);
+                    break;
+                case String s when input.matches("REMOVE.*?TOOL BELT"): // add item to tool belt
+                    trim = s.substring(7, s.length() - 10).trim();
+                    x = this.model.getPlayer().removeItemFromToolBelt(trim);
+                    this.view.displayRemoveFromToolBelt(x, trim);
+                    break;
+                case "1", "2", "3", "4", "5": // use tool belt item
+                    x = model.getPlayer().useToolBeltItem(Integer.parseInt(input) - 1);
+                    view.displayToolBeltUse(x);
+                    break;
                 default:
                     this.view.displayInvalidCommand();
                     break;
             }
+
+            if (!fight) break; // leave fight loop if we fled
+
 
             // check if we killed the monster before it damages us
             if (currentMonster.getHealth() <= 0) {

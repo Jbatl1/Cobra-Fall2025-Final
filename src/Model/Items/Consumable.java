@@ -2,14 +2,12 @@ package Model.Items;
 
 public class Consumable extends Item{
     private int health;
-    private double riskOfPoison;
     private int amount;
 
-    public Consumable(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity, int health, double riskOfPoison, int amount, int cost) {
-        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemRestoreHP, itemDescription, itemUpgrade, puzzleID, quantity, cost);
+    public Consumable(String itemID, String roomID, String itemName, String itemType, String itemRarity, String itemDescription, String puzzleID, int quantity, int health, int cost) {
+        super(itemID, roomID, itemName, itemType, itemRarity, itemDescription, puzzleID, quantity, cost);
         this.health = health;
-        this.riskOfPoison = riskOfPoison;
-        this.amount = amount;
+        this.amount = 1;
     }
 
     public int getHealth() {
@@ -20,14 +18,6 @@ public class Consumable extends Item{
         this.health = health;
     }
 
-    public double getRiskOfPoison() {
-        return riskOfPoison;
-    }
-
-    public void setRiskOfPoison(double riskOfPoison) {
-        this.riskOfPoison = riskOfPoison;
-    }
-
     public int getAmount() {
         return amount;
     }
@@ -35,4 +25,5 @@ public class Consumable extends Item{
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
 }

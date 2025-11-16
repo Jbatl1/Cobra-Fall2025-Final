@@ -11,7 +11,7 @@ import Model.LoadRooms;
 import Model.Puzzles.Puzzle;
 import Model.Entities.Player;
 import Model.Puzzles.BoundaryPuzzle;
-import Model.Model;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -224,47 +224,23 @@ public class Room {
         return puzzleNames;
     }
 
-      /*  public List<String> getItemPresent() {
+        public List<String> getItemPresent() {
         List<String> itemNames = new ArrayList<>();
 
-        for (Item i : Main.M.getItems().values()) {
-            if (this.roomID.equals(i.getRoomID())) {
-                itemNames.add(i.getItemName());
-            }
-            else if (i.)
-
+        for (Item i : this.roomItems) {
+            itemNames.add(i.getItemName());
         }
-        return itemNames;
-    }*/
-
-    public List<String> getItemPresent() {
-        List<String> itemNames = new ArrayList<>();
-
-        // Get player inventory safely
-        Player currentPlayer = Main.M.getPlayer1().values().stream().findFirst().orElse(null);
-        List<String> inventoryItemNames = new ArrayList<>();
-        if (currentPlayer != null) {
-            for (Item invItem : currentPlayer.getInventory()) {
-                inventoryItemNames.add(invItem.getItemName());
-            }
-        }
-
-        // Only check items actually **currently in this room**
-        for (Item i : this.getRoomItems()) {
-            if (!inventoryItemNames.contains(i.getItemName())) {
-                itemNames.add(i.getItemName());
-            }
-        }
-
         return itemNames;
     }
+
 
     public int getMonsterByName(String name) {
         if (name == null || monsters == null) return 0;
 
-        for (Monster m : monsters) { // monsters should return
+        for(int i = 0; i < monsters.size(); i++) {
+            Monster m = monsters.get(i);
             if (m.getName().equalsIgnoreCase(name)) {
-                return 1;   // yes monster was found
+                return i; // return index
             }
         }
 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Model.Items.Consumable;
+import Model.Items.EnergyWeapon;
 import Model.Items.Item;
 import Model.Items.Weapon;
 import Model.Rooms.CrashSite;
@@ -37,7 +39,7 @@ public class Player extends Entity {
     // ==============================
     // Constructor
     // ==============================
-    public Player(Room startingRoom, String name, int health, int attackPower) {
+    public Player(Room startingRoom, String name, int health, int attackPower, Weapon starterItem) {
         super(name, health, attackPower);
         this.inventory = new ArrayList<>();
         this.toolBelt = new ArrayList<>();
@@ -46,22 +48,12 @@ public class Player extends Entity {
         this.narrativeMemory = new ArrayList<>();
         this.shipStorage = new ArrayList<>();
         this.gold = 100; // starting gold
+        this.equippedItem = starterItem;
     }
 
     // ==============================
     // Ship Storage Management
     // ==============================
-    public int addCargoItem(Item item) {
-        if (shipStorage.size() >= SHIP_CAPACITY) {
-            return -1; // full
-        }
-        shipStorage.add(item);
-        return 1;
-    }
-
-    public int removeCargoItem(Item item) {
-        return shipStorage.remove(item) ? 1 : -1;
-    }
 
     public ArrayList<Item> getShipStorage() {
         return shipStorage;
@@ -74,23 +66,6 @@ public class Player extends Entity {
         return gold;
     }
 
-    public void addGold(int amount) {
-        if (amount > 0) {
-            gold += amount;
-        }
-    }
-
-    public boolean spendGold(int amount) {
-        if (amount <= gold) {
-            gold -= amount;
-            return true;
-        }
-        return false;
-    }
-
-    public int checkCurrency() {
-        return gold;
-    }
 
     // ==============================
     // Move to a Different Landing Site
@@ -141,33 +116,112 @@ public class Player extends Entity {
 
     public int equipItemToHands(String s) {
         int idx = isInInventory(s);
-
-        if (idx >= 0 && (equippedItem == null || this.inventory.get(idx) instanceof Weapon)) {
+        if (idx < 0) {
+            return -1; // item not in inventory
+        }
+        if (equippedItem == null && this.inventory.get(idx) instanceof Weapon) {
             equippedItem = inventory.get(idx);
+            this.inventory.remove(idx);
             return 1; // success
         }
-        return 0;
+        return -2; // item is not a weapon and hands are occupied
     }
 
     public int equipItemToToolBelt(String s) {
         int idx = isInInventory(s);
-        if (idx >= 0 && !toolBelt.contains(inventory.get(idx))) {
-            toolBelt.add(inventory.get(idx));
-            return 1;
-        }
-        return 0;
+        if (idx < 0) return -1; // item not in inventory
+        if (toolBelt.size() >= 5) return -2; // toolbelt full
+        if (toolBelt.contains(inventory.get(idx))) return -3; // item already in toolbelt
+
+        this.toolBelt.add(inventory.get(idx));
+        this.inventory.remove(idx);
+        return 1;
+
     }
 
-    public int removeItemFromHands(String s) {
+    public int unEquipItemFromHands(String s) {
         if (equippedItem != null && equippedItem.getItemName().equalsIgnoreCase(s)) {
+            addItem(equippedItem);
             equippedItem = null;
             return 1;
         }
-        return 0;
+        return -1;
     }
 
     public int removeItemFromToolBelt(String s) {
-        return toolBelt.removeIf(i -> i.getItemName().equalsIgnoreCase(s)) ? 1 : 0;
+        if (toolBelt.isEmpty()) return -1; // toolbelt empty
+        for (int i = 0; i < toolBelt.size(); i++) {
+            if (toolBelt.get(i).getItemName().equalsIgnoreCase(s)) {
+                this.inventory.add(toolBelt.get(i));
+                toolBelt.remove(i);
+                return 1;
+            }
+        }
+        return -2; // item not in toolbelt
+    }
+    
+    public int useToolBeltItem(int x) {
+        if (toolBelt.isEmpty()) return -1; // toolbelt empty
+        Item item = toolBelt.get(x);
+        if (item.getItemType().equalsIgnoreCase("Consumable")) {
+            consumeItem(item);
+            return 1; //consumable used
+        }
+        else if (item.getItemType().equalsIgnoreCase("Weapon")) {
+            if (equippedItem == null) {
+                equippedItem = item;
+                toolBelt.remove(x);
+                return 2; // success
+            }
+            else {
+                Item temp = equippedItem;
+                equippedItem = item;
+                toolBelt.set(x, temp);
+                return 3; // swapped
+            }
+        }
+        else if (item.getItemType().equalsIgnoreCase("Key")) {
+            System.out.println("NEED TO IMPLEMENT KEY USAGE");
+        }
+        return -1; // cant use item
+    }
+
+    private int consumeItem(Item item) {
+        if (item.getItemType().equalsIgnoreCase("Consumable")) {
+            int restoreHP = ((Consumable) item).getHealth();
+            this.health += restoreHP;
+            if (this.health > 100) {
+                this.health = 100;
+            }
+            int idx = isInInventory(item.getItemName());
+            if (idx >= 0) {
+                inventory.remove(idx);
+            } else {
+                if (isInToolBelt(item.getItemName()) >= 0){
+                    toolBelt.remove(item);
+                }
+            }
+            return restoreHP;
+        }
+        return 0;
+    }
+
+    private int isInToolBelt(String name) {
+        for (int i = 0; i < toolBelt.size(); i++) {
+            if (toolBelt.get(i).getItemName().equalsIgnoreCase(name)) {
+                return i;
+            }
+        }
+        return -1; // not found
+    }
+
+    public int dropEquippedItem() { // Caleb
+        if (equippedItem != null) {
+            currRoom.addItem(equippedItem);
+            equippedItem = null;
+            return 1;
+        }
+        return -1;
     }
 
     public int dropItem(String s) {
@@ -205,7 +259,14 @@ public class Player extends Entity {
     // ==============================
     public int inflictDamage(Monster enemy) {
         if (equippedItem == null) return 0; // no weapon equipped
-        int damage = equippedItem.getItemDamage();
+        int damage = ((Weapon)equippedItem).getDamage();
+        int weaponStatus = ((Weapon) equippedItem).useDurability();
+        if (weaponStatus == -1 && !(equippedItem instanceof EnergyWeapon)) {
+            return -1; // weapon broke
+        }
+        if (weaponStatus == -1 && equippedItem instanceof EnergyWeapon) {
+            return -2; // out of energy
+        }
         enemy.receiveDamage(damage);
         return damage;
     }

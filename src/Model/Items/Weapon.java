@@ -4,10 +4,22 @@ public class Weapon extends Item{
     private int damage;
     private int durability;
 
-    public Weapon(String itemID, String roomID, String itemName, String itemType, String itemRarity, int itemDamage, int itemDurability, int itemRestoreHP, String itemDescription, int itemUpgrade, String puzzleID, int quantity, int damage, int durability, int cost) {
-        super(itemID, roomID, itemName, itemType, itemRarity, itemDamage, itemDurability, itemRestoreHP, itemDescription, itemUpgrade, puzzleID, quantity, cost);
-        this.damage = damage;
-        this.durability = durability;
+    public Weapon(
+            String itemID,
+            String roomID,
+            String itemName,
+            String itemType,
+            String itemRarity,
+            int itemDamage,
+            int itemDurability,
+            String itemDescription,
+            String puzzleID,
+            int quantity,
+            int cost
+    ) {
+        super(itemID, roomID, itemName, itemType, itemRarity, itemDescription, puzzleID, quantity, cost);
+        this.damage = itemDamage;
+        this.durability = itemDurability;
     }
 
     public int getDamage() {
@@ -24,5 +36,13 @@ public class Weapon extends Item{
 
     public void setDurability(int durability) {
         this.durability = durability;
+    }
+
+    public int useDurability() { // Caleb
+        durability--;
+        if (durability >= 1) {
+            return 1;
+        }
+        return -1;
     }
 }

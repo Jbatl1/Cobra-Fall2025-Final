@@ -69,7 +69,15 @@ public class View {
     }
 
     public void displayPlayerAttack(String monsterName, int damage) { //caleb
-        System.out.println("You attack " + monsterName + " for " + damage + " damage!");
+        if (damage > 0) {
+            System.out.println("You strike " + monsterName + " for " + damage + " damage!");
+        }
+        if (damage == -1) {
+            System.out.println("Your weapon is broken and cannot deal damage!");
+        }
+        if (damage == -2) {
+            System.out.println("Your energy weapons are depleted and cannot deal damage!");
+        }
     }
 
     public void displayMonsterAttack(String monsterName, int damage) { //caleb
@@ -429,6 +437,60 @@ public class View {
         }
         else if (x == -3) {
             System.out.println("❗ Your ship's inventory is empty. Cannot retrieve " + item + ".");
+        }
+    }
+
+    public void displayAddToToolBelt(int x, String itemName) { // Caleb
+        if (x == 1) {
+            System.out.println("🧰 You added " + itemName + " to your tool belt.");
+        } else if (x == -1) {
+            System.out.println("❗ You don't have " + itemName + " in your inventory.");
+        } else if (x == -2) {
+            System.out.println("❗ Your tool belt is full. Cannot add " + itemName + ".");
+        } else if (x == -3) {
+            System.out.println("❗ " + itemName + " is already in your tool belt.");
+        }
+    }
+
+    public void displayRemoveFromToolBelt(int x, String item) {
+        if (x == 1) {
+            System.out.println("🧰 You removed " + item + " from your tool belt.");
+        }
+        else if (x == -1) {
+            System.out.println("❗ You don't have " + item + " in your inventory.");
+        }
+        else if (x == -2) {
+            System.out.println("❗ " + item + " is not in your tool belt.");
+        }
+    }
+
+    public void displayUnEquipItem(int x, String s) {
+        if (x == 1) {
+            System.out.println("🛠️ You unequipped: " + s);
+        } else if (x == -1) {
+            System.out.println("❗ You don't have " + s + " equipped.");
+        }
+    }
+
+    public void displayEquippedItemDropped(int x, String itemName) {
+        if (x == 1) {
+            System.out.println("🗑️ You dropped your equipped item: " + itemName);
+        } else if (x == -1) {
+            System.out.println("❗ You don't have an item equipped.");
+        }
+    }
+
+    public void displayToolBeltUse(int x) {
+        if (x == 1) {
+            System.out.println("🧰 You consumed an item from your tool belt.");
+        }
+        else if (x == 2) {
+            System.out.println("🧰 you equipped a weapon from your tool belt.");
+        } else if (x == 3) {
+            System.out.println("🧰 you swapped the weapon in your hands for your tool belt weapon.");
+        }
+        else if (x == -1) {
+            System.out.println("❗ no item in that slot of your tool belt.");
         }
     }
 }
