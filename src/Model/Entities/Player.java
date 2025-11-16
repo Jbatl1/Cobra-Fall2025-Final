@@ -164,13 +164,24 @@ public class Player extends Entity {
         if (toolBelt.isEmpty()) return -1; // toolbelt empty
         Item item = toolBelt.get(x);
         if (item.getItemType().equalsIgnoreCase("Consumable")) {
-
+            consumeItem(item);
+            return 1; //consumable used
         }
         else if (item.getItemType().equalsIgnoreCase("Weapon")) {
-
+            if (equippedItem == null) {
+                equippedItem = item;
+                toolBelt.remove(x);
+                return 2; // success
+            }
+            else {
+                Item temp = equippedItem;
+                equippedItem = item;
+                toolBelt.set(x, temp);
+                return 3; // swapped
+            }
         }
         else if (item.getItemType().equalsIgnoreCase("Key")) {
-
+            System.out.println("NEED TO IMPLEMENT KEY USAGE");
         }
         return -1; // cant use item
     }
@@ -182,9 +193,26 @@ public class Player extends Entity {
             if (this.health > 100) {
                 this.health = 100;
             }
+            int idx = isInInventory(item.getItemName());
+            if (idx >= 0) {
+                inventory.remove(idx);
+            } else {
+                if (isInToolBelt(item.getItemName()) >= 0){
+                    toolBelt.remove(item);
+                }
+            }
             return restoreHP;
         }
         return 0;
+    }
+
+    private int isInToolBelt(String name) {
+        for (int i = 0; i < toolBelt.size(); i++) {
+            if (toolBelt.get(i).getItemName().equalsIgnoreCase(name)) {
+                return i;
+            }
+        }
+        return -1; // not found
     }
 
     public int dropEquippedItem() { // Caleb
