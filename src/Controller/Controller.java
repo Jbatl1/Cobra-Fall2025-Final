@@ -255,25 +255,16 @@ public class Controller {
                     break;
                 case String s when input.matches("^INSPECT\\s.*$"): // shows monster name / desc / health / atk
                     x = this.model.getPlayer().getCurrRoom().getMonsterByName(s.substring(8).trim());
-                    if (this.model.getPlayer().getCurrRoom().getMonsterByName(s) > 0) {
+                    if (x >= 0) {
                         this.view.displayInspectMonster(this.model.getPlayer().getCurrRoom().getMonsters().get(x));
                     }
                     else {
                         this.view.displayMonsterNotFound(s.substring(8).trim());
                     }
                     break;
-                case "IGNORE": // ignore monster in room
-                    // idk if this is useful? they can just pick what monster to fight in the room
-                    break;
-
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
-//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
-//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
-//                    System.out.println("-------------------");
-//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
-
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
 
@@ -343,6 +334,9 @@ public class Controller {
                     currentMonster = null;
                     fight = false;
                     break;
+                case "EXAMINE":
+
+                    break;
                 case String s when input.matches("ADD.*?TOOL BELT"): // add item to tool belt
                     trim = s.substring(3, s.length() - 10).trim();
                     x = this.model.getPlayer().equipItemToToolBelt(trim);
@@ -357,6 +351,7 @@ public class Controller {
                     x = model.getPlayer().useToolBeltItem(Integer.parseInt(input) - 1);
                     view.displayToolBeltUse(x);
                     break;
+
                 default:
                     this.view.displayInvalidCommand();
                     break;
