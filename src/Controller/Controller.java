@@ -147,7 +147,8 @@ public class Controller {
                     this.view.displayUnEquipItem(x, trim);
                     break;
                 case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
-                    x = this.model.getPlayer().isInInventory(s);
+                    trim = s.substring(8).trim();
+                    x = this.model.getPlayer().isInInventory(trim);
                     this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
                     break;
                 case "TOOL BELT": // opens tool belt
@@ -334,6 +335,10 @@ public class Controller {
             this.view.displayMonsterAttack(currentMonster.getName(), currentMonster.getAttackPower());
         }
 
+
+        // ===========================
+        //          SHOP LOOP
+        // ===========================
 
         while (shop) {
             String input = this.view.getInput().toUpperCase();
