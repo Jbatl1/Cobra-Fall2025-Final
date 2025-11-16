@@ -58,6 +58,7 @@ public class LoadRooms { //Anita Philip
             loadAllMonsters(conn);
             assignMonstersToRooms(); // <-- Add this call here
             setupRoomExits();
+            loadAllShops(conn);
 
 
         } catch (Exception e) {
@@ -258,6 +259,40 @@ public class LoadRooms { //Anita Philip
             Room r = roomsInfo.get(m.getRoomID());
             if (r != null) {
                 r.addMonster(m);  // <-- Use your new method
+            }
+        }
+    }
+
+    // ------------------ SHOPS ------------------
+
+    private void loadAllShops(Connection conn) throws Exception {
+        // Map of item -> cost for all shops
+        HashMap<Item, Integer> universalShopStock = new HashMap<>();
+
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Shop;");
+
+        while (rs.next()) {
+            String itemID = rs.getString("Item_ID");
+            int cost = rs.getInt("Cost");
+            Item stockItem = items.get(itemID);
+
+            if (stockItem != null) {
+                universalShopStock.put(stockItem, cost);
+            } else {
+                System.out.println("WARNING: Shop table references invalid item: " + itemID);
+            }
+        }
+
+        if (universalShopStock.isEmpty()) {
+            System.out.println("WARNING: Shop table is empty — no shop items loaded!");
+            return;
+        }
+
+
+        for (Room room : roomsInfo.values()) {
+            if (room.isShop()) {
+                room.setStock(new HashMap<>(universalShopStock));
             }
         }
     }

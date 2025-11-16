@@ -302,7 +302,7 @@ public class Controller {
 
 
         while (shop) {
-            String input = this.view.getInput();
+            String input = this.view.getInput().toUpperCase();
             switch (input) {
                 case "VIEW ITEMS": // displays items for sale
                     Map<Item, Integer> stock = (this.model.getPlayer().getCurrRoom()).getStock();
