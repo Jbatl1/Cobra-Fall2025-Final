@@ -453,4 +453,18 @@ public class View {
             System.out.println("❗ You don't have an item equipped.");
         }
     }
+
+    public void displayToolBeltUse(int x) {
+        if (x == 1) {
+            System.out.println("🧰 You consumed an item from your tool belt.");
+        }
+        else if (x == 2) {
+            System.out.println("🧰 you equipped a weapon from your tool belt.");
+        } else if (x == 3) {
+            System.out.println("🧰 you swapped the weapon in your hands for your tool belt weapon.");
+        }
+        else if (x == -1) {
+            System.out.println("❗ no item in that slot of your tool belt.");
+        }
+    }
 }

@@ -61,4 +61,13 @@ public class Model {
         }
         return null;
     }
+
+    public void displayDestroyItem(int x, String itemName) {
+        if (x == 1) {
+            System.out.println("You destroyed your " + itemName + "!");
+        }
+        else if (x == -1) {
+            System.out.println("You don't have a " + itemName + " in your inventory");
+        }
+    }
 }

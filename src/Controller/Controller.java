@@ -122,6 +122,11 @@ public class Controller {
 
 
                 // ITEMS---------------------
+                case String s when input.matches("^DESTROY\\s.*$"):
+                    trim = s.substring(8);
+                    x = model.getPlayer().destroyItem(trim);
+                    model.displayDestroyItem(x, trim);
+                    break;
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item //Anita Philip lines 104 - 146
                     x = this.model.getPlayer().pickupItem(s.substring(7).trim());
                     view.displayItemPickup(x, s);
@@ -159,7 +164,8 @@ public class Controller {
                     this.view.displayRemoveFromToolBelt(x, trim);
                     break;
                 case "1", "2", "3", "4", "5": // use tool belt item
-                    model.getPlayer().useToolBeltItem(0);
+                    x = model.getPlayer().useToolBeltItem(Integer.parseInt(input) - 1);
+                    view.displayToolBeltUse(x);
                     break;
                 case "B": // Shows Inventory
                     this.view.displayInv(this.model.getPlayer().getInventory());
@@ -293,6 +299,20 @@ public class Controller {
                     this.view.displayFlee(currentMonster.getName());
                     currentMonster = null;
                     fight = false;
+                    break;
+                case String s when input.matches("ADD.*?TOOL BELT"): // add item to tool belt
+                    trim = s.substring(3, s.length() - 10).trim();
+                    x = this.model.getPlayer().equipItemToToolBelt(trim);
+                    this.view.displayAddToToolBelt(x, trim);
+                    break;
+                case String s when input.matches("REMOVE.*?TOOL BELT"): // add item to tool belt
+                    trim = s.substring(7, s.length() - 10).trim();
+                    x = this.model.getPlayer().removeItemFromToolBelt(trim);
+                    this.view.displayRemoveFromToolBelt(x, trim);
+                    break;
+                case "1", "2", "3", "4", "5": // use tool belt item
+                    x = model.getPlayer().useToolBeltItem(Integer.parseInt(input) - 1);
+                    view.displayToolBeltUse(x);
                     break;
                 default:
                     this.view.displayInvalidCommand();
