@@ -187,7 +187,16 @@ public class Player extends Entity {
         return 0;
     }
 
-        public int dropItem(String s) {
+    public int dropEquippedItem() { // Caleb
+        if (equippedItem != null) {
+            currRoom.addItem(equippedItem);
+            equippedItem = null;
+            return 1;
+        }
+        return -1;
+    }
+
+    public int dropItem(String s) {
         int idx = isInInventory(s);
         if (idx >= 0) {
             Item item = inventory.remove(idx);

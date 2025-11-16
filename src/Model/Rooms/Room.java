@@ -227,10 +227,8 @@ public class Room {
         public List<String> getItemPresent() {
         List<String> itemNames = new ArrayList<>();
 
-        for (Item i : Main.M.getItems().values()) {
-            if (this.roomID.equals(i.getRoomID())) {
-                itemNames.add(i.getItemName());
-            }
+        for (Item i : this.roomItems) {
+            itemNames.add(i.getItemName());
         }
         return itemNames;
     }
@@ -239,9 +237,10 @@ public class Room {
     public int getMonsterByName(String name) {
         if (name == null || monsters == null) return 0;
 
-        for (Monster m : monsters) { // monsters should return
+        for(int i = 0; i < monsters.size(); i++) {
+            Monster m = monsters.get(i);
             if (m.getName().equalsIgnoreCase(name)) {
-                return 1;   // yes monster was found
+                return i; // return index
             }
         }
 

@@ -166,8 +166,8 @@ public class Controller {
                     break;
                 case "G": // drop held item
                     String itemName = this.model.getPlayer().getEquippedItem().getItemName();
-                    x = this.model.getPlayer().dropItem(itemName);
-                    this.view.displayItemDropped(x, itemName);  // need to update player dropItem method to return -1 when item cant be dropped
+                    x = this.model.getPlayer().dropEquippedItem();
+                    this.view.displayEquippedItemDropped(x, itemName);  // need to update player dropItem method to return -1 when item cant be dropped
                     break;
                 case "SHIP": // Opens Ship Inventory
                     if (this.model.getPlayer().getCurrRoom() instanceof LandingSite) {
@@ -228,10 +228,10 @@ public class Controller {
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
-                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
-                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
-                    System.out.println("-------------------");
-                    System.out.println(model.getPlayer().getCurrRoom().isShop());
+//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
+//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
+//                    System.out.println("-------------------");
+//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
 
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
@@ -293,10 +293,14 @@ public class Controller {
                     this.view.displayFlee(currentMonster.getName());
                     currentMonster = null;
                     fight = false;
+                    break;
                 default:
                     this.view.displayInvalidCommand();
                     break;
             }
+
+            if (!fight) break; // leave fight loop if we fled
+
 
             // check if we killed the monster before it damages us
             if (currentMonster.getHealth() <= 0) {

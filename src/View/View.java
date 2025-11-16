@@ -445,4 +445,12 @@ public class View {
             System.out.println("❗ You don't have " + s + " equipped.");
         }
     }
+
+    public void displayEquippedItemDropped(int x, String itemName) {
+        if (x == 1) {
+            System.out.println("🗑️ You dropped your equipped item: " + itemName);
+        } else if (x == -1) {
+            System.out.println("❗ You don't have an item equipped.");
+        }
+    }
 }
