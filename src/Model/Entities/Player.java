@@ -51,17 +51,6 @@ public class Player extends Entity {
     // ==============================
     // Ship Storage Management
     // ==============================
-    public int addCargoItem(Item item) {
-        if (shipStorage.size() >= SHIP_CAPACITY) {
-            return -1; // full
-        }
-        shipStorage.add(item);
-        return 1;
-    }
-
-    public int removeCargoItem(Item item) {
-        return shipStorage.remove(item) ? 1 : -1;
-    }
 
     public ArrayList<Item> getShipStorage() {
         return shipStorage;
@@ -74,23 +63,6 @@ public class Player extends Entity {
         return gold;
     }
 
-    public void addGold(int amount) {
-        if (amount > 0) {
-            gold += amount;
-        }
-    }
-
-    public boolean spendGold(int amount) {
-        if (amount <= gold) {
-            gold -= amount;
-            return true;
-        }
-        return false;
-    }
-
-    public int checkCurrency() {
-        return gold;
-    }
 
     // ==============================
     // Move to a Different Landing Site
@@ -141,21 +113,27 @@ public class Player extends Entity {
 
     public int equipItemToHands(String s) {
         int idx = isInInventory(s);
-
-        if (idx >= 0 && (equippedItem == null || this.inventory.get(idx) instanceof Weapon)) {
+        System.out.println(idx);
+        if (idx < 0) {
+            return -1; // item not in inventory
+        }
+        if (equippedItem == null && this.inventory.get(idx) instanceof Weapon) {
             equippedItem = inventory.get(idx);
             return 1; // success
         }
-        return 0;
+        return -2; // item is not a weapon and hands are occupied
     }
 
     public int equipItemToToolBelt(String s) {
         int idx = isInInventory(s);
-        if (idx >= 0 && !toolBelt.contains(inventory.get(idx))) {
-            toolBelt.add(inventory.get(idx));
-            return 1;
-        }
-        return 0;
+        if (idx < 0) return -1; // item not in inventory
+        if (toolBelt.size() >= 5) return -2; // toolbelt full
+        if (toolBelt.contains(inventory.get(idx))) return -3; // item already in toolbelt
+
+        this.toolBelt.add(inventory.get(idx));
+        this.inventory.remove(idx);
+        return 1;
+
     }
 
     public int removeItemFromHands(String s) {
@@ -167,10 +145,45 @@ public class Player extends Entity {
     }
 
     public int removeItemFromToolBelt(String s) {
-        return toolBelt.removeIf(i -> i.getItemName().equalsIgnoreCase(s)) ? 1 : 0;
+        if (toolBelt.isEmpty()) return -1; // toolbelt empty
+        for (int i = 0; i < toolBelt.size(); i++) {
+            if (toolBelt.get(i).getItemName().equalsIgnoreCase(s)) {
+                this.inventory.add(toolBelt.get(i));
+                toolBelt.remove(i);
+                return 1;
+            }
+        }
+        return -2; // item not in toolbelt
+    }
+    
+    public int useToolBeltItem(int x) {
+        if (toolBelt.isEmpty()) return -1; // toolbelt empty
+        Item item = toolBelt.get(x);
+        if (item.getItemType().equalsIgnoreCase("Consumable")) {
+
+        }
+        else if (item.getItemType().equalsIgnoreCase("Weapon")) {
+
+        }
+        else if (item.getItemType().equalsIgnoreCase("Key")) {
+
+        }
+        return -1; // cant use item
     }
 
-    public int dropItem(String s) {
+    private int consumeItem(Item item) {
+        if (item.getItemType().equalsIgnoreCase("Consumable")) {
+            int restoreHP = item.getItemRestoreHP();
+            this.health += restoreHP;
+            if (this.health > 100) {
+                this.health = 100;
+            }
+            return restoreHP;
+        }
+        return 0;
+    }
+
+        public int dropItem(String s) {
         int idx = isInInventory(s);
         if (idx >= 0) {
             Item item = inventory.remove(idx);

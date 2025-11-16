@@ -35,4 +35,5 @@ public class Consumable extends Item{
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
 }

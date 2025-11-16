@@ -405,4 +405,28 @@ public class View {
             System.out.println("❗ Your ship's inventory is empty. Cannot retrieve " + item + ".");
         }
     }
+
+    public void displayAddToToolBelt(int x, String itemName) { // Caleb
+        if (x == 1) {
+            System.out.println("🧰 You added " + itemName + " to your tool belt.");
+        } else if (x == -1) {
+            System.out.println("❗ You don't have " + itemName + " in your inventory.");
+        } else if (x == -2) {
+            System.out.println("❗ Your tool belt is full. Cannot add " + itemName + ".");
+        } else if (x == -3) {
+            System.out.println("❗ " + itemName + " is already in your tool belt.");
+        }
+    }
+
+    public void displayRemoveFromToolBelt(int x, String item) {
+        if (x == 1) {
+            System.out.println("🧰 You removed " + item + " from your tool belt.");
+        }
+        else if (x == -1) {
+            System.out.println("❗ You don't have " + item + " in your inventory.");
+        }
+        else if (x == -2) {
+            System.out.println("❗ " + item + " is not in your tool belt.");
+        }
+    }
 }

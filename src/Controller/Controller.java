@@ -132,8 +132,9 @@ public class Controller {
                     this.view.displayItemDropped(x, s);
                     break;
                 case String s when input.matches("^EQUIP\\s.*$"): //Equip Item
-                    x = this.model.getPlayer().equipItemToHands(s);
-                    this.view.displayEquipItem(x, s);
+                    trim = s.substring(6).trim();
+                    x = this.model.getPlayer().equipItemToHands(trim);
+                    this.view.displayEquipItem(x, trim);
                     break;
                 case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
                     x = this.model.getPlayer().isInInventory(s);
@@ -141,6 +142,19 @@ public class Controller {
                     break;
                 case "TOOL BELT": // opens tool belt
                     this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
+                    break;
+                case String s when input.matches("ADD.*?TOOL BELT"): // add item to tool belt
+                    trim = s.substring(3, s.length() - 10).trim();
+                    x = this.model.getPlayer().equipItemToToolBelt(trim);
+                    this.view.displayAddToToolBelt(x, trim);
+                    break;
+                case String s when input.matches("REMOVE.*?TOOL BELT"): // add item to tool belt
+                    trim = s.substring(7, s.length() - 10).trim();
+                    x = this.model.getPlayer().removeItemFromToolBelt(trim);
+                    this.view.displayRemoveFromToolBelt(x, trim);
+                    break;
+                case "1", "2", "3", "4", "5": // use tool belt item
+                    model.getPlayer().useToolBeltItem(0);
                     break;
                 case "B": // Shows Inventory
                     this.view.displayInv(this.model.getPlayer().getInventory());
