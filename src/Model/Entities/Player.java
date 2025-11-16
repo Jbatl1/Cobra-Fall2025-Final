@@ -78,7 +78,24 @@ public class Player extends Entity {
         for (LandingSite l : connections) {
             if (l.getRoomName().equalsIgnoreCase(landingSite)) {
                 currRoom = l;
-                return 1; // success
+                switch (currRoom.getRoomID()) {
+                    case "VI1":
+                        return 1;
+                    case "FW1":
+                        return 2;
+                    case "SW1":
+                        return 3;
+                    case "JR1":
+                        return 4;
+                    case "ED1":
+                        return 5;
+                    case "CC1":
+                        return 6;
+                    case "SI1":
+                        return 7;
+                    case "CT1":
+                        return 8;
+                }
             }
         }
         return -1; // landing site does not exist
@@ -253,7 +270,7 @@ public class Player extends Entity {
     }
 
     // ==============================
-    // Combat System
+    //          Combat System
     // ==============================
     public int inflictDamage(Monster enemy) {
         if (equippedItem == null) return 0; // no weapon equipped

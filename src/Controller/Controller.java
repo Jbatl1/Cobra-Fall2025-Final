@@ -25,6 +25,7 @@ public class Controller {
     private boolean solvePuzzle = false;
     private Monster currentMonster = null;
     private Puzzle currentPuzzle = null;
+    private String currentPlanet = "Survivors World";
 
 
     public Controller(Model model, View view) {
@@ -110,14 +111,23 @@ public class Controller {
                     break;
                 case String s when input.matches("^TRAVEL\\s.*$"): // travel to landing site
                     x = this.model.getPlayer().moveToLandingSite(s.substring(7).trim());
-                    if (x == 1) {
-                        view.displayRoomEntry(model.getPlayer().getCurrRoom());
-                    } else if (x == -1) {
+                    if (x == -1) {
                         view.displayLandingSiteNotFound(s.substring(7).trim());
+                        break;
                     }
-                    else if (x == -2) {
+                    if (x == -2) {
                         view.displayNotAtLandingSite();
+                        break;
                     }
+                    if (x == 1) currentPlanet = "Volcanic Inferno";
+                    if (x == 2) currentPlanet = "Frozen Waste";
+                    if (x == 3) currentPlanet = "Survivors World";
+                    if (x == 4) currentPlanet = "Jungle Ruins";
+                    if (x == 5) currentPlanet = "Echo Deserts";
+                    if (x == 6) currentPlanet = "Crystal Canyons";
+                    if (x == 7) currentPlanet = "Sky Isles";
+                    if (x == 8) currentPlanet = "Celestial Citadel";
+                    view.displayRoomEntry(model.getPlayer().getCurrRoom());
                     break;
 
 
@@ -147,7 +157,8 @@ public class Controller {
                     this.view.displayUnEquipItem(x, trim);
                     break;
                 case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
-                    x = this.model.getPlayer().isInInventory(s);
+                    trim = s.substring(8).trim();
+                    x = this.model.getPlayer().isInInventory(trim);
                     this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
                     break;
                 case "TOOL BELT": // opens tool belt
@@ -244,6 +255,14 @@ public class Controller {
 
                 // OTHER --------------------
                 case "M": // open map
+                    if (currentPlanet.equalsIgnoreCase("Volcanic Inferno")) view.displayVolcanicInfernoMap();
+                    if (currentPlanet.equalsIgnoreCase("Frozen Waste")) view.displayFrozenWorldMap();
+                    if (currentPlanet.equalsIgnoreCase("Survivors World")) view.displaySurvivorsWorldMap();
+                    if (currentPlanet.equalsIgnoreCase("Jungle Ruins")) view.displayJungleRuinMap();
+                    if (currentPlanet.equalsIgnoreCase("Echo Deserts")) view.displayEchoDesertMap();
+                    if (currentPlanet.equalsIgnoreCase("Crystal Canyons")) view.displayCrystalCanyonMap();
+                    if (currentPlanet.equalsIgnoreCase("Sky Isles")) view.displaySkyIslesMap();
+                    if (currentPlanet.equalsIgnoreCase("Celestial Citadel")) view.displayCelestialCitadelMap();
 
                     break;
                 case "SHOP": // opens shop and displays items for sale
@@ -334,6 +353,10 @@ public class Controller {
             this.view.displayMonsterAttack(currentMonster.getName(), currentMonster.getAttackPower());
         }
 
+
+        // ===========================
+        //          SHOP LOOP
+        // ===========================
 
         while (shop) {
             String input = this.view.getInput().toUpperCase();
