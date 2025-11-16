@@ -341,8 +341,15 @@ public class View {
             System.out.println("❓: " + puzzle.getPuzzleQuestion());
         }
 
-        public void displayLootPuzzlePrompt (Puzzle puzzle){//Anita Philip
-            System.out.println("❓: " + puzzle.getPuzzleQuestion());
+        public void displayNormalLootPuzzlePrompt (Room room){//Anita Philip
+
+
+            List<String> puzzleQuestions = room.getPuzzleNames();
+            if (puzzleQuestions.isEmpty()) {
+
+            } else {
+                System.out.println(room.getPuzzleNames());
+            }
         }
 
         public void displayPuzzleSolved (Puzzle puzzle){//Anita Philip

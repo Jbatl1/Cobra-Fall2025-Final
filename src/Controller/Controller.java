@@ -420,6 +420,8 @@ public class Controller {
         return puzzle.isPuzzleIsSolved();
     }
 
+
+
     public void handleBoundaryPuzzle(Room room) { //Anita Philip
         Puzzle boundaryPuzzle = room.getRoomPuzzle(); // One boundary puzzle per room
 
@@ -443,7 +445,32 @@ public class Controller {
         }
     }
 
-    private void movePlayerToPreviousRoom() { //Anita Philip
+    public void handleLootNormalPuzzle(Room room) {
+        Puzzle lootNormalPuzzle = room.getThePuzzle();
+
+
+        //there is a puzzle and it's not solved
+        if(lootNormalPuzzle != null  && !lootNormalPuzzle.isPuzzleIsSolved() && (lootNormalPuzzle.getType().equalsIgnoreCase("normal") || lootNormalPuzzle.getType().equalsIgnoreCase("loot"))) {
+            view.displayNormalLootPuzzlePrompt(room);
+            String choice = view.getInput();
+
+            if (choice.equalsIgnoreCase("EXAMINE")) {
+                boolean solved = runPuzzleLoop(lootNormalPuzzle);
+                if (!solved) {
+                    view.displayPuzzleFailed(lootNormalPuzzle);
+                    movePlayerToPreviousRoom(); // return player to previous room
+                }
+            } else {
+                view.displayPuzzleIgnored(lootNormalPuzzle);
+                movePlayerToPreviousRoom(); // return player to previous room
+            }
+        }
+    }
+
+
+
+
+        private void movePlayerToPreviousRoom() { //Anita Philip
         Room previousRoom = model.getPlayer().getPrevRoom();
         if (previousRoom != null) {
             model.getPlayer().setCurrRoom(previousRoom);
