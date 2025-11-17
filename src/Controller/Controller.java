@@ -249,8 +249,9 @@ public class Controller { //Caleb Butler
                     }
                     break;
                 case String s when input.matches("^INSPECT\\s.*$"): // shows monster name / desc / health / atk
-                    x = this.model.getPlayer().getCurrRoom().getMonsterByName(s.substring(8).trim());
-                    if (this.model.getPlayer().getCurrRoom().getMonsterByName(s) > 0) {
+                    trim = s.substring(8).trim();
+                    x = this.model.getPlayer().getCurrRoom().getMonsterByName(trim);
+                    if (x >= 0) {
                         this.view.displayInspectMonster(this.model.getPlayer().getCurrRoom().getMonsters().get(x));
                     }
                     else {
