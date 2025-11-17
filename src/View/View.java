@@ -395,7 +395,7 @@ public class View {
             System.out.println("You have been moved back to previous room");
         }
 
-        public void displayMessage () {//Anita Philip
+        public void displayNoPrevRoom () {//Anita Philip
             System.out.println("You cannot move back, no previous room recorded.");
         }
 

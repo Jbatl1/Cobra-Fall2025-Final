@@ -469,7 +469,7 @@ public class Controller {
                 && !boundaryPuzzle.isPuzzleIsSolved()
                 && boundaryPuzzle.getType().equalsIgnoreCase("boundary")) {
 
-            view.displayBoundaryPuzzlePrompt(boundaryPuzzle); // e.g., "This room has a puzzle (Examine / Ignore)"
+            view.displayPuzzleChoice(); // e.g., "This room has a puzzle (Examine / Ignore)"
             String choice = view.getInput();
 
             if (choice.equalsIgnoreCase("EXAMINE")) {
@@ -480,6 +480,7 @@ public class Controller {
                     movePlayerToPreviousRoom(); // return player to previous room
                 }
             } else {
+                System.out.println(model.getPlayer().getCurrRoom().getRoomName());
                 view.displayPuzzleIgnored(boundaryPuzzle);
                 movePlayerToPreviousRoom(); // return player to previous room
             }
@@ -502,6 +503,7 @@ public class Controller {
                     movePlayerToPreviousRoom(); // return player to previous room
                 }
             } else {
+                System.out.println(model.getPlayer().getCurrRoom().getRoomName());
                 view.displayPuzzleIgnored(lootNormalPuzzle);
                 movePlayerToPreviousRoom(); // return player to previous room
             }
@@ -515,7 +517,7 @@ public class Controller {
             model.getPlayer().setCurrRoom(previousRoom);
             view.displayReturnToPreviousRoom(previousRoom); // optional message
         } else {
-            view.displayMessage();
+            view.displayNoPrevRoom();
         }
     }
 
