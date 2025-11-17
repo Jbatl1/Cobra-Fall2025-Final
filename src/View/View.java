@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.Scanner;
 
-public class View {
+public class View {//Caleb Butler & Anita Philip & Kai Wiggins
     private JFrame frame;
     private JLabel label;
     private Scanner scanner;
@@ -133,7 +133,6 @@ public class View {
     public void displayExploreRoom(Room room) {  // Caleb
         System.out.println("🔍 Exploring " + room.getRoomName() + ":");
         System.out.println(room.getRoomDescription());
-        //System.out.println(room.getMonsters1(room));
 
         List<String> monsterNames = room.getMonsterNames();
         if (monsterNames.isEmpty()) {

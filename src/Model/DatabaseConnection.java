@@ -4,13 +4,13 @@ import java.sql.*;
 import java.io.File;
 
 
-public class DatabaseConnection {
+public class DatabaseConnection { // Anita Philip
 
         private static final String DB_FILE_NAME = "NEXUS-ESCAPE-DATABASE.db";
         private static Connection connection = null;
 
         // --- Public method to get connection ---
-        public static Connection connect() {
+        public static Connection connect() {// Anita Philip
             if (connection != null) {
                 return connection; // reuse the same connection
             }
@@ -41,7 +41,7 @@ public class DatabaseConnection {
         }
 
         // --- Recursive search for the database file ---
-        private static File findDatabase(File dir, String fileName) {
+        private static File findDatabase(File dir, String fileName) {// Anita Philip
             File[] files = dir.listFiles();
             if (files == null) return null;
 
@@ -57,7 +57,7 @@ public class DatabaseConnection {
         }
 
         // --- Optional: safely close connection when exiting the game ---
-        public static void close() {
+        public static void close() { // Anita Philip
             try {
                 if (connection != null && !connection.isClosed()) {
                     connection.close();

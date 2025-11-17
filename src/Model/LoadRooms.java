@@ -55,10 +55,10 @@ public class LoadRooms { //Anita Philip
 
             loadAllRooms(conn);
             loadAllItems(conn);
-            loadAllPuzzles(conn);  // load puzzles first
-            assignPuzzlesToRooms(); // Assign after items are loaded
+            loadAllPuzzles(conn);
+            assignPuzzlesToRooms();
             loadAllMonsters(conn);
-            assignMonstersToRooms(); // <-- Add this call here
+            assignMonstersToRooms();
             setupRoomExits();
             loadAllShops(conn);
 
@@ -354,7 +354,7 @@ public class LoadRooms { //Anita Philip
         }
     }
 
-    private void assignMonstersToRooms() {
+    private void assignMonstersToRooms() { // Anita Philip
         for (Monster m : monsters.values()) {
             Room r = roomsInfo.get(m.getRoomID());
             if (r != null) {
@@ -365,7 +365,7 @@ public class LoadRooms { //Anita Philip
 
     // ------------------ SHOPS ------------------
 
-    private void loadAllShops(Connection conn) throws Exception {
+    private void loadAllShops(Connection conn) throws Exception { //Caleb Butler
         // Map of item -> cost for all shops
         HashMap<Item, Integer> universalShopStock = new HashMap<>();
 
@@ -398,7 +398,7 @@ public class LoadRooms { //Anita Philip
     }
 
     // ------------------ ROOM EXITS ------------------
-    private void setupRoomExits() {
+    private void setupRoomExits() {// Anita Philip
         for (Room room : roomsInfo.values()) {
 
             String northID = room.getNorthNavigation();
@@ -420,6 +420,7 @@ public class LoadRooms { //Anita Philip
         }
     }
 
+    // Anita Philip
     public HashMap<String, Room> getRoomsInfo() {
         return roomsInfo;
     }
@@ -441,5 +442,4 @@ public class LoadRooms { //Anita Philip
     public Room getStartRoom() {
         return roomsInfo.get("SW1");
     }
-    //public HashMap<String, Monster> getMonstersInfo() {return monsters;}
 }

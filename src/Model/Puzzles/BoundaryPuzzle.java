@@ -4,15 +4,15 @@ import Model.Entities.Player;
 import Model.Items.Item;
 import Model.Rooms.Room;
 
-public class BoundaryPuzzle extends Puzzle {
+public class BoundaryPuzzle extends Puzzle { //Anita Philip
 
     public BoundaryPuzzle(String puzzleID, String puzzleQuestion, int puzzleMaxAttempts,
                           String puzzleSolution, Item reward, String roomID, String type) {
         super(puzzleID, puzzleQuestion, puzzleMaxAttempts, puzzleSolution, reward, roomID, type);
-    }
+    } //Anita Philip
 
     @Override
-    public int solvePuzzle(Room room, Player player, String userInput) {
+    public int solvePuzzle(Room room, Player player, String userInput) { //Anita Philip
         // Already solved
         if (isPuzzleIsSolved()) return 1;
 

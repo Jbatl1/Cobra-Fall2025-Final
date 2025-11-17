@@ -1,11 +1,11 @@
 package Model.Items;
 
-public class EnergyWeapon extends Weapon{
+public class EnergyWeapon extends Weapon{//Caleb Butler
     private int charge;
     private int maxCharge;
 
 
-    public EnergyWeapon(
+    public EnergyWeapon(//Caleb Butler
             String itemID,
             String roomID,
             String itemName,
