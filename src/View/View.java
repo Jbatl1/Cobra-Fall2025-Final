@@ -359,7 +359,11 @@ public class View {
 
         public void displayPuzzleSolved (Puzzle puzzle){//Anita Philip
             System.out.println("🧩 You have correctly solved the puzzle!");
-            System.out.println("Item ♦️ " + puzzle.getReward().getItemName() + " has been added to your inventory! ");
+            if (puzzle.getReward() != null) {
+                System.out.println("Item ♦️ " + puzzle.getReward().getItemName() + " has been added to your inventory! ");
+            } else {
+                System.out.println("This puzzle has no reward assigned.");
+            }
 
         }
 
@@ -368,12 +372,15 @@ public class View {
         }
 
         public static void displayPuzzleLocked (Puzzle puzzle){//Anita Philip
+
+
+        if(puzzle.getType().equalsIgnoreCase("normal") || puzzle.getType().equalsIgnoreCase("loot")){
+
+        }
             System.out.println("You have have failed to solve the puzzle! Leave and comeback to try again");
         }
 
-        public void displayPuzzleBlockedPickup (Item i){//Anita Philip
-            System.out.println("You cannot pick up " + i.getItemName() + " until the puzzle is solved.");
-        }
+
 
         public void displayPuzzleQuestion(Puzzle puzzle){//Anita Philip
             System.out.println("Puzzle Question: " + puzzle.getPuzzleQuestion());

@@ -39,9 +39,12 @@ public class Controller {
 
         int x;
         boolean rest = model.getPlayer().getCurrRoom().isRestRoom();
+        view.displayWelcome();
 
         while (!shop && !fight && !puzzle && !solvePuzzle) {
+            view.pointerForInput();
             String input = this.view.getInput().toUpperCase();
+
             String trim = "";
             switch (input) {
 
@@ -158,9 +161,30 @@ public class Controller {
                     this.view.displayUnEquipItem(x, trim);
                     break;
                 case String s when input.matches("^EXAMINE\\s.*$"): //Examine Item
-                    trim = s.substring(8).trim();
-                    x = this.model.getPlayer().isInInventory(trim);
-                    this.view.displayExamineItem(this.model.getPlayer().getInventory().get(x));
+                    trim = s.substring(8).trim();   // the thing the player wants to examine
+
+                    // 1. Try to see if it's a puzzle in the current room
+                    Puzzle roomPuzzle = this.model.getPlayer().getCurrRoom().getThePuzzle();
+                    if (roomPuzzle != null &&
+                            roomPuzzle.getPuzzleID().equalsIgnoreCase(trim)) {
+
+                        // Call your puzzle examine method
+                        this.view.displayNormalLootPuzzlePrompt(this.model.getPlayer().getCurrRoom());
+                        break;
+                    }
+
+                    // 2. Not a puzzle → check if it's an inventory item
+                    int index = this.model.getPlayer().isInInventory(trim);
+                    if (index != -1) {
+                        this.view.displayExamineItem(
+                                this.model.getPlayer().getInventory().get(index)
+                        );
+                        break;
+                    }
+
+                    // 3. Not found at all
+                    this.view.displayMessage1();
+
                     break;
                 case "TOOL BELT": // opens tool belt
                     this.view.displayToolbelt(this.model.getPlayer().getToolBelt());
@@ -232,16 +256,25 @@ public class Controller {
                     break;
                 case String s when input.matches("^INSPECT\\s.*$"): // shows monster name / desc / health / atk
                     x = this.model.getPlayer().getCurrRoom().getMonsterByName(s.substring(8).trim());
-                    if (x >= 0) {
+                    if (this.model.getPlayer().getCurrRoom().getMonsterByName(s) > 0) {
                         this.view.displayInspectMonster(this.model.getPlayer().getCurrRoom().getMonsters().get(x));
                     }
                     else {
                         this.view.displayMonsterNotFound(s.substring(8).trim());
                     }
                     break;
+                case "IGNORE": // ignore monster in room
+                    // idk if this is useful? they can just pick what monster to fight in the room
+                    break;
+
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
+//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
+//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
+//                    System.out.println("-------------------");
+//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
+
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
 
@@ -311,9 +344,6 @@ public class Controller {
                     currentMonster = null;
                     fight = false;
                     break;
-                case "EXAMINE":
-
-                    break;
                 case String s when input.matches("ADD.*?TOOL BELT"): // add item to tool belt
                     trim = s.substring(3, s.length() - 10).trim();
                     x = this.model.getPlayer().equipItemToToolBelt(trim);
@@ -328,7 +358,6 @@ public class Controller {
                     x = model.getPlayer().useToolBeltItem(Integer.parseInt(input) - 1);
                     view.displayToolBeltUse(x);
                     break;
-
                 default:
                     this.view.displayInvalidCommand();
                     break;
@@ -349,10 +378,6 @@ public class Controller {
             this.view.displayMonsterAttack(currentMonster.getName(), currentMonster.getAttackPower());
         }
 
-
-        // ===========================
-        //          SHOP LOOP
-        // ===========================
 
         while (shop) {
             String input = this.view.getInput().toUpperCase();
@@ -436,40 +461,56 @@ public class Controller {
         return puzzle.isPuzzleIsSolved();
     }
 
-    public void handleBoundaryPuzzle(Room room) {
+
+
+    public void handleBoundaryPuzzle(Room room) { //Anita Philip
         Puzzle boundaryPuzzle = room.getRoomPuzzle(); // One boundary puzzle per room
 
-        // Only handle unsolved boundary puzzles
         if (boundaryPuzzle != null
                 && !boundaryPuzzle.isPuzzleIsSolved()
                 && boundaryPuzzle.getType().equalsIgnoreCase("boundary")) {
 
-            view.displayBoundaryPuzzlePrompt(boundaryPuzzle); // "This room has a puzzle (Examine / Ignore)"
+            view.displayBoundaryPuzzlePrompt(boundaryPuzzle); // e.g., "This room has a puzzle (Examine / Ignore)"
             String choice = view.getInput();
 
             if (choice.equalsIgnoreCase("EXAMINE")) {
                 boolean solved = runPuzzleLoop(boundaryPuzzle);
-
                 if (!solved) {
                     // Player failed the puzzle; move back
                     view.displayPuzzleFailed(boundaryPuzzle);
-                    movePlayerToPreviousRoom();
+                    movePlayerToPreviousRoom(); // return player to previous room
                 }
-                // If solved, no need to move player; runPuzzleLoop already handles display
-            }
-            else if (choice.equalsIgnoreCase("IGNORE")) {
-                boundaryPuzzle.solvePuzzle(room, model.getPlayer(), "IGNORE"); // apply penalty
+            } else {
                 view.displayPuzzleIgnored(boundaryPuzzle);
-                movePlayerToPreviousRoom(); // move player back after ignoring
-            }
-            else {
-                // Optional: handle invalid input
-                view.displayInvalidCommand();
+                movePlayerToPreviousRoom(); // return player to previous room
             }
         }
     }
 
-    private void movePlayerToPreviousRoom() { //Anita Philip
+    public void handleLootNormalPuzzle(Room room) {
+        Puzzle lootNormalPuzzle = room.getThePuzzle();
+
+
+        //there is a puzzle and it's not solved
+        if(lootNormalPuzzle != null  && !lootNormalPuzzle.isPuzzleIsSolved() && (lootNormalPuzzle.getType().equalsIgnoreCase("normal") || lootNormalPuzzle.getType().equalsIgnoreCase("loot"))) {
+            view.displayNormalLootPuzzlePrompt(room);
+            String choice = view.getInput();
+
+            if (choice.equalsIgnoreCase("EXAMINE")) {
+                boolean solved = runPuzzleLoop(lootNormalPuzzle);
+                if (!solved) {
+                    view.displayPuzzleFailed(lootNormalPuzzle);
+                    movePlayerToPreviousRoom(); // return player to previous room
+                }
+            } else {
+                view.displayPuzzleIgnored(lootNormalPuzzle);
+                movePlayerToPreviousRoom(); // return player to previous room
+            }
+        }
+    }
+
+
+        private void movePlayerToPreviousRoom() { //Anita Philip
         Room previousRoom = model.getPlayer().getPrevRoom();
         if (previousRoom != null) {
             model.getPlayer().setCurrRoom(previousRoom);
