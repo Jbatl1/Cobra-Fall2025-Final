@@ -3,11 +3,12 @@ package Model.Rooms;
 //change planet to landing site, no collection, add desc to landing site (planet desc, boolean isAtlandingsite,
 //get other connections from other landing sites, and other rooms in that landing
 //hashmap for landsite connections and hashmap for rooms and landsite connections
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LandingSite extends Room{ //Caleb Butler & My Tran
+public class LandingSite extends Room implements Serializable {
     // Connections to other landing sites and rooms
     private Map<String, LandingSite> landingSiteConnections;
 

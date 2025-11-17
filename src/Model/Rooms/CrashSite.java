@@ -3,9 +3,10 @@ package Model.Rooms;
 import Model.Entities.Player;
 import Model.Items.Item;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CrashSite extends LandingSite{ //Caleb Butler
+public class CrashSite extends LandingSite implements Serializable {
 
     private ArrayList<Item> shipStorage;
 

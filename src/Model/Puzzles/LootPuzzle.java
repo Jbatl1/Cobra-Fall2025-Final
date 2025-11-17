@@ -4,7 +4,9 @@ import Model.Entities.Player;
 import Model.Items.Item;
 import Model.Rooms.Room;
 
-public class LootPuzzle extends Puzzle{ //Anita Philip
+import java.io.Serializable;
+
+public class LootPuzzle extends Puzzle implements Serializable {
 
 
     private int puzzleMaxAttempts;

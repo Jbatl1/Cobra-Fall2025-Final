@@ -1,12 +1,14 @@
 package Model.Entities;
 
+import java.io.Serializable;
+
 /**
  * Base class for all living entities (Players, Monsters, NPCs).
  * Handles shared logic for health, attack, and defense.
  * No print statements — View layer handles all output.
  */
 
-public abstract class Entity { //Kai Wiggins
+public abstract class Entity implements Serializable {
 
     // ==============================
     // Fields
@@ -45,6 +47,17 @@ public abstract class Entity { //Kai Wiggins
         return defense;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setAttackPower(int attackPower) {
+        this.attackPower = attackPower;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
 
     // ==============================
     // Core Combat Logic
