@@ -1,5 +1,6 @@
 package Model.Rooms;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.Map;
 
 //items --> roomItems
 //getName() --> getItemName
-public class Room {// Anita Philip
+public class Room implements Serializable {
     private String roomID;
     private String roomName;
     private String roomDescription;

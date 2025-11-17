@@ -3,7 +3,9 @@ package Model.Entities;
 import Model.Rooms.Room;
 import Model.Items.Item;
 
-public class Monster extends Entity { //Kai Wiggins
+import java.io.Serializable;
+
+public class Monster extends Entity implements Serializable {
 
 
     // Fields
@@ -33,14 +35,59 @@ public class Monster extends Entity { //Kai Wiggins
         this.currentRoom = currentRoom;  // actual Room object
     }
 
+   /* public Monster(String name, int health, int attackPower, String monsterID, String abilityEffect, String roomID, String description, boolean isBoss, Item dropItem, boolean isRaider, Room currentRoom) {
+        super(name, health, attackPower);
+        this.monsterID = monsterID;
+        this.abilityEffect = abilityEffect;
+        this.roomID = roomID;
+        this.description = description;
+        this.isBoss = isBoss;
+        this.dropItem = dropItem;
+        this.isRaider = isRaider;
+        this.currentRoom = currentRoom;
+    }
 
-    // Getters / Setters - //Kai Wiggins
+    // Constructor
+    public Monster(String name, int health, int attackPower, int defense,
+                   String monsterID, String abilityEffect, Item dropItem,
+                   boolean isBoss, boolean isRaider, Room currentRoom) {
+        // Call the 3-parameter Entity constructor
+        super(name, health, attackPower);
+
+        // Manually set defense because Entity doesn't take defense in the constructor
+        this.defense = defense;
+
+        this.monsterID = monsterID;
+        this.abilityEffect = abilityEffect;
+        this.dropItem = dropItem;
+        this.isBoss = isBoss;
+        this.isRaider = isRaider;
+        this.currentRoom = currentRoom;
+    }*/
+
+    // Getters / Setters
     public String getMonsterID() {
         return monsterID;
     }
 
+    public String getAbilityEffect() {
+        return abilityEffect;
+    }
+
     public Item getDropItem() {
         return dropItem;
+    }
+
+    public boolean isBoss() {
+        return isBoss;
+    }
+
+    public boolean isRaider() {
+        return isRaider;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
     }
 
     public String getRoomID() {
@@ -57,6 +104,11 @@ public class Monster extends Entity { //Kai Wiggins
         this.roomID = roomID;
     }
 
+    public void attackPlayer(Player player) {
+        int damage = Math.max(0, attackPower - player.getDefense());
+        player.receiveDamage(damage);
+        System.out.println(name + " attacks " + player.getName() + " for " + damage + " damage!");
+    }
 
     public int receiveDamage(int amount) {
         int damageTaken = Math.max(0, amount - defense);

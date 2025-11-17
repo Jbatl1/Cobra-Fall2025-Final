@@ -1,5 +1,6 @@
 package Model.Entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ import Model.Puzzles.Puzzle;
  * Player entity. Uses Entity's health/attack/defense fields and methods.
  * Model contains no printing; View handles output.
  */
-public class Player extends Entity { //Kai Wiggins & Caleb Butler
+public class Player extends Entity implements Serializable {
 
     // ==============================
     // Fields
@@ -409,7 +410,7 @@ public class Player extends Entity { //Kai Wiggins & Caleb Butler
         return -1; // item not in inventory
     }
 
-    public int storeItemInCrashedShip(String item) { //Caleb Butler
+    public int storeItemInCrashedShip(String item) {
         if (!(this.currRoom instanceof CrashSite)) return -3; // not at crash site
         int idx = isInInventory(item);
         if (idx >= 0) {
@@ -421,7 +422,7 @@ public class Player extends Entity { //Kai Wiggins & Caleb Butler
 
     }
 
-    public int getFromCrashedShip(String item) { //Caleb Butler
+    public int getFromCrashedShip(String item) { // Caleb
         if (!(this.currRoom instanceof CrashSite)) return -2; // not at crash site
         ArrayList<Item> crashStorage = ((CrashSite) this.currRoom).getShipStorage();
         if (crashStorage.isEmpty()) return -3; // crash ship storage empty
@@ -435,7 +436,7 @@ public class Player extends Entity { //Kai Wiggins & Caleb Butler
         return -1; // item not in crash ship storage
     }
 
-    public int getFromShip(String item) {  //Caleb Butler
+    public int getFromShip(String item) { // Caleb
         if (!(this.currRoom instanceof LandingSite)) return -2; // not at landing site
         if (shipStorage.isEmpty()) return -3; // ship storage empty
         for (int i = 0; i < shipStorage.size(); i++) {
@@ -448,3 +449,4 @@ public class Player extends Entity { //Kai Wiggins & Caleb Butler
         return -1; // item not in ship storage
     }
 }
+///need a arraylist with a ship capacity of 20 items, we going to need a method in the player class to move to a different landing site which will take in a string called landingsite, its going to check if they current room is a landingsite, we also need to check if its an existing landingsite, if it exist update player room to the new landingsite, if its false return -1, if true return 1, if not in landingsite from the start return -2.

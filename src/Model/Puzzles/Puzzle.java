@@ -4,7 +4,9 @@ import Model.Entities.Player;
 import Model.Items.Item;
 import Model.Rooms.Room;
 
-public class Puzzle { //Anita Philip
+import java.io.Serializable;
+
+public class Puzzle implements Serializable {
 
     private String puzzleID;
     private String puzzleQuestion;
@@ -20,7 +22,7 @@ public class Puzzle { //Anita Philip
 
     // Constructor
     public Puzzle(String puzzleID, String puzzleQuestion, int puzzleMaxAttempts,
-                  String puzzleSolution, Item reward, String roomID, String type) { //Anita Philip
+                  String puzzleSolution, Item reward, String roomID, String type) {
         this.puzzleID = puzzleID;
         this.puzzleQuestion = puzzleQuestion;
         this.puzzleMaxAttempts = puzzleMaxAttempts;

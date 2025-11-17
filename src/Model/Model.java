@@ -4,10 +4,12 @@ import Model.Entities.Player;
 import Model.Items.Item;
 import Model.Puzzles.Puzzle;
 import Model.Rooms.Room;
+//import jdk.graal.compiler.options.OptionDescriptors;
 
 import java.util.HashMap;
+import java.io.Serializable;
 
-public class Model { // Anita Philip & Caleb Butler
+public class Model implements Serializable {
     private Player player;
     private HashMap<String, Item> items = new HashMap<>();
     private HashMap<String, Puzzle> puzzles = new HashMap<>();
@@ -53,4 +55,6 @@ public class Model { // Anita Philip & Caleb Butler
             System.out.println("You don't have a " + itemName + " in your inventory");
         }
     }
+
+
 }

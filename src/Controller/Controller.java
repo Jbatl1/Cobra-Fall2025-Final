@@ -10,11 +10,12 @@ import Model.Rooms.Room;
 import View.View;
 import Model.Puzzles.Puzzle;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Controller { //Caleb Butler
+public class Controller implements Serializable {
     private Model model;
     private View view;
 
@@ -29,16 +30,17 @@ public class Controller { //Caleb Butler
     private String currentPlanet = "Survivors World";
 
 
-    public Controller(Model model, View view) { //Caleb Butler
+    public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
     }
 
 
-    public void processInput () { //Caleb Butler
+    public void processInput () { // Caleb
 
         int x;
         boolean rest = model.getPlayer().getCurrRoom().isRestRoom();
+
 
         while (!shop && !fight && !puzzle && !solvePuzzle) {
             view.pointerForInput();
@@ -46,6 +48,16 @@ public class Controller { //Caleb Butler
 
             String trim = "";
             switch (input) {
+                case "QUIT":
+                    try (FileOutputStream file = new FileOutputStream("game.dat")) {
+                        ObjectOutputStream out = new ObjectOutputStream(file);
+                        out.writeObject(this);
+                        System.out.println("Game data serialized.");
+                        System.exit(0);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
 
                 // MOVEMENT----------------------
                 case "N": // move north
@@ -60,6 +72,7 @@ public class Controller { //Caleb Butler
                     }
                     if (x == -2) {
                         puzzle = true;
+                       //currentPuzzle = model.getPlayer().getCurrRoom().getExits("N").getBoundaryPuzzle();
                          currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("N", model.getRooms());
                     }
                     break;
@@ -75,6 +88,7 @@ public class Controller { //Caleb Butler
                     }
                     if (x == -2) {
                         puzzle = true;
+                       // currentPuzzle = model.getPlayer().getCurrRoom().getExits("E").getBoundaryPuzzle();
                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("E", model.getRooms());
                     }
                     break;
@@ -90,6 +104,7 @@ public class Controller { //Caleb Butler
                     }
                     if (x == -2) {
                         puzzle = true;
+                        //currentPuzzle = model.getPlayer().getCurrRoom().getExits("S").getBoundaryPuzzle();
                          currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("S", model.getRooms());
                     }
                     break;
@@ -105,6 +120,7 @@ public class Controller { //Caleb Butler
                     }
                     if (x == -2) {
                         puzzle = true;
+                      //  currentPuzzle = model.getPlayer().getCurrRoom().getExits("W").getBoundaryPuzzle();
                         currentPuzzle = model.getPlayer().getCurrRoom().getBoundaryPuzzleInDirection("W", model.getRooms());
                     }
                     break;
@@ -139,6 +155,7 @@ public class Controller { //Caleb Butler
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item //Anita Philip lines 104 - 146
                     x = this.model.getPlayer().pickupItem(s.substring(7).trim());
                     view.displayItemPickup(x, s);
+                    String itemNameToPickup = input.substring(7).trim();
                     break;
                 case String s when input.matches("^DROP\\s.*$"): // drop item
                     x = this.model.getPlayer().dropItem(s.substring(5).trim());
@@ -249,19 +266,25 @@ public class Controller { //Caleb Butler
                     }
                     break;
                 case String s when input.matches("^INSPECT\\s.*$"): // shows monster name / desc / health / atk
-                    trim = s.substring(8).trim();
-                    x = this.model.getPlayer().getCurrRoom().getMonsterByName(trim);
-                    if (x >= 0) {
+                    x = this.model.getPlayer().getCurrRoom().getMonsterByName(s.substring(8).trim());
+                    if (this.model.getPlayer().getCurrRoom().getMonsterByName(s) > 0) {
                         this.view.displayInspectMonster(this.model.getPlayer().getCurrRoom().getMonsters().get(x));
                     }
                     else {
                         this.view.displayMonsterNotFound(s.substring(8).trim());
                     }
                     break;
+                case "IGNORE": // ignore monster in room
+                    // idk if this is useful? they can just pick what monster to fight in the room
+                    break;
 
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
+//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
+//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
+//                    System.out.println("-------------------");
+//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
 
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
@@ -302,7 +325,7 @@ public class Controller { //Caleb Butler
         // ================================
         //          FIGHT LOOP
         // ================================
-        while (fight) { //Caleb Butler
+        while (fight) {
 
             if (this.model.getPlayer().getHealth() <= 0) {
                 this.view.displayDefeat();
@@ -371,8 +394,7 @@ public class Controller { //Caleb Butler
                 break;
             }
 
-            x = this.model.getPlayer().receiveDamage(currentMonster.getAttackPower());
-            this.view.displayTakenDamageFromMonster(model.getPlayer(), x);
+            this.model.getPlayer().receiveDamage(currentMonster.getAttackPower());
             this.view.displayMonsterAttack(currentMonster.getName(), currentMonster.getAttackPower());
         }
 
@@ -415,6 +437,26 @@ public class Controller { //Caleb Butler
         }
     }
 
+    /*private List<Puzzle> getItemPuzzlesForCurrentRoom(Item item) { //Anita Philip
+        List<Puzzle> relevant = new ArrayList<>();
+        if (item.getPuzzleIDs() == null) return relevant;
+
+        String currentRoomId = model.getPlayer().getCurrRoom().getRoomID();
+
+        for (String pid : item.getPuzzleIDs()) {
+            Puzzle p = model.getPuzzles().get(pid);
+            if (p != null && p.getRoomID().equals(currentRoomId)) {
+                relevant.add(p);
+            }
+        }
+        return relevant;  //Only returns puzzles attached to this item in the current room.
+    }*/
+
+/*
+     * Runs the puzzle solving loop for a specific puzzle.
+     * Returns true if puzzle solved, false if failed or locked.
+*/
+
 
     private boolean runPuzzleLoop(Puzzle puzzle, String answer) {
         while (!puzzle.isPuzzleIsSolved()) {
@@ -441,13 +483,16 @@ public class Controller { //Caleb Butler
 
                 case -1: // Locked
                     view.displayPuzzleFailed(puzzle);
+               /* case -1: // Locked, invalid, or no attempts left
+                default:
+                    view.displayPuzzleLocked(puzzle);*/
                     return false;
             }
         }
         return puzzle.isPuzzleIsSolved();
     }
 
-    private boolean runBoundaryPuzzleLoop(Puzzle puzzle) { //Caleb Butler
+    private boolean runBoundaryPuzzleLoop(Puzzle puzzle) { //Anita Philip
         view.displayPuzzleQuestion(puzzle);
         while (!puzzle.isPuzzleIsSolved() && !puzzle.isPuzzleLocked()) {
             String input = view.getInput();
@@ -474,7 +519,7 @@ public class Controller { //Caleb Butler
 
 
 
-    public void handleBoundaryPuzzle(Room room) { //Caleb Butler
+    public void handleBoundaryPuzzle(Room room) { //Anita Philip
         Puzzle boundaryPuzzle = room.getRoomPuzzle(); // One boundary puzzle per room
 
         if (boundaryPuzzle != null
@@ -499,7 +544,7 @@ public class Controller { //Caleb Butler
         }
     }
 
-    public void handleLootNormalPuzzle(Room room) { //Anita Philip
+    public void handleLootNormalPuzzle(Room room) {
         Puzzle lootNormalPuzzle = room.getThePuzzle();
 
         // Only proceed if there is a loot/normal puzzle not yet solved
@@ -531,8 +576,14 @@ public class Controller { //Caleb Butler
             } else {
                 solved = runPuzzleLoop(lootNormalPuzzle, choice); // treat any other word as answer
             }
+/*
+            // Only display failed message if not solved
+            if (!solved) {
+                view.displayPuzzleFailed(lootNormalPuzzle);
+            }*/
         }
     }
+
 
         private void movePlayerToPreviousRoom() { //Anita Philip
         Room previousRoom = model.getPlayer().getPrevRoom();
@@ -543,6 +594,7 @@ public class Controller { //Caleb Butler
             view.displayMessage();
         }
     }
+
 
 
 }
