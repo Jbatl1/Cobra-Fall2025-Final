@@ -8,11 +8,4 @@ public class Material extends Item {
         this.damageIncrease = itemUpgrade;
     }
 
-    public int getDamageIncrease() {
-        return damageIncrease;
-    }
-
-    public void setDamageIncrease(int damageIncrease) {
-        this.damageIncrease = damageIncrease;
-    }
 }

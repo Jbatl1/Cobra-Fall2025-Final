@@ -328,6 +328,7 @@ public class Player extends Entity {
         }
 
         this.inventory.add(item);
+        this.gold -= item.getCost();
         return item.getCost();
     }
 
@@ -356,13 +357,6 @@ public class Player extends Entity {
     // ==============================
     // Puzzle Interaction
     // ==============================
-    public void examinePuzzle(Puzzle p) {
-        // logic-only; View handles display
-    }
-
-    public void skipPuzzle(Puzzle p) {
-        receiveDamage(10);
-    }
 
 
     // ==============================

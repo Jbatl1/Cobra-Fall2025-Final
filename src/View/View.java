@@ -102,12 +102,6 @@ public class View {
         System.out.println("Current HP: " + player.getHealth());
     }
 
-    public void displayFightSummary(Player player, Monster monster) {  // Caleb
-        System.out.println("⚔️ Combat Summary:");
-        System.out.println("  " + player.getClass().getSimpleName() + " HP: " + player.getHealth());
-        System.out.println("  " + monster.getName() + " HP: " + monster.getHealth());
-        printSeparator();
-    }
 
     public void displayDefeat() {  // Caleb
         System.out.println("💀 You were defeated! You lost your equipped item...");
@@ -191,7 +185,7 @@ public class View {
 
     public void displayPurchaseItem(int x, String s) {  // Caleb
         if (x < 0) {
-            System.out.println("❗ You don't have enough gold to buy" + s + ".");
+            System.out.println("❗ You don't have enough gold to buy " + s + ".");
         } else {
             System.out.println("💰 You purchased " + s + " for " + x + " gold.");
         }
@@ -225,9 +219,6 @@ public class View {
     // Inventory / Items
     // ==============================
 
-    public void displayItemNotFound(Item item ){
-        System.out.println("Sorry could not find item");
-    }
 
     public void displayItemPickup(int x, String itemName) { //caleb
         switch (x) {
@@ -391,10 +382,6 @@ public class View {
         public void displayMessage1 () {//Anita Philip
         System.out.println("Can't examine");
          }
-
-    public void displayPuzzleChoice () {
-        System.out.println("Type 'EXAMINE' to try solving the puzzle or 'IGNORE' to leave it.");
-    }
 
          //------------------------------------------------------------------------------------
          //------------------------------------------------------------------------------------

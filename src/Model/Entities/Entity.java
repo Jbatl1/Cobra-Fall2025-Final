@@ -45,17 +45,6 @@ public abstract class Entity {
         return defense;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void setAttackPower(int attackPower) {
-        this.attackPower = attackPower;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
 
     // ==============================
     // Core Combat Logic

@@ -420,23 +420,10 @@ public class LoadRooms { //Anita Philip
         }
     }
 
-    public HashMap<String, Room> getRoomsInfo() {
-        return roomsInfo;
-    }
-    public HashMap<String, Puzzle> getPuzzles() {return puzzles;}
     public HashMap<String, Monster> getMonsters() {return monsters;}
     public HashMap<String, Puzzle> getAllPuzzles() {return allPuzzles;}
-    public HashMap<String, Puzzle> getBoundaryPuzzles() {return boundaryPuzzles;}
-    public HashMap<String, Puzzle> getNormalPuzzles() {return normalPuzzles;}
-    public HashMap<String, Puzzle> getLootPuzzles() {return lootPuzzles;}
     public HashMap<String, Item> getItems() {
         return items;
-    }
-    public HashMap<String, Player> getPlayer1() {
-        return player1;
-    }
-    public HashMap<String, Integer> getInventory() {
-        return inventory;
     }
     public Room getStartRoom() {
         return roomsInfo.get("SW1");

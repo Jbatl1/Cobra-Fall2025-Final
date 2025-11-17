@@ -61,19 +61,6 @@ public  class Item { //Anita Philip
         }
     }
 
-    public List<Puzzle> getLootPuzzles() { //Anita Philip
-        if (lootPuzzles == null) {
-            lootPuzzles = new ArrayList<>();
-        }
-        return lootPuzzles;
-    }
-
-    public void clearLootPuzzles() { //Anita Philip
-        if (lootPuzzles != null) {
-            lootPuzzles.clear();
-        }
-    }
-
     public int getCost() { return cost; }
 
 }

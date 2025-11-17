@@ -68,24 +68,8 @@ public class Monster extends Entity {
         return monsterID;
     }
 
-    public String getAbilityEffect() {
-        return abilityEffect;
-    }
-
     public Item getDropItem() {
         return dropItem;
-    }
-
-    public boolean isBoss() {
-        return isBoss;
-    }
-
-    public boolean isRaider() {
-        return isRaider;
-    }
-
-    public Room getCurrentRoom() {
-        return currentRoom;
     }
 
     public String getRoomID() {
@@ -102,11 +86,6 @@ public class Monster extends Entity {
         this.roomID = roomID;
     }
 
-    public void attackPlayer(Player player) {
-        int damage = Math.max(0, attackPower - player.getDefense());
-        player.receiveDamage(damage);
-        System.out.println(name + " attacks " + player.getName() + " for " + damage + " damage!");
-    }
 
     public void receiveDamage(int amount) {
         int damageTaken = Math.max(0, amount - defense);
@@ -118,19 +97,5 @@ public class Monster extends Entity {
         }
     }
 
-
-    // Rewards / Flee
-
-    public Item getReward() {
-        if (health <= 0 && dropItem != null) {
-            System.out.println(name + " dropped: " + dropItem.getItemName());
-            return dropItem;
-        }
-        return null;
-    }
-
-    public boolean canFlee() {
-        return !isBoss;
-    }
 }
 

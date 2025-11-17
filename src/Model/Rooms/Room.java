@@ -78,10 +78,6 @@ public class Room {
         return roomDescription;
     }
 
-    public String getRoomType() {
-        return roomType;
-    }
-
     public Puzzle getRoomPuzzle() {return roomPuzzle;}
 
     public String getNorthNavigation() {
@@ -99,11 +95,6 @@ public class Room {
     public String getWestNavigation() {
         return westNavigation;
     }
-
-    public boolean isRoomVisited() {
-        return roomVisited;
-    }
-
 
 
 
@@ -148,10 +139,6 @@ public class Room {
         }
         }
 
-        public boolean isRaider () {
-            return isRaider;
-        }
-
         public boolean isShop () {
             return isShop;
         }
@@ -169,16 +156,6 @@ public class Room {
             }
             return null;
         }
-
-    public String getMonsters1(Room room) {
-
-        for (Monster m : Main.M.getMonsters().values()) { // monsters should return
-            if (m.getRoomID().equalsIgnoreCase(room.getRoomID())){
-                return m.getName();
-            }
-        }
-        return null;
-    }
 
     public List<Monster> getMonsters() {
         return monsters;
@@ -210,20 +187,6 @@ public class Room {
         }
         return names;
     }
-
-  /*  public List<String> getPuzzleNames() {
-        List<String> puzzleNames = new ArrayList<>();
-
-        for (Puzzle p : Main.M.getAllPuzzles().values()) { // <--- use getAllPuzzles()
-            if (this.roomID.equals(p.getRoomID())) {
-                if (p.getType().equalsIgnoreCase("Normal") || p.getType().equalsIgnoreCase("Loot")) {
-                    puzzleNames.add(p.getPuzzleQuestion());
-                }
-            }
-        }
-        return puzzleNames;
-    }
-*/
 
     public List<String> getPuzzleNames() {
         List<String> puzzleNames = new ArrayList<>();
@@ -281,14 +244,6 @@ public class Room {
     }
 
 
-
-    public String monsterInRoom() {
-
-        for (Monster m : monsters) { // monsters should return
-            return m.getName();
-        }
-        return null;
-    }
 
     public void removeMonster(Monster monster) {
         if (monster == null || monsters == null) return;
