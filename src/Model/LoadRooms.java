@@ -54,8 +54,8 @@ public class LoadRooms { //Anita Philip
         try (Connection conn = DatabaseConnection.connect()) {
 
             loadAllRooms(conn);
-            loadAllPuzzles(conn);  // load puzzles first
             loadAllItems(conn);
+            loadAllPuzzles(conn);  // load puzzles first
             assignPuzzlesToRooms(); // Assign after items are loaded
             loadAllMonsters(conn);
             assignMonstersToRooms(); // <-- Add this call here
