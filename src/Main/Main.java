@@ -20,7 +20,7 @@ public class Main {
        M.loadRooms();
 
         Controller controller = new Controller(new Model(new Player(M.getStartRoom(), "Player", 100, 10, (Weapon) M.getItems().get("ar_rSword"))), new View());
-
+        System.out.println("WELCOME TO NEXUS ESCAPE! (N,E,S,W)" + '\n');
         while (true) {
             controller.processInput();
         }

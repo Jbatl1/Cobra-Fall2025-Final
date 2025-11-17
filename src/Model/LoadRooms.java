@@ -3,6 +3,8 @@ package Model;
 import Model.Entities.Monster;
 import Model.Entities.Player;
 import Model.Items.*;
+import Model.Puzzles.BoundaryPuzzle;
+import Model.Puzzles.LootPuzzle;
 import Model.Puzzles.Puzzle;
 import Model.Rooms.CrashSite;
 import Model.Rooms.LandingSite;
@@ -248,25 +250,53 @@ public class LoadRooms { //Anita Philip
             String rewardItemID = rs.getString("Reward");
             Item rewardItem = items.get(rewardItemID);
 
-            Puzzle puzzle = new Puzzle(
-                    rs.getString("PuzzleID"),
-                    rs.getString("Question"),
-                    rs.getInt("Attempts"),
-                    rs.getString("Solution"),
-                    rewardItem,
-                    rs.getString("RoomID"),
-                    rs.getString("Type")
-            );
-
-            allPuzzles.put(puzzle.getPuzzleID(), puzzle);
-
-            // Sort by type
-            switch (puzzle.getType().toLowerCase()) {
-                case "boundary": boundaryPuzzles.put(puzzle.getPuzzleID(), puzzle); break;
-                case "normal": normalPuzzles.put(puzzle.getPuzzleID(), puzzle); break;
-                case "loot": lootPuzzles.put(puzzle.getPuzzleID(), puzzle); break;
-                default: System.out.println("WARNING: Unknown puzzle type: " + puzzle.getType());
+            if (rs.getString("Type").equalsIgnoreCase("Boundary")) {
+                BoundaryPuzzle puzzle = new BoundaryPuzzle(
+                        rs.getString("PuzzleID"),
+                        rs.getString("Question"),
+                        rs.getInt("Attempts"),
+                        rs.getString("Solution"),
+                        rewardItem,
+                        rs.getString("RoomID"),
+                        rs.getString("Type")
+                );
+                allPuzzles.put(puzzle.getPuzzleID(), puzzle);
             }
+            else if(rs.getString("Type").equalsIgnoreCase("Loot")) {
+                LootPuzzle puzzle = new LootPuzzle(
+                        rs.getString("PuzzleID"),
+                        rs.getString("Question"),
+                        rs.getInt("Attempts"),
+                        rs.getString("Solution"),
+                        rewardItem,
+                        rs.getString("RoomID"),
+                        rs.getString("Type")
+                );
+                allPuzzles.put(puzzle.getPuzzleID(), puzzle);
+            }
+            else {
+                Puzzle puzzle = new Puzzle(
+                        rs.getString("PuzzleID"),
+                        rs.getString("Question"),
+                        rs.getInt("Attempts"),
+                        rs.getString("Solution"),
+                        rewardItem,
+                        rs.getString("RoomID"),
+                        rs.getString("Type")
+                );
+                allPuzzles.put(puzzle.getPuzzleID(), puzzle);
+            }
+
+            for (Puzzle puzzle : allPuzzles.values()) {
+                switch (puzzle.getType().toLowerCase()) {
+                    case "boundary": boundaryPuzzles.put(puzzle.getPuzzleID(), puzzle); break;
+                    case "normal": normalPuzzles.put(puzzle.getPuzzleID(), puzzle); break;
+                    case "loot": lootPuzzles.put(puzzle.getPuzzleID(), puzzle); break;
+                    default: System.out.println("WARNING: Unknown puzzle type: " + puzzle.getType());
+                }
+            }
+            // Sort by type
+
         }
     }
     // ------------------ ASSIGN PUZZLES TO ROOMS ------------------

@@ -3,6 +3,7 @@ package Controller;
 import Model.Entities.Monster;
 import Model.Items.Item;
 import Model.Model;
+import Model.Puzzles.BoundaryPuzzle;
 import Model.Rooms.CrashSite;
 import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
@@ -38,7 +39,7 @@ public class Controller {
 
         int x;
         boolean rest = model.getPlayer().getCurrRoom().isRestRoom();
-        view.displayWelcome();
+
 
         while (!shop && !fight && !puzzle && !solvePuzzle) {
             view.pointerForInput();
@@ -220,7 +221,7 @@ public class Controller {
                         this.view.displayShipInv(((CrashSite) this.model.getPlayer().getCurrRoom()).getShipStorage());
                     }
                     break;
-                case String s when input.matches("GET.*?CRASHED_SHIP"): ;
+                case String s when input.matches("GET.*?CRASHED SHIP"): ;
                     trim = s.substring(4, s.length() - 12).trim();
                     x = this.model.getPlayer().getFromCrashedShip(trim);
                     this.view.displayGetFromCrashedShip(x, trim);
@@ -230,7 +231,7 @@ public class Controller {
                     x = this.model.getPlayer().getFromShip(trim);
                     this.view.displayGetFromShip(x, trim);
                     break;
-                case String s when input.matches("STORE.*?CRASHED_SHIP"): ;
+                case String s when input.matches("STORE.*?CRASHED SHIP"): ;
                     trim = s.substring(6, s.length() - 12).trim();
                     x = this.model.getPlayer().storeItemInCrashedShip(trim);
                     this.view.displayStoreInCrashedShip(x, trim);
@@ -269,10 +270,6 @@ public class Controller {
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
-//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
-//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
-//                    System.out.println("-------------------");
-//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
 
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
@@ -297,6 +294,9 @@ public class Controller {
                     else {
                         this.view.displayNotInShop();
                     }
+                    break;
+                case "HELP":
+                    view.displayHelp();
                     break;
                 default:
                     this.view.displayInvalidCommand();
@@ -436,10 +436,10 @@ public class Controller {
 
     private boolean runPuzzleLoop(Puzzle puzzle) { //Anita Philip
         view.displayPuzzleQuestion(puzzle);
-
+        System.out.println(puzzle.getType());
         while (!puzzle.isPuzzleIsSolved() && !puzzle.isPuzzleLocked()) {
             String input = view.getInput();
-            int result = puzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), input);
+            int result =  puzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), input);
 
             switch (result) {
                 case 1: // Solved
@@ -469,7 +469,7 @@ public class Controller {
                 && !boundaryPuzzle.isPuzzleIsSolved()
                 && boundaryPuzzle.getType().equalsIgnoreCase("boundary")) {
 
-            view.displayBoundaryPuzzlePrompt(boundaryPuzzle); // e.g., "This room has a puzzle (Examine / Ignore)"
+            view.displayPuzzleChoice(); // e.g., "This room has a puzzle (Examine / Ignore)"
             String choice = view.getInput();
 
             if (choice.equalsIgnoreCase("EXAMINE")) {
@@ -480,6 +480,7 @@ public class Controller {
                     movePlayerToPreviousRoom(); // return player to previous room
                 }
             } else {
+                System.out.println(model.getPlayer().getCurrRoom().getRoomName());
                 view.displayPuzzleIgnored(boundaryPuzzle);
                 movePlayerToPreviousRoom(); // return player to previous room
             }
@@ -502,6 +503,7 @@ public class Controller {
                     movePlayerToPreviousRoom(); // return player to previous room
                 }
             } else {
+                System.out.println(model.getPlayer().getCurrRoom().getRoomName());
                 view.displayPuzzleIgnored(lootNormalPuzzle);
                 movePlayerToPreviousRoom(); // return player to previous room
             }
@@ -515,10 +517,8 @@ public class Controller {
             model.getPlayer().setCurrRoom(previousRoom);
             view.displayReturnToPreviousRoom(previousRoom); // optional message
         } else {
-            view.displayMessage();
+            view.displayNoPrevRoom();
         }
     }
-
-
 
 }
