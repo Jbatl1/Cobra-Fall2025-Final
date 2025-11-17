@@ -4,7 +4,9 @@ import Model.Entities.Player;
 import Model.Items.Item;
 import Model.Rooms.Room;
 
-public class BoundaryPuzzle extends Puzzle {
+import java.io.Serializable;
+
+public class BoundaryPuzzle extends Puzzle implements Serializable {
 
     public BoundaryPuzzle(String puzzleID, String puzzleQuestion, int puzzleMaxAttempts,
                           String puzzleSolution, Item reward, String roomID, String type) {

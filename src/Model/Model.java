@@ -6,8 +6,9 @@ import Model.Puzzles.Puzzle;
 import Model.Rooms.Room;
 
 import java.util.HashMap;
+import java.io.Serializable;
 
-public class Model {
+public class Model implements Serializable {
     private Player player;
     private HashMap<String, Item> items = new HashMap<>();
     private HashMap<String, Puzzle> puzzles = new HashMap<>();

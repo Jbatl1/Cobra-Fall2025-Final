@@ -1,6 +1,8 @@
 package Model.Items;
 
-public class EnergyWeapon extends Weapon{
+import java.io.Serializable;
+
+public class EnergyWeapon extends Weapon implements Serializable {
     private int charge;
     private int maxCharge;
 

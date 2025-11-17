@@ -10,14 +10,14 @@ import Model.Rooms.Room;
 import View.View;
 import Model.Puzzles.Puzzle;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Controller {
+public class Controller implements Serializable {
     private Model model;
     private View view;
-
 
     private boolean shop; // just declare, no initialization
 
@@ -47,6 +47,16 @@ public class Controller {
 
             String trim = "";
             switch (input) {
+                case "QUIT":
+                    try (FileOutputStream file = new FileOutputStream("game.dat")) {
+                        ObjectOutputStream out = new ObjectOutputStream(file);
+                        out.writeObject(this);
+                        System.out.println("Game data serialized.");
+                        System.exit(0);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
 
                 // MOVEMENT----------------------
                 case "N": // move north

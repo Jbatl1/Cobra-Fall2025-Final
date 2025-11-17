@@ -1,6 +1,8 @@
 package Model.Items;
 
-public class Consumable extends Item{
+import java.io.Serializable;
+
+public class Consumable extends Item implements Serializable {
     private int health;
     private int amount;
 

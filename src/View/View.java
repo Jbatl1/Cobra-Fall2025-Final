@@ -8,21 +8,23 @@ import Model.Items.Item;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 import java.util.Scanner;
 
-public class View {
-    private JFrame frame;
-    private JLabel label;
-    private Scanner scanner;
+public class View implements Serializable {
+    private transient JFrame frame;
+    private transient JLabel label;
+    private transient Scanner scanner;
 
     public View() {
         scanner = new Scanner(System.in);
     }
 
     public String getInput() {
+        if (scanner == null) scanner = new Scanner(System.in);
         return scanner.nextLine().trim().toUpperCase();
     }
 

@@ -1,12 +1,14 @@
 package Model.Entities;
 
+import java.io.Serializable;
+
 /**
  * Base class for all living entities (Players, Monsters, NPCs).
  * Handles shared logic for health, attack, and defense.
  * No print statements — View layer handles all output.
  */
 
-public abstract class Entity {
+public abstract class Entity implements Serializable {
 
     // ==============================
     // Fields

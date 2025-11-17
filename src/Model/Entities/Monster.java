@@ -3,7 +3,9 @@ package Model.Entities;
 import Model.Rooms.Room;
 import Model.Items.Item;
 
-public class Monster extends Entity {
+import java.io.Serializable;
+
+public class Monster extends Entity implements Serializable {
 
 
     // Fields

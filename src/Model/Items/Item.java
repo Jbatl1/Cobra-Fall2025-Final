@@ -2,10 +2,11 @@ package Model.Items;
 
 import Model.Puzzles.Puzzle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public  class Item { //Anita Philip
+public  class Item implements Serializable { //Anita Philip
 
     private String ItemID;
     private String RoomID;

@@ -1,5 +1,6 @@
 package Model.Entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ import Model.Puzzles.Puzzle;
  * Player entity. Uses Entity's health/attack/defense fields and methods.
  * Model contains no printing; View handles output.
  */
-public class Player extends Entity {
+public class Player extends Entity implements Serializable {
 
     // ==============================
     // Fields

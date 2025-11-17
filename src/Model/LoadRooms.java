@@ -10,12 +10,13 @@ import Model.Rooms.CrashSite;
 import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
 
-public class LoadRooms { //Anita Philip
+public class LoadRooms implements Serializable { //Anita Philip
 
     HashMap<String, Room> roomsInfo = new HashMap<>();
     HashMap<String, Puzzle> puzzles = new HashMap<>();

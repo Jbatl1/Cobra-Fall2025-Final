@@ -2,9 +2,11 @@ package Model;
 
 import Model.Entities.Player;
 import Model.Rooms.Room;
+
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Map {
+public class Map implements Serializable {
 
     // === UML Fields ===
     private Room playerLocation;

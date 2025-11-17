@@ -4,7 +4,9 @@ import Model.Entities.Player;
 import Model.Items.Item;
 import Model.Rooms.Room;
 
-public class Puzzle {
+import java.io.Serializable;
+
+public class Puzzle implements Serializable {
 
     private String puzzleID;
     private String puzzleQuestion;
