@@ -3,6 +3,7 @@ package Controller;
 import Model.Entities.Monster;
 import Model.Items.Item;
 import Model.Model;
+import Model.Puzzles.BoundaryPuzzle;
 import Model.Rooms.CrashSite;
 import Model.Rooms.LandingSite;
 import Model.Rooms.Room;
@@ -411,10 +412,10 @@ public class Controller {
 
     private boolean runPuzzleLoop(Puzzle puzzle) { //Anita Philip
         view.displayPuzzleQuestion(puzzle);
-
+        System.out.println(puzzle.getType());
         while (!puzzle.isPuzzleIsSolved() && !puzzle.isPuzzleLocked()) {
             String input = view.getInput();
-            int result = puzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), input);
+            int result =  puzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), input);
 
             switch (result) {
                 case 1: // Solved
@@ -477,7 +478,5 @@ public class Controller {
             view.displayMessage();
         }
     }
-
-
 
 }
