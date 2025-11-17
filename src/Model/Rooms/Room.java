@@ -211,12 +211,29 @@ public class Room {
         return names;
     }
 
-    public List<String> getPuzzleNames() {
+  /*  public List<String> getPuzzleNames() {
         List<String> puzzleNames = new ArrayList<>();
 
         for (Puzzle p : Main.M.getAllPuzzles().values()) { // <--- use getAllPuzzles()
             if (this.roomID.equals(p.getRoomID())) {
                 if (p.getType().equalsIgnoreCase("Normal") || p.getType().equalsIgnoreCase("Loot")) {
+                    puzzleNames.add(p.getPuzzleQuestion());
+                }
+            }
+        }
+        return puzzleNames;
+    }
+*/
+
+    public List<String> getPuzzleNames() {
+        List<String> puzzleNames = new ArrayList<>();
+
+        for (Puzzle p : Main.M.getAllPuzzles().values()) { // get all puzzles
+            // Only consider puzzles in this room
+            if (this.roomID.equals(p.getRoomID())) {
+                // Only Normal or Loot type puzzles AND unsolved
+                if ((p.getType().equalsIgnoreCase("Normal") || p.getType().equalsIgnoreCase("Loot"))
+                        && !p.isPuzzleIsSolved()) {
                     puzzleNames.add(p.getPuzzleQuestion());
                 }
             }

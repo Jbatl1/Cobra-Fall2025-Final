@@ -16,6 +16,7 @@ public class Puzzle {
     private String roomID;
     private String type;
     private int attemptsLeft;
+   // private boolean puzzleLocked;
 
     // Constructor
     public Puzzle(String puzzleID, String puzzleQuestion, int puzzleMaxAttempts,
@@ -24,7 +25,9 @@ public class Puzzle {
         this.puzzleQuestion = puzzleQuestion;
         this.puzzleMaxAttempts = puzzleMaxAttempts;
         this.puzzleSolution = puzzleSolution;
+        this.attemptsLeft = puzzleMaxAttempts;
         this.reward = reward;
+        this.type = type;
         this.roomID = roomID;
         this.type = type;
         this.attemptsLeft = puzzleMaxAttempts;
@@ -60,6 +63,11 @@ public class Puzzle {
         if (reward != null) player.addItem(reward);
     }
 
+    public void resetAttempts() {
+        this.attemptsLeft = this.puzzleMaxAttempts;
+        this.puzzleLocked = false;
+    }
+
     // Solve puzzle logic
     public int solvePuzzle(Room room, Player player, String userInput) {
         if (!"normal".equalsIgnoreCase(this.type)) return -1;
@@ -69,6 +77,7 @@ public class Puzzle {
         if (userInput.equalsIgnoreCase(puzzleSolution)) {
             puzzleIsSolved = true;
             addLootToInventory(player);
+            // Puzzle is solved — Controller will handle removing it from the room list
             return 1;
         } else {
             decrementAttempts();

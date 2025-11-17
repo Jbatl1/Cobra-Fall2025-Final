@@ -274,14 +274,6 @@ public class View {
         }
     }
 
- /*   public void displayExamineItem(Item i) { //caleb
-        if (i != null) {
-            System.out.println(i.getItemDescription());
-        } else {
-            System.out.println("❗ Item not found in inventory.");
-        }
-    }
-*/
     public void displayExamineItem(Item i) { //caleb
         if (i != null) {
             System.out.println(i.getItemDescription());
@@ -325,26 +317,15 @@ public class View {
 
     public void displayItemDestroyed(Item item) {System.out.println("🔥 You destroyed: " + item.getItemName());}
 
-    // ==============================
+    // ===================================================================================
     // Puzzle
-    // ==============================
-
-
-        public void displayPuzzleBeforePickup (Puzzle puzzle){ //Anita Philip
-            System.out.println("You must solve a puzzle before you can pickup this Item! (Examine or Ignore)");
-        }
-
-        public void displayPuzzleChoice () {
-            System.out.println("Type 'EXAMINE' to try solving the puzzle or 'IGNORE' to leave it.");
-        }
-
+    // ===================================================================================
 
         public void displayBoundaryPuzzlePrompt (Puzzle puzzle){ //Anita Philip
             System.out.println("❓: " + puzzle.getPuzzleQuestion());
         }
 
         public void displayNormalLootPuzzlePrompt (Room room){//Anita Philip
-
 
             List<String> puzzleQuestions = room.getPuzzleNames();
             if (puzzleQuestions.isEmpty()) {
@@ -354,6 +335,9 @@ public class View {
             }
         }
 
+        public void displayPick(){
+            System.out.println("IGNORE ?");
+        }
         public void displayPuzzleSolved (Puzzle puzzle){//Anita Philip
             System.out.println("🧩 You have correctly solved the puzzle!");
             if (puzzle.getReward() != null) {
@@ -364,23 +348,24 @@ public class View {
 
         }
 
-        public static void displayPuzzleIncorrect (Puzzle puzzle){//Anita Philip
+        public void displayNoPuzzleHereToExamine(){
+            System.out.println("No puzzle here to examine! 🧩❌");
+        }
+
+        public void displayPuzzleIncorrect (Puzzle puzzle){//Anita Philip
             System.out.println("That answer is not correct! ");
+        }
+
+        public void displayTakenDamage(){
+            System.out.println("You ignored the puzzle and took 5 damage!");
         }
 
         public static void displayPuzzleLocked (Puzzle puzzle){//Anita Philip
 
 
         if(puzzle.getType().equalsIgnoreCase("normal") || puzzle.getType().equalsIgnoreCase("loot")){
-
         }
             System.out.println("You have have failed to solve the puzzle! Leave and comeback to try again");
-        }
-
-
-
-        public void displayPuzzleQuestion(Puzzle puzzle){//Anita Philip
-            System.out.println("Puzzle Question: " + puzzle.getPuzzleQuestion());
         }
 
         public void displayPuzzleIgnored (Puzzle p){//Anita Philip
@@ -399,10 +384,16 @@ public class View {
             System.out.println("You cannot move back, no previous room recorded.");
         }
 
+        public void displayMessage(){
+            System.out.println("mmm");
+        }
 
-    public void displayMessage1 () {//Anita Philip
+        public void displayMessage1 () {//Anita Philip
         System.out.println("Can't examine");
-    }
+         }
+
+         //------------------------------------------------------------------------------------
+         //------------------------------------------------------------------------------------
     public void displayStoreInShip(int x, String s) { // Caleb
         if (x == 1) {
             System.out.println("📦 You stored " + s + " in your ship's inventory.");
