@@ -57,14 +57,14 @@ public class Player extends Entity { //Kai Wiggins & Caleb Butler
 
     public ArrayList<Item> getShipStorage() {
         return shipStorage;
-    }//Kai Wiggins
+    }
 
     // ==============================
     // Currency Methods
     // ==============================
     public int getGold() {
         return gold;
-    }//Kai Wiggins
+    }
 
 
     // ==============================
@@ -295,20 +295,10 @@ public class Player extends Entity { //Kai Wiggins & Caleb Butler
         }
     }
 
-    public void receiveRewardItem(Item item) {
-        inventory.add(item);
-    } //Kai Wiggins
 
     // ==============================
     // Player Memory & Bartering
     // ==============================
-    public void rememberEvent(String event) {
-        narrativeMemory.add(event);
-    }//Kai Wiggins
-
-    public ArrayList<String> getMemories() {
-        return narrativeMemory;
-    } //Kai Wiggins
 
     public int buyItem( String itemName) { //Kai Wiggins & Caleb Butler
         // Find item in shop stock
@@ -328,6 +318,7 @@ public class Player extends Entity { //Kai Wiggins & Caleb Butler
         }
 
         this.inventory.add(item);
+        this.gold -= item.getCost();
         return item.getCost();
     }
 
@@ -356,13 +347,6 @@ public class Player extends Entity { //Kai Wiggins & Caleb Butler
     // ==============================
     // Puzzle Interaction
     // ==============================
-    public void examinePuzzle(Puzzle p) {//Kai Wiggins
-        // logic-only; View handles display
-    }
-
-    public void skipPuzzle(Puzzle p) {
-        receiveDamage(10);
-    }
 
 
     // ==============================

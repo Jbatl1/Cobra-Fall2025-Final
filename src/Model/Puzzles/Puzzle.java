@@ -38,8 +38,6 @@ public class Puzzle { //Anita Philip
     // Getters - //Anita Philip
     public String getPuzzleID() { return puzzleID; }
     public String getPuzzleQuestion() { return puzzleQuestion; }
-    public int getPuzzleAttempts() { return attemptsLeft; }
-    public int getMaxAttempts() { return puzzleMaxAttempts; }
     public String getPuzzleSolution() { return puzzleSolution; }
     public Item getReward() { return reward; }
     public String getRoomID() { return roomID; }

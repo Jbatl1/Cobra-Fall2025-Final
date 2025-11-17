@@ -80,10 +80,6 @@ public class Room {// Anita Philip
         return roomDescription;
     }
 
-    public String getRoomType() {
-        return roomType;
-    }
-
     public Puzzle getRoomPuzzle() {return roomPuzzle;}
 
     public String getNorthNavigation() {
@@ -102,9 +98,9 @@ public class Room {// Anita Philip
         return westNavigation;
     }
 
-    public boolean isRoomVisited() {
-        return roomVisited;
-    }
+
+
+
 
     public ArrayList<Item> getRoomItems() {
         return roomItems;
@@ -145,10 +141,6 @@ public class Room {// Anita Philip
         }
         }
 
-        public boolean isRaider () {
-            return isRaider;
-        }
-
         public boolean isShop () {
             return isShop;
         }
@@ -166,16 +158,6 @@ public class Room {// Anita Philip
             }
             return null;
         }
-
-    public String getMonsters1(Room room) {
-
-        for (Monster m : Main.M.getMonsters().values()) { // monsters should return
-            if (m.getRoomID().equalsIgnoreCase(room.getRoomID())){
-                return m.getName();
-            }
-        }
-        return null;
-    }
 
     public List<Monster> getMonsters() {
         return monsters;
@@ -264,14 +246,6 @@ public class Room {// Anita Philip
     }
 
 
-
-    public String monsterInRoom() {
-
-        for (Monster m : monsters) { // monsters should return
-            return m.getName();
-        }
-        return null;
-    }
 
     public void removeMonster(Monster monster) {
         if (monster == null || monsters == null) return;

@@ -32,10 +32,10 @@ public  class Item { //Anita Philip
         this.cost = cost;
     }
 
-    //Getters/Setters - //Anita Philip
     public void setItemDescription(String itemDescription) {
         ItemDescription = itemDescription;
     }
+
     public String getItemID() { return ItemID; }
     public String getItemName() {return ItemName;}
     public String getRoomID() {return RoomID;}
@@ -61,19 +61,6 @@ public  class Item { //Anita Philip
         }
     }
 
-    public List<Puzzle> getLootPuzzles() { //Anita Philip
-        if (lootPuzzles == null) {
-            lootPuzzles = new ArrayList<>();
-        }
-        return lootPuzzles;
-    }
-
-    public void clearLootPuzzles() { //Anita Philip
-        if (lootPuzzles != null) {
-            lootPuzzles.clear();
-        }
-    }
-
-    public int getCost() { return cost; }  //Anita Philip
+    public int getCost() { return cost; }
 
 }

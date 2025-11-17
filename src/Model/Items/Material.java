@@ -8,11 +8,4 @@ public class Material extends Item { //Caleb Butler
         this.damageIncrease = itemUpgrade;
     } //Caleb Butler
 
-    public int getDamageIncrease() {
-        return damageIncrease;
-    }
-
-    public void setDamageIncrease(int damageIncrease) {
-        this.damageIncrease = damageIncrease;
-    }
 }

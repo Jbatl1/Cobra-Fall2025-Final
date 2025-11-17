@@ -36,15 +36,6 @@ public class Model { // Anita Philip & Caleb Butler
         this.items = items;
     }
 
-    // ---------------- Puzzles ----------------
-    public HashMap<String, Puzzle> getPuzzles() {
-        return puzzles;
-    }
-
-    public void setPuzzles(HashMap<String, Puzzle> puzzles) {
-        this.puzzles = puzzles;
-    }
-
     // ---------------- Rooms ----------------
     public HashMap<String, Room> getRooms() {
         return rooms;
@@ -52,14 +43,6 @@ public class Model { // Anita Philip & Caleb Butler
 
     public void setRooms(HashMap<String, Room> rooms) {
         this.rooms = rooms;
-    }
-
-    // ---------------- Utility ----------------
-    public Item findItemInCurrentRoom(String name) {
-        for (Item i : getPlayer().getCurrRoom().getRoomItems()) {
-            if (i.getItemName().equalsIgnoreCase(name)) return i;
-        }
-        return null;
     }
 
     public void displayDestroyItem(int x, String itemName) {

@@ -55,10 +55,10 @@ public class LoadRooms { //Anita Philip
 
             loadAllRooms(conn);
             loadAllItems(conn);
-            loadAllPuzzles(conn);
-            assignPuzzlesToRooms();
+            loadAllPuzzles(conn);  // load puzzles first
+            assignPuzzlesToRooms(); // Assign after items are loaded
             loadAllMonsters(conn);
-            assignMonstersToRooms();
+            assignMonstersToRooms(); // <-- Add this call here
             setupRoomExits();
             loadAllShops(conn);
 
@@ -354,7 +354,7 @@ public class LoadRooms { //Anita Philip
         }
     }
 
-    private void assignMonstersToRooms() { // Anita Philip
+    private void assignMonstersToRooms() {
         for (Monster m : monsters.values()) {
             Room r = roomsInfo.get(m.getRoomID());
             if (r != null) {
@@ -365,7 +365,7 @@ public class LoadRooms { //Anita Philip
 
     // ------------------ SHOPS ------------------
 
-    private void loadAllShops(Connection conn) throws Exception { //Caleb Butler
+    private void loadAllShops(Connection conn) throws Exception {
         // Map of item -> cost for all shops
         HashMap<Item, Integer> universalShopStock = new HashMap<>();
 
@@ -398,7 +398,7 @@ public class LoadRooms { //Anita Philip
     }
 
     // ------------------ ROOM EXITS ------------------
-    private void setupRoomExits() {// Anita Philip
+    private void setupRoomExits() {
         for (Room room : roomsInfo.values()) {
 
             String northID = room.getNorthNavigation();
@@ -420,26 +420,9 @@ public class LoadRooms { //Anita Philip
         }
     }
 
-    // Anita Philip
-    public HashMap<String, Room> getRoomsInfo() {
-        return roomsInfo;
-    }
-    public HashMap<String, Puzzle> getPuzzles() {return puzzles;}
     public HashMap<String, Monster> getMonsters() {return monsters;}
     public HashMap<String, Puzzle> getAllPuzzles() {return allPuzzles;}
-    public HashMap<String, Puzzle> getBoundaryPuzzles() {return boundaryPuzzles;}
-    public HashMap<String, Puzzle> getNormalPuzzles() {return normalPuzzles;}
-    public HashMap<String, Puzzle> getLootPuzzles() {return lootPuzzles;}
-    public HashMap<String, Item> getItems() {
-        return items;
-    }
-    public HashMap<String, Player> getPlayer1() {
-        return player1;
-    }
-    public HashMap<String, Integer> getInventory() {
-        return inventory;
-    }
-    public Room getStartRoom() {
-        return roomsInfo.get("SW1");
-    }
+    public HashMap<String, Item> getItems() {return items;}
+    public Room getStartRoom() {return roomsInfo.get("SW1");}
+
 }

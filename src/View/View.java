@@ -71,9 +71,6 @@ public class View {//Caleb Butler & Anita Philip & Kai Wiggins
     }
 
     public void displayPlayerAttack(String monsterName, int damage) { //caleb
-        if (damage > 0) {
-            System.out.println("You strike " + monsterName + " for " + damage + " damage!");
-        }
         if (damage == -1) {
             System.out.println("Your weapon is broken and cannot deal damage!");
         }
@@ -102,12 +99,6 @@ public class View {//Caleb Butler & Anita Philip & Kai Wiggins
         System.out.println("Current HP: " + player.getHealth());
     }
 
-    public void displayFightSummary(Player player, Monster monster) {  // Caleb
-        System.out.println("⚔️ Combat Summary:");
-        System.out.println("  " + player.getClass().getSimpleName() + " HP: " + player.getHealth());
-        System.out.println("  " + monster.getName() + " HP: " + monster.getHealth());
-        printSeparator();
-    }
 
     public void displayDefeat() {  // Caleb
         System.out.println("💀 You were defeated! You lost your equipped item...");
@@ -190,7 +181,7 @@ public class View {//Caleb Butler & Anita Philip & Kai Wiggins
 
     public void displayPurchaseItem(int x, String s) {  // Caleb
         if (x < 0) {
-            System.out.println("❗ You don't have enough gold to buy" + s + ".");
+            System.out.println("❗ You don't have enough gold to buy " + s + ".");
         } else {
             System.out.println("💰 You purchased " + s + " for " + x + " gold.");
         }
@@ -224,9 +215,6 @@ public class View {//Caleb Butler & Anita Philip & Kai Wiggins
     // Inventory / Items
     // ==============================
 
-    public void displayItemNotFound(Item item ){
-        System.out.println("Sorry could not find item");
-    }
 
     public void displayItemPickup(int x, String itemName) { //caleb
         switch (x) {
@@ -390,10 +378,6 @@ public class View {//Caleb Butler & Anita Philip & Kai Wiggins
         public void displayMessage1 () {//Anita Philip
         System.out.println("Can't examine");
          }
-
-    public void displayPuzzleChoice () {
-        System.out.println("Type 'EXAMINE' to try solving the puzzle or 'IGNORE' to leave it.");
-    }
 
          //------------------------------------------------------------------------------------
          //------------------------------------------------------------------------------------
@@ -863,6 +847,18 @@ public class View {//Caleb Butler & Anita Philip & Kai Wiggins
                 SOLVE - begins the attempt of a puzzle
                 IGNORE - ignores monster
                 EXAMINE - displays information about the monster
+                
+                
+                ---TRAVEL LOCATIONS---
+                
+                VI1 - scorched plateau
+                FW1 - frozen Landing site
+                SW1 - Crash site
+                JR1 - jungle Landing site
+                ED1 - Ancient pyramids
+                CC1 - Shattered ravine
+                CT1 - Radiant Gates
+                SI1 - Cloudpiercer Plateau
                 """);
     }
 
@@ -879,5 +875,9 @@ public class View {//Caleb Butler & Anita Philip & Kai Wiggins
 
     public void displayPuzzleQuestion(Puzzle puzzle) {
         System.out.println("Puzzle question: " + puzzle.getPuzzleQuestion());
+    }
+
+    public void displayTakenDamageFromMonster(Player player, int x) {
+        System.out.println("Your health is now at " + (player.getHealth()-x));
     }
 }

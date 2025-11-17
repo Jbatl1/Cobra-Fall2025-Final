@@ -139,7 +139,6 @@ public class Controller { //Caleb Butler
                 case String s when input.matches("^PICKUP\\s.*$"): //pickup item //Anita Philip lines 104 - 146
                     x = this.model.getPlayer().pickupItem(s.substring(7).trim());
                     view.displayItemPickup(x, s);
-                    String itemNameToPickup = input.substring(7).trim();
                     break;
                 case String s when input.matches("^DROP\\s.*$"): // drop item
                     x = this.model.getPlayer().dropItem(s.substring(5).trim());
@@ -250,25 +249,19 @@ public class Controller { //Caleb Butler
                     }
                     break;
                 case String s when input.matches("^INSPECT\\s.*$"): // shows monster name / desc / health / atk
-                    x = this.model.getPlayer().getCurrRoom().getMonsterByName(s.substring(8).trim());
-                    if (this.model.getPlayer().getCurrRoom().getMonsterByName(s) > 0) {
+                    trim = s.substring(8).trim();
+                    x = this.model.getPlayer().getCurrRoom().getMonsterByName(trim);
+                    if (x >= 0) {
                         this.view.displayInspectMonster(this.model.getPlayer().getCurrRoom().getMonsters().get(x));
                     }
                     else {
                         this.view.displayMonsterNotFound(s.substring(8).trim());
                     }
                     break;
-                case "IGNORE": // ignore monster in room
-                    // idk if this is useful? they can just pick what monster to fight in the room
-                    break;
 
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
-//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
-//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
-//                    System.out.println("-------------------");
-//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
 
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
@@ -378,7 +371,8 @@ public class Controller { //Caleb Butler
                 break;
             }
 
-            this.model.getPlayer().receiveDamage(currentMonster.getAttackPower());
+            x = this.model.getPlayer().receiveDamage(currentMonster.getAttackPower());
+            this.view.displayTakenDamageFromMonster(model.getPlayer(), x);
             this.view.displayMonsterAttack(currentMonster.getName(), currentMonster.getAttackPower());
         }
 
@@ -421,20 +415,6 @@ public class Controller { //Caleb Butler
         }
     }
 
-    private List<Puzzle> getItemPuzzlesForCurrentRoom(Item item) { //Anita Philip
-        List<Puzzle> relevant = new ArrayList<>();
-        if (item.getPuzzleIDs() == null) return relevant;
-
-        String currentRoomId = model.getPlayer().getCurrRoom().getRoomID();
-
-        for (String pid : item.getPuzzleIDs()) {
-            Puzzle p = model.getPuzzles().get(pid);
-            if (p != null && p.getRoomID().equals(currentRoomId)) {
-                relevant.add(p);
-            }
-        }
-        return relevant;  //Only returns puzzles attached to this item in the current room.
-    }
 
     private boolean runPuzzleLoop(Puzzle puzzle, String answer) {
         while (!puzzle.isPuzzleIsSolved()) {

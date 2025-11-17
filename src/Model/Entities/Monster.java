@@ -26,36 +26,21 @@ public class Monster extends Entity { //Kai Wiggins
         this.monsterID = monsterID;
         this.abilityEffect = abilityEffect;
         this.defense = defense;
-        this.roomID = roomID;
+        this.roomID = roomID;         // from DB
         this.isBoss = isBoss;
         this.dropItem = dropItem;
         this.isRaider = isRaider;
-        this.currentRoom = currentRoom;
+        this.currentRoom = currentRoom;  // actual Room object
     }
+
 
     // Getters / Setters - //Kai Wiggins
     public String getMonsterID() {
         return monsterID;
     }
 
-    public String getAbilityEffect() {
-        return abilityEffect;
-    }
-
     public Item getDropItem() {
         return dropItem;
-    }
-
-    public boolean isBoss() {
-        return isBoss;
-    }
-
-    public boolean isRaider() {
-        return isRaider;
-    }
-
-    public Room getCurrentRoom() {
-        return currentRoom;
     }
 
     public String getRoomID() {
@@ -65,18 +50,15 @@ public class Monster extends Entity { //Kai Wiggins
     public String getDescription() {
         return description;
     }
+    // Combat
+
 
     public void setRoomID(String roomID) {
         this.roomID = roomID;
     }
 
-    public void attackPlayer(Player player) {//Kai Wiggins
-        int damage = Math.max(0, attackPower - player.getDefense());
-        player.receiveDamage(damage);
-        System.out.println(name + " attacks " + player.getName() + " for " + damage + " damage!");
-    }
 
-    public void receiveDamage(int amount) {//Kai Wiggins
+    public int receiveDamage(int amount) {
         int damageTaken = Math.max(0, amount - defense);
         health -= damageTaken;
         if (health < 0) health = 0;
@@ -84,20 +66,8 @@ public class Monster extends Entity { //Kai Wiggins
         if (health == 0) {
             System.out.println(name + " has been defeated!");
         }
+        return damageTaken;
     }
 
-    // Rewards / Flee
-
-    public Item getReward() { //Kai Wiggins
-        if (health <= 0 && dropItem != null) {
-            System.out.println(name + " dropped: " + dropItem.getItemName());
-            return dropItem;
-        }
-        return null;
-    }
-
-    public boolean canFlee() {
-        return !isBoss;
-    }
 }
 

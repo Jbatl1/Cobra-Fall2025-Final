@@ -26,17 +26,6 @@ public class Weapon extends Item{ //Caleb Butler
         return damage;
     }//Caleb Butler
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    public int getDurability() {
-        return durability;
-    }
-
-    public void setDurability(int durability) {
-        this.durability = durability;
-    }
 
     public int useDurability() { //Caleb Butler
         durability--;

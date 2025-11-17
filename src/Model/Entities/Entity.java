@@ -45,27 +45,19 @@ public abstract class Entity { //Kai Wiggins
         return defense;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void setAttackPower(int attackPower) {
-        this.attackPower = attackPower;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
 
     // ==============================
     // Core Combat Logic
     // ==============================
 
-    public void receiveDamage(int amount) { //Kai Wiggins
-        int damageTaken = Math.max(0, amount - defense);
-        health -= damageTaken;
-        if (health < 0) {
-            health = 0;
+
+        public int receiveDamage (int amount){
+            int damageTaken = Math.max(0, amount - defense);
+            health -= damageTaken;
+            if (health < 0) {
+                health = 0;
+            }
+            return damageTaken;
         }
-    }
+
 }

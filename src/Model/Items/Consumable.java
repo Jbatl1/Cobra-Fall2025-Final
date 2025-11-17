@@ -15,16 +15,5 @@ public class Consumable extends Item{ //Caleb Butler
         return health;
     } //Caleb Butler
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
 
 }
