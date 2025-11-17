@@ -520,291 +520,236 @@ public class View {
 
 
     public void displaySurvivorsWorldMap() {
-        if (frame == null) {
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    ImageIcon map = new ImageIcon(
-                            View.class.getResource("/MapImages/survivorsWorld.png")
-                    );
-                    label = new JLabel(map);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                ImageIcon map = new ImageIcon(
+                        View.class.getResource("/MapImages/survivorsWorld.png")
+                );
+                label = new JLabel(map);
 
-                    frame = new JFrame("MAP");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setSize(new Dimension(800, 600));
+                frame = new JFrame("MAP");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setSize(new Dimension(800, 600));
 
-                    JScrollPane scrollPane = new JScrollPane(label);
-                    frame.add(scrollPane);
+                JScrollPane scrollPane = new JScrollPane(label);
+                frame.add(scrollPane);
 
-                    frame.setVisible(true);
+                frame.setVisible(true);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null,
-                            "Failed to load PNG:\n" + e.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            });
-        }
-        else {
-            ImageIcon newMap = new ImageIcon(
-                    View.class.getResource("/MapImages/survivorsWorld.PNG"));
-            label.setIcon(newMap);
-            label.revalidate();
-            label.repaint();
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                        "Failed to load PNG:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+
     }
 
     public void displayVolcanicInfernoMap() {
-        if (frame == null) {
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    ImageIcon map = new ImageIcon(
-                            View.class.getResource("/MapImages/volcanicInferno.PNG")
-                    );
-                    label = new JLabel(map);
 
-                    frame = new JFrame("MAP");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setSize(new Dimension(800, 600));
+        SwingUtilities.invokeLater(() -> {
+            try {
+                ImageIcon map = new ImageIcon(
+                        View.class.getResource("/MapImages/volcanicInferno.PNG")
+                );
+                label = new JLabel(map);
 
-                    JScrollPane scrollPane = new JScrollPane(label);
-                    frame.add(scrollPane);
+                frame = new JFrame("MAP");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setSize(new Dimension(800, 600));
 
-                    frame.setVisible(true);
+                JScrollPane scrollPane = new JScrollPane(label);
+                frame.add(scrollPane);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null,
-                            "Failed to load PNG:\n" + e.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            });
-        }
-        else {
-            ImageIcon newMap = new ImageIcon(
-                    View.class.getResource("/MapImages/volcanicInferno.PNG"));
-            label.setIcon(newMap);
-            label.revalidate();
-            label.repaint();
-        }
+                frame.setVisible(true);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                        "Failed to load PNG:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
     }
     public void displayFrozenWorldMap() {
-        if (frame == null) {
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    ImageIcon map = new ImageIcon(
-                            View.class.getResource("/MapImages/frozenWorld.PNG")
-                    );
-                    label = new JLabel(map);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                ImageIcon map = new ImageIcon(
+                        View.class.getResource("/MapImages/frozenWorld.PNG")
+                );
+                label = new JLabel(map);
 
-                    frame = new JFrame("MAP");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setSize(new Dimension(800, 600));
+                frame = new JFrame("MAP");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setSize(new Dimension(800, 600));
 
-                    JScrollPane scrollPane = new JScrollPane(label);
-                    frame.add(scrollPane);
+                JScrollPane scrollPane = new JScrollPane(label);
+                frame.add(scrollPane);
 
-                    frame.setVisible(true);
+                frame.setVisible(true);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null,
-                            "Failed to load PNG:\n" + e.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            });
-        }
-        else {
-            ImageIcon newMap = new ImageIcon(
-                    View.class.getResource("/MapImages/frozenWorld.PNG"));
-            label.setIcon(newMap);
-            label.revalidate();
-            label.repaint();
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                        "Failed to load PNG:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+
     }
 
     public void displayJungleRuinMap() {
-        if (frame == null) {
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    ImageIcon map = new ImageIcon(
-                            View.class.getResource("/MapImages/jungleRuin.PNG")
-                    );
-                    label = new JLabel(map);
 
-                    frame = new JFrame("MAP");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setSize(new Dimension(800, 600));
+        SwingUtilities.invokeLater(() -> {
+            try {
+                ImageIcon map = new ImageIcon(
+                        View.class.getResource("/MapImages/jungleRuin.PNG")
+                );
+                label = new JLabel(map);
 
-                    JScrollPane scrollPane = new JScrollPane(label);
-                    frame.add(scrollPane);
+                frame = new JFrame("MAP");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setSize(new Dimension(800, 600));
 
-                    frame.setVisible(true);
+                JScrollPane scrollPane = new JScrollPane(label);
+                frame.add(scrollPane);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null,
-                            "Failed to load PNG:\n" + e.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            });
-        }
-        else {
-            ImageIcon newMap = new ImageIcon(
-                    View.class.getResource("/MapImages/jungleRuin.PNG"));
-            label.setIcon(newMap);
-            label.revalidate();
-            label.repaint();
-        }
+                frame.setVisible(true);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                        "Failed to load PNG:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
     }
 
     public void displayEchoDesertMap() {
-        if (frame == null) {
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    ImageIcon map = new ImageIcon(
-                            View.class.getResource("/MapImages/echoDesert.PNG")
-                    );
-                    label = new JLabel(map);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                ImageIcon map = new ImageIcon(
+                        View.class.getResource("/MapImages/echoDesert.PNG")
+                );
+                label = new JLabel(map);
 
-                    frame = new JFrame("MAP");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setSize(new Dimension(800, 600));
+                frame = new JFrame("MAP");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setSize(new Dimension(800, 600));
 
-                    JScrollPane scrollPane = new JScrollPane(label);
-                    frame.add(scrollPane);
+                JScrollPane scrollPane = new JScrollPane(label);
+                frame.add(scrollPane);
 
-                    frame.setVisible(true);
+                frame.setVisible(true);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null,
-                            "Failed to load PNG:\n" + e.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            });
-        }
-        else {
-            ImageIcon newMap = new ImageIcon(
-                    View.class.getResource("/MapImages/echoDesert.PNG"));
-            label.setIcon(newMap);
-            label.revalidate();
-            label.repaint();
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                        "Failed to load PNG:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+
     }
 
     public void displayCrystalCanyonMap() {
-        if (frame == null) {
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    ImageIcon map = new ImageIcon(
-                            View.class.getResource("/MapImages/crystalCanyon.PNG")
-                    );
-                    label = new JLabel(map);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                ImageIcon map = new ImageIcon(
+                        View.class.getResource("/MapImages/crystalCanyon.PNG")
+                );
+                label = new JLabel(map);
 
-                    frame = new JFrame("MAP");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setSize(new Dimension(800, 600));
+                frame = new JFrame("MAP");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setSize(new Dimension(800, 600));
 
-                    JScrollPane scrollPane = new JScrollPane(label);
-                    frame.add(scrollPane);
+                JScrollPane scrollPane = new JScrollPane(label);
+                frame.add(scrollPane);
 
-                    frame.setVisible(true);
+                frame.setVisible(true);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null,
-                            "Failed to load PNG:\n" + e.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            });
-        }
-        else {
-            ImageIcon newMap = new ImageIcon(
-                    View.class.getResource("/MapImages/crystalCanyon.PNG"));
-            label.setIcon(newMap);
-            label.revalidate();
-            label.repaint();
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                        "Failed to load PNG:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+
     }
 
     public void displaySkyIslesMap() {
-        if (frame == null) {
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    ImageIcon map = new ImageIcon(
-                            View.class.getResource("/MapImages/skyIsles.PNG")
-                    );
-                    label = new JLabel(map);
 
-                    frame = new JFrame("MAP");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setSize(new Dimension(800, 600));
+        SwingUtilities.invokeLater(() -> {
+            try {
+                ImageIcon map = new ImageIcon(
+                        View.class.getResource("/MapImages/skyIsles.PNG")
+                );
+                label = new JLabel(map);
 
-                    JScrollPane scrollPane = new JScrollPane(label);
-                    frame.add(scrollPane);
+                frame = new JFrame("MAP");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setSize(new Dimension(800, 600));
 
-                    frame.setVisible(true);
+                JScrollPane scrollPane = new JScrollPane(label);
+                frame.add(scrollPane);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null,
-                            "Failed to load PNG:\n" + e.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            });
-        }
-        else {
-            ImageIcon newMap = new ImageIcon(
-                    View.class.getResource("/MapImages/skyIsles.PNG"));
-            label.setIcon(newMap);
-            label.revalidate();
-            label.repaint();
-        }
+                frame.setVisible(true);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                        "Failed to load PNG:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
     }
 
     public void displayCelestialCitadelMap() {
-        if (frame == null) {
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    ImageIcon map = new ImageIcon(
-                            View.class.getResource("/MapImages/celestialCitadel.PNG")
-                    );
-                    label = new JLabel(map);
 
-                    frame = new JFrame("MAP");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                ImageIcon map = new ImageIcon(
+                        View.class.getResource("/MapImages/celestialCitadel.PNG")
+                );
+                label = new JLabel(map);
 
-                    frame.setSize(new Dimension(800, 600));
+                frame = new JFrame("MAP");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-                    JScrollPane scrollPane = new JScrollPane(label);
-                    frame.add(scrollPane);
+                frame.setSize(new Dimension(800, 600));
 
-                    frame.setVisible(true);
+                JScrollPane scrollPane = new JScrollPane(label);
+                frame.add(scrollPane);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null,
-                            "Failed to load PNG:\n" + e.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            });
-        }
-        else {
-            ImageIcon newMap = new ImageIcon(
-                    View.class.getResource("/MapImages/celestialCitadel.PNG"));
-            label.setIcon(newMap);
-            label.revalidate();
-            label.repaint();
-        }
+                frame.setVisible(true);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                        "Failed to load PNG:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+
     }
 
     public void displayHelp() { // Caleb
