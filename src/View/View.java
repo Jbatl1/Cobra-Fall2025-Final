@@ -71,9 +71,6 @@ public class View {
     }
 
     public void displayPlayerAttack(String monsterName, int damage) { //caleb
-        if (damage > 0) {
-            System.out.println("You strike " + monsterName + " for " + damage + " damage!");
-        }
         if (damage == -1) {
             System.out.println("Your weapon is broken and cannot deal damage!");
         }
@@ -851,6 +848,18 @@ public class View {
                 SOLVE - begins the attempt of a puzzle
                 IGNORE - ignores monster
                 EXAMINE - displays information about the monster
+                
+                
+                ---TRAVEL LOCATIONS---
+                
+                VI1 - scorched plateau
+                FW1 - frozen Landing site
+                SW1 - Crash site
+                JR1 - jungle Landing site
+                ED1 - Ancient pyramids
+                CC1 - Shattered ravine
+                CT1 - Radiant Gates
+                SI1 - Cloudpiercer Plateau
                 """);
     }
 
@@ -867,5 +876,9 @@ public class View {
 
     public void displayPuzzleQuestion(Puzzle puzzle) {
         System.out.println("Puzzle question: " + puzzle.getPuzzleQuestion());
+    }
+
+    public void displayTakenDamageFromMonster(Player player, int x) {
+        System.out.println("Your health is now at " + (player.getHealth()-x));
     }
 }

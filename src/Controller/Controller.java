@@ -372,7 +372,8 @@ public class Controller {
                 break;
             }
 
-            this.model.getPlayer().receiveDamage(currentMonster.getAttackPower());
+            x = this.model.getPlayer().receiveDamage(currentMonster.getAttackPower());
+            this.view.displayTakenDamageFromMonster(model.getPlayer(), x);
             this.view.displayMonsterAttack(currentMonster.getName(), currentMonster.getAttackPower());
         }
 

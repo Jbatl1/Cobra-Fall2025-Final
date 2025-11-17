@@ -55,11 +55,12 @@ public abstract class Entity {
      * Ensures health never drops below zero.
      * Logic-only — no direct printing.
      */
-    public void receiveDamage(int amount) {
+    public int receiveDamage(int amount) {
         int damageTaken = Math.max(0, amount - defense);
         health -= damageTaken;
         if (health < 0) {
             health = 0;
         }
+        return damageTaken;
     }
 }
