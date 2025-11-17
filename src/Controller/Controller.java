@@ -164,11 +164,9 @@ public class Controller {
 
                     // 1. Try to see if it's a puzzle in the current room
                     Puzzle roomPuzzle = this.model.getPlayer().getCurrRoom().getThePuzzle();
-                    if (roomPuzzle != null &&
-                            roomPuzzle.getPuzzleID().equalsIgnoreCase(trim)) {
-
+                    if (roomPuzzle != null) {
                         // Call your puzzle examine method
-                        this.view.displayNormalLootPuzzlePrompt(this.model.getPlayer().getCurrRoom());
+                        handleLootNormalPuzzle(model.getPlayer().getCurrRoom());
                         break;
                     }
 
@@ -434,8 +432,8 @@ public class Controller {
 */
 
 
-    private boolean runPuzzleLoop(Puzzle puzzle) { //Anita Philip
-        view.displayPuzzleQuestion(puzzle);
+    private boolean runPuzzleLoop(Puzzle puzzle, String answer) {
+      view.displayPuzzleQuestion(puzzle);
 
         while (!puzzle.isPuzzleIsSolved() && !puzzle.isPuzzleLocked()) {
             String input = view.getInput();
@@ -444,7 +442,7 @@ public class Controller {
             switch (result) {
                 case 1: // Solved
                     view.displayPuzzleSolved(puzzle);
-                    model.getPlayer().getCurrRoom().getPuzzlePresent().remove(puzzle); // ✅ Clean removal
+                    model.getPlayer().getCurrRoom().getPuzzlePresent().remove(puzzle);
                     return true;
 
                 case 0: // Incorrect attempt
@@ -452,8 +450,10 @@ public class Controller {
                     break;
 
                 case -1: // Locked, invalid, or no attempts left
-                default:
-                    view.displayPuzzleLocked(puzzle);
+                    // Only show message for boundary puzzles
+                    if ("boundary".equalsIgnoreCase(puzzle.getType())) {
+                        view.displayPuzzleLocked(puzzle);
+                    }
                     return false;
             }
         }
@@ -473,7 +473,7 @@ public class Controller {
             String choice = view.getInput();
 
             if (choice.equalsIgnoreCase("EXAMINE")) {
-                boolean solved = runPuzzleLoop(boundaryPuzzle);
+                boolean solved = runPuzzleLoop(boundaryPuzzle, choice);
                 if (!solved) {
                     view.displayPuzzleFailed(boundaryPuzzle);
                     movePlayerToPreviousRoom(); // return player to previous room
@@ -488,26 +488,29 @@ public class Controller {
     public void handleLootNormalPuzzle(Room room) {
         Puzzle lootNormalPuzzle = room.getThePuzzle();
 
+        // Only proceed if there is a loot/normal puzzle not yet solved
+        if (lootNormalPuzzle != null
+                && !lootNormalPuzzle.isPuzzleIsSolved()
+                && (lootNormalPuzzle.getType().equalsIgnoreCase("normal")
+                || lootNormalPuzzle.getType().equalsIgnoreCase("loot"))) {
 
-        //there is a puzzle and it's not solved
-        if(lootNormalPuzzle != null  && !lootNormalPuzzle.isPuzzleIsSolved() && (lootNormalPuzzle.getType().equalsIgnoreCase("normal") || lootNormalPuzzle.getType().equalsIgnoreCase("loot"))) {
             view.displayNormalLootPuzzlePrompt(room);
+
             String choice = view.getInput();
 
+            boolean solved;
             if (choice.equalsIgnoreCase("EXAMINE")) {
-                boolean solved = runPuzzleLoop(lootNormalPuzzle);
-                if (!solved) {
-                    view.displayPuzzleFailed(lootNormalPuzzle);
-                    movePlayerToPreviousRoom(); // return player to previous room
-                }
+                solved = runPuzzleLoop(lootNormalPuzzle, null); // handles question and input internally
             } else {
-                view.displayPuzzleIgnored(lootNormalPuzzle);
-                movePlayerToPreviousRoom(); // return player to previous room
+                solved = runPuzzleLoop(lootNormalPuzzle, choice); // treat any other word as answer
+            }
+
+            // Only display failed message if not solved
+            if (!solved) {
+                view.displayPuzzleFailed(lootNormalPuzzle);
             }
         }
     }
-
-
 
 
         private void movePlayerToPreviousRoom() { //Anita Philip
