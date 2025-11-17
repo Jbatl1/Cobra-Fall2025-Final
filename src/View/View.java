@@ -392,6 +392,10 @@ public class View {
         System.out.println("Can't examine");
          }
 
+    public void displayPuzzleChoice () {
+        System.out.println("Type 'EXAMINE' to try solving the puzzle or 'IGNORE' to leave it.");
+    }
+
          //------------------------------------------------------------------------------------
          //------------------------------------------------------------------------------------
     public void displayStoreInShip(int x, String s) { // Caleb

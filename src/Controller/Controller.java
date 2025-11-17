@@ -221,7 +221,7 @@ public class Controller {
                         this.view.displayShipInv(((CrashSite) this.model.getPlayer().getCurrRoom()).getShipStorage());
                     }
                     break;
-                case String s when input.matches("GET.*?CRASHED SHIP"): ;
+                case String s when input.matches("GET.*?CRASHED_SHIP"): ;
                     trim = s.substring(4, s.length() - 12).trim();
                     x = this.model.getPlayer().getFromCrashedShip(trim);
                     this.view.displayGetFromCrashedShip(x, trim);
@@ -270,6 +270,10 @@ public class Controller {
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
+//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
+//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
+//                    System.out.println("-------------------");
+//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
 
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
