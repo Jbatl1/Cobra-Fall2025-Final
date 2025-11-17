@@ -58,8 +58,16 @@ public class Puzzle { //Anita Philip
         return attemptsLeft;
     }
 
+    public void resetAttempts() {
+        this.attemptsLeft = this.puzzleMaxAttempts;
+        this.puzzleLocked = false;
+    }
+
 /**
      * Adds the reward to the player's inventory if it exists.*/
+
+
+
 
 
     public void addLootToInventory(Player player) { //Anita Philip

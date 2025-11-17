@@ -158,6 +158,8 @@ public class Controller {
                         // Call your puzzle examine method
                         handleLootNormalPuzzle(model.getPlayer().getCurrRoom());
                         break;
+                    }else{
+                        view.displayNoPuzzleHereToExamine();
                     }
 
                     // 2. Not a puzzle → check if it's an inventory item
@@ -415,10 +417,16 @@ public class Controller {
 
 
     private boolean runPuzzleLoop(Puzzle puzzle, String answer) {
-      view.displayPuzzleQuestion(puzzle);
+        while (!puzzle.isPuzzleIsSolved()) {
+            // If puzzle is locked, exit immediately
+            if (puzzle.isPuzzleLocked()) {
+                view.displayPuzzleFailed(puzzle);  // Show failure
+                return false;
+            }
 
-        while (!puzzle.isPuzzleIsSolved() && !puzzle.isPuzzleLocked()) {
-            String input = view.getInput();
+            String input = answer != null ? answer : view.getInput();
+            answer = null; // only use provided answer once
+
             int result = puzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), input);
 
             switch (result) {
@@ -431,11 +439,8 @@ public class Controller {
                     view.displayPuzzleIncorrect(puzzle);
                     break;
 
-                case -1: // Locked, invalid, or no attempts left
-                    // Only show message for boundary puzzles
-                    if ("boundary".equalsIgnoreCase(puzzle.getType())) {
-                        view.displayPuzzleLocked(puzzle);
-                    }
+                case -1: // Locked
+                    view.displayPuzzleFailed(puzzle);
                     return false;
             }
         }
@@ -476,9 +481,22 @@ public class Controller {
                 && (lootNormalPuzzle.getType().equalsIgnoreCase("normal")
                 || lootNormalPuzzle.getType().equalsIgnoreCase("loot"))) {
 
+            lootNormalPuzzle.resetAttempts();
+
             view.displayNormalLootPuzzlePrompt(room);
+            view.displayPick();
+            view.pointerForInput();
 
             String choice = view.getInput();
+
+
+            // If player ignores the puzzle
+            if (choice.equalsIgnoreCase("IGNORE")) {
+                int damage = 5; // Or any amount you want
+                model.getPlayer().receiveDamage(damage);
+                view.displayTakenDamage();
+                return; // exits method, returning player to normal room state
+            }
 
             boolean solved;
             if (choice.equalsIgnoreCase("EXAMINE")) {
@@ -486,11 +504,11 @@ public class Controller {
             } else {
                 solved = runPuzzleLoop(lootNormalPuzzle, choice); // treat any other word as answer
             }
-
+/*
             // Only display failed message if not solved
             if (!solved) {
                 view.displayPuzzleFailed(lootNormalPuzzle);
-            }
+            }*/
         }
     }
 
