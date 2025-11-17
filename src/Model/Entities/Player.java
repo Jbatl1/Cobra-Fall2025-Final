@@ -179,6 +179,7 @@ public class Player extends Entity {
     
     public int useToolBeltItem(int x) {
         if (toolBelt.isEmpty()) return -1; // toolbelt empty
+        if (x > toolBelt.size()-1) return -2; // no item in slot
         Item item = toolBelt.get(x);
         if (item.getItemType().equalsIgnoreCase("Consumable")) {
             consumeItem(item);
@@ -200,7 +201,7 @@ public class Player extends Entity {
         else if (item.getItemType().equalsIgnoreCase("Key")) {
             System.out.println("NEED TO IMPLEMENT KEY USAGE");
         }
-        return -1; // cant use item
+        return -3; // cant use item
     }
 
     private int consumeItem(Item item) {

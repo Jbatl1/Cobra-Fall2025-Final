@@ -39,7 +39,7 @@ public class Controller {
 
         int x;
         boolean rest = model.getPlayer().getCurrRoom().isRestRoom();
-        view.displayWelcome();
+
 
         while (!shop && !fight && !puzzle && !solvePuzzle) {
             view.pointerForInput();
@@ -221,7 +221,7 @@ public class Controller {
                         this.view.displayShipInv(((CrashSite) this.model.getPlayer().getCurrRoom()).getShipStorage());
                     }
                     break;
-                case String s when input.matches("GET.*?CRASHED_SHIP"): ;
+                case String s when input.matches("GET.*?CRASHED SHIP"): ;
                     trim = s.substring(4, s.length() - 12).trim();
                     x = this.model.getPlayer().getFromCrashedShip(trim);
                     this.view.displayGetFromCrashedShip(x, trim);
@@ -231,7 +231,7 @@ public class Controller {
                     x = this.model.getPlayer().getFromShip(trim);
                     this.view.displayGetFromShip(x, trim);
                     break;
-                case String s when input.matches("STORE.*?CRASHED_SHIP"): ;
+                case String s when input.matches("STORE.*?CRASHED SHIP"): ;
                     trim = s.substring(6, s.length() - 12).trim();
                     x = this.model.getPlayer().storeItemInCrashedShip(trim);
                     this.view.displayStoreInCrashedShip(x, trim);
@@ -270,10 +270,6 @@ public class Controller {
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
-//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
-//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
-//                    System.out.println("-------------------");
-//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
 
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
@@ -298,6 +294,9 @@ public class Controller {
                     else {
                         this.view.displayNotInShop();
                     }
+                    break;
+                case "HELP":
+                    view.displayHelp();
                     break;
                 default:
                     this.view.displayInvalidCommand();

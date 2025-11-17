@@ -33,9 +33,6 @@ public class View {
         System.out.println(msg);
     }
 
-    public void displayWelcome(){
-        System.out.println("WELCOME TO NEXUS ESCAPE! (N,E,S,W)" + '\n');
-    }
 
     public void pointerForInput(){
         System.out.print("\n> ");
@@ -514,6 +511,12 @@ public class View {
         else if (x == -1) {
             System.out.println("❗ no item in that slot of your tool belt.");
         }
+        else if (x == -2) {
+            System.out.println("You dont have an item in that slot");
+        }
+        else if (x == -3) {
+            System.out.println("You cant use that item");
+        }
     }
 
     // ======================
@@ -807,5 +810,65 @@ public class View {
             label.revalidate();
             label.repaint();
         }
+    }
+
+    public void displayHelp() { // Caleb
+        System.out.println("""
+                ==== COMMANDS ====
+                
+                ---MOVEMENT---
+                N - moves north
+                E - moves east
+                S - moves south
+                W - moves west
+                TRAVEL *ROOM NAME* - traves to other planets
+                EXPLORE - displays information's about the current room
+                M - opens the map (if you close the window it will not open again until you restart the game. use m again to update map for new worlds)
+                
+                ---ITEM---
+                
+                PICKUP *ITEM NAME* - picks up item and adds it to the players inventory
+                DROP *ITEM NAME* - removes an item from the players inventoy
+                EQUIP *ITEM NAME* - moves an item from the players inventory to their hands
+                UNEQUIP *ITEM NAME* - moves an item from the players hands to their inventory
+                DESTROY *ITEM NAME* - deletes an item
+                EXAMINE *ITEM NAME* - displays information about an item
+                1, 2, 3, 4, 5 - uses an consumables, or moves weapon into players hands if they have an item in that slot of their toolbelt
+                G - drop held item
+                
+                ---INVENTORY---
+                
+                TOOL BELT - displays tool belt
+                ADD *ITEM NAME* TOOL BELT - adds item to tool belt
+                REMOVE *ITEM NAME* TOOL BELT - removes item from toolbelt 
+                B - display inventory - displays inventory
+                SHIP - displays ship inventory if you are at a launch site
+                CRASHED SHIP - displays crashed ship inventory if you are at a crash site
+                GET *ITEM NAME* CRASHED SHIP - gets an item from the crashed ship
+                GET *ITEM NAME* SHIP - gets an item from the ship
+                STORE *ITEM NAME* CRASHED SHIP - puts an item in the crashed ship
+                STORE *ITEM NAME* SHIP - puts an item in the ship
+                
+                ---MONSTER---
+                
+                FIGHT *MONSTER NAME* - begins a fight with a monster
+                INSPECT *MONSTER NAME* - shows information about a monster
+                ATTACK - deals damage to a monster
+                FLEE - leaves a fight with  a monster
+                
+                ---SHOP---
+                
+                SHOP - opens the shop if you are in a shop room
+                VIEW ITEMS - shows shop stock
+                SELL *ITEM NAME* - sells an item if you have it
+                BUY *ITEM NAME* - buys an item if you have enough gold
+                EXIT - leaves the shop
+                
+                ---PUZZLE---
+                
+                SOLVE - begins the attempt of a puzzle
+                IGNORE - ignores monster
+                EXAMINE - displays information about the monster
+                """);
     }
 }
