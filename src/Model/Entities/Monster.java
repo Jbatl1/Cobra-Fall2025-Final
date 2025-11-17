@@ -3,7 +3,7 @@ package Model.Entities;
 import Model.Rooms.Room;
 import Model.Items.Item;
 
-public class Monster extends Entity {
+public class Monster extends Entity { //Kai Wiggins
 
 
     // Fields
@@ -20,7 +20,7 @@ public class Monster extends Entity {
 
     public Monster(String name, int health, int attackPower, int defense,
                    String monsterID, String abilityEffect, String roomID,
-                   boolean isBoss, Item dropItem, boolean isRaider, Room currentRoom) {
+                   boolean isBoss, Item dropItem, boolean isRaider, Room currentRoom) { //Kai Wiggins
 
         super(name, health, attackPower);
         this.monsterID = monsterID;
@@ -33,37 +33,8 @@ public class Monster extends Entity {
         this.currentRoom = currentRoom;  // actual Room object
     }
 
-   /* public Monster(String name, int health, int attackPower, String monsterID, String abilityEffect, String roomID, String description, boolean isBoss, Item dropItem, boolean isRaider, Room currentRoom) {
-        super(name, health, attackPower);
-        this.monsterID = monsterID;
-        this.abilityEffect = abilityEffect;
-        this.roomID = roomID;
-        this.description = description;
-        this.isBoss = isBoss;
-        this.dropItem = dropItem;
-        this.isRaider = isRaider;
-        this.currentRoom = currentRoom;
-    }
 
-    // Constructor
-    public Monster(String name, int health, int attackPower, int defense,
-                   String monsterID, String abilityEffect, Item dropItem,
-                   boolean isBoss, boolean isRaider, Room currentRoom) {
-        // Call the 3-parameter Entity constructor
-        super(name, health, attackPower);
-
-        // Manually set defense because Entity doesn't take defense in the constructor
-        this.defense = defense;
-
-        this.monsterID = monsterID;
-        this.abilityEffect = abilityEffect;
-        this.dropItem = dropItem;
-        this.isBoss = isBoss;
-        this.isRaider = isRaider;
-        this.currentRoom = currentRoom;
-    }*/
-
-    // Getters / Setters
+    // Getters / Setters - //Kai Wiggins
     public String getMonsterID() {
         return monsterID;
     }

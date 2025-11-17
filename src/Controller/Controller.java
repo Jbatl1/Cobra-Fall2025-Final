@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Controller {
+public class Controller { //Caleb Butler
     private Model model;
     private View view;
 
@@ -29,17 +29,16 @@ public class Controller {
     private String currentPlanet = "Survivors World";
 
 
-    public Controller(Model model, View view) {
+    public Controller(Model model, View view) { //Caleb Butler
         this.model = model;
         this.view = view;
     }
 
 
-    public void processInput () { // Caleb
+    public void processInput () { //Caleb Butler
 
         int x;
         boolean rest = model.getPlayer().getCurrRoom().isRestRoom();
-
 
         while (!shop && !fight && !puzzle && !solvePuzzle) {
             view.pointerForInput();
@@ -302,7 +301,7 @@ public class Controller {
         // ================================
         //          FIGHT LOOP
         // ================================
-        while (fight) {
+        while (fight) { //Caleb Butler
 
             if (this.model.getPlayer().getHealth() <= 0) {
                 this.view.displayDefeat();
@@ -415,12 +414,6 @@ public class Controller {
     }
 
 
-/*
-     * Runs the puzzle solving loop for a specific puzzle.
-     * Returns true if puzzle solved, false if failed or locked.
-*/
-
-
     private boolean runPuzzleLoop(Puzzle puzzle, String answer) {
         while (!puzzle.isPuzzleIsSolved()) {
             // If puzzle is locked, exit immediately
@@ -446,16 +439,13 @@ public class Controller {
 
                 case -1: // Locked
                     view.displayPuzzleFailed(puzzle);
-               /* case -1: // Locked, invalid, or no attempts left
-                default:
-                    view.displayPuzzleLocked(puzzle);*/
                     return false;
             }
         }
         return puzzle.isPuzzleIsSolved();
     }
 
-    private boolean runBoundaryPuzzleLoop(Puzzle puzzle) { //Anita Philip
+    private boolean runBoundaryPuzzleLoop(Puzzle puzzle) { //Caleb Butler
         view.displayPuzzleQuestion(puzzle);
         while (!puzzle.isPuzzleIsSolved() && !puzzle.isPuzzleLocked()) {
             String input = view.getInput();
@@ -482,7 +472,7 @@ public class Controller {
 
 
 
-    public void handleBoundaryPuzzle(Room room) { //Anita Philip
+    public void handleBoundaryPuzzle(Room room) { //Caleb Butler
         Puzzle boundaryPuzzle = room.getRoomPuzzle(); // One boundary puzzle per room
 
         if (boundaryPuzzle != null
@@ -507,7 +497,7 @@ public class Controller {
         }
     }
 
-    public void handleLootNormalPuzzle(Room room) {
+    public void handleLootNormalPuzzle(Room room) { //Anita Philip
         Puzzle lootNormalPuzzle = room.getThePuzzle();
 
         // Only proceed if there is a loot/normal puzzle not yet solved
@@ -542,7 +532,6 @@ public class Controller {
         }
     }
 
-
         private void movePlayerToPreviousRoom() { //Anita Philip
         Room previousRoom = model.getPlayer().getPrevRoom();
         if (previousRoom != null) {
@@ -552,7 +541,6 @@ public class Controller {
             view.displayMessage();
         }
     }
-
 
 
 }

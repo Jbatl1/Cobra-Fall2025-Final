@@ -4,7 +4,7 @@ import Model.Entities.Player;
 import Model.Items.Item;
 import Model.Rooms.Room;
 
-public class Puzzle {
+public class Puzzle { //Anita Philip
 
     private String puzzleID;
     private String puzzleQuestion;
@@ -20,7 +20,7 @@ public class Puzzle {
 
     // Constructor
     public Puzzle(String puzzleID, String puzzleQuestion, int puzzleMaxAttempts,
-                  String puzzleSolution, Item reward, String roomID, String type) {
+                  String puzzleSolution, Item reward, String roomID, String type) { //Anita Philip
         this.puzzleID = puzzleID;
         this.puzzleQuestion = puzzleQuestion;
         this.puzzleMaxAttempts = puzzleMaxAttempts;
@@ -35,7 +35,7 @@ public class Puzzle {
         this.puzzleLocked = false;
     }
 
-    // Getters
+    // Getters - //Anita Philip
     public String getPuzzleID() { return puzzleID; }
     public String getPuzzleQuestion() { return puzzleQuestion; }
     public String getPuzzleSolution() { return puzzleSolution; }
@@ -46,11 +46,11 @@ public class Puzzle {
     public boolean isPuzzleIsSolved() { return puzzleIsSolved; }
 
     // Protected setters for child classes
-    protected void setPuzzleSolved(boolean solved) { this.puzzleIsSolved = solved; }
-    protected void setPuzzleLocked(boolean locked) { this.puzzleLocked = locked; }
+    protected void setPuzzleSolved(boolean solved) { this.puzzleIsSolved = solved; } //Kai Wiggins
+    protected void setPuzzleLocked(boolean locked) { this.puzzleLocked = locked; }//Kai Wiggins
 
     // Decrement attempts and lock if none remain
-    public int decrementAttempts() {
+    public int decrementAttempts() { //Anita Philip
         if (attemptsLeft > 0) attemptsLeft--;
         if (attemptsLeft <= 0) puzzleLocked = true;
         return attemptsLeft;
@@ -59,15 +59,15 @@ public class Puzzle {
     // Add reward to player inventory
     public void addLootToInventory(Player player) {
         if (reward != null) player.addItem(reward);
-    }
+    } //Anita Philip
 
-    public void resetAttempts() {
+    public void resetAttempts() { //Anita Philip
         this.attemptsLeft = this.puzzleMaxAttempts;
         this.puzzleLocked = false;
     }
 
     // Solve puzzle logic
-    public int solvePuzzle(Room room, Player player, String userInput) {
+    public int solvePuzzle(Room room, Player player, String userInput) { //Anita Philip
         if (!"normal".equalsIgnoreCase(this.type)) return -1;
         if (puzzleLocked) return -1;
         if (puzzleIsSolved) return 1;

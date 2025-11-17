@@ -422,11 +422,7 @@ public class LoadRooms { //Anita Philip
 
     public HashMap<String, Monster> getMonsters() {return monsters;}
     public HashMap<String, Puzzle> getAllPuzzles() {return allPuzzles;}
-    public HashMap<String, Item> getItems() {
-        return items;
-    }
-    public Room getStartRoom() {
-        return roomsInfo.get("SW1");
-    }
-    //public HashMap<String, Monster> getMonstersInfo() {return monsters;}
+    public HashMap<String, Item> getItems() {return items;}
+    public Room getStartRoom() {return roomsInfo.get("SW1");}
+
 }

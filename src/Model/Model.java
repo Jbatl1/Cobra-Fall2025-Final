@@ -7,7 +7,7 @@ import Model.Rooms.Room;
 
 import java.util.HashMap;
 
-public class Model {
+public class Model { // Anita Philip & Caleb Butler
     private Player player;
     private HashMap<String, Item> items = new HashMap<>();
     private HashMap<String, Puzzle> puzzles = new HashMap<>();

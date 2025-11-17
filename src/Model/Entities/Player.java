@@ -17,7 +17,7 @@ import Model.Puzzles.Puzzle;
  * Player entity. Uses Entity's health/attack/defense fields and methods.
  * Model contains no printing; View handles output.
  */
-public class Player extends Entity {
+public class Player extends Entity { //Kai Wiggins & Caleb Butler
 
     // ==============================
     // Fields
@@ -39,7 +39,7 @@ public class Player extends Entity {
     // ==============================
     // Constructor
     // ==============================
-    public Player(Room startingRoom, String name, int health, int attackPower, Weapon starterItem) {
+    public Player(Room startingRoom, String name, int health, int attackPower, Weapon starterItem) { //Kai Wiggins
         super(name, health, attackPower);
         this.inventory = new ArrayList<>();
         this.toolBelt = new ArrayList<>();
@@ -70,7 +70,7 @@ public class Player extends Entity {
     // ==============================
     // Move to a Different Landing Site
     // ==============================
-    public int moveToLandingSite(String landingSite) {
+    public int moveToLandingSite(String landingSite) { //Caleb Butler
         if (!(currRoom instanceof LandingSite)) {
             return -2; // not currently at a landing site
         }
@@ -106,13 +106,13 @@ public class Player extends Entity {
     // ==============================
     public ArrayList<Item> getInventory() {
         return inventory;
-    }
+    }  //Kai Wiggins
 
     public ArrayList<Item> getToolBelt() {
         return toolBelt;
-    }
+    } //Kai Wiggins
 
-    public void addItem(Item newItem) {
+    public void addItem(Item newItem) { //Kai Wiggins
         for (Item item : inventory) {
             if (item.getItemID().equals(newItem.getItemID())) {
                 item.setQuantity(item.getQuantity() + newItem.getQuantity());
@@ -122,7 +122,7 @@ public class Player extends Entity {
         inventory.add(newItem);
     }
 
-    public int isInInventory(String s) {
+    public int isInInventory(String s) { //Kai Wiggins
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i).getItemName().equalsIgnoreCase(s)) {
                 return i;
@@ -131,7 +131,7 @@ public class Player extends Entity {
         return -1;
     }
 
-    public int equipItemToHands(String s) {
+    public int equipItemToHands(String s) { //Kai Wiggins & Caleb Butler
         int idx = isInInventory(s);
         if (idx < 0) {
             return -1; // item not in inventory
@@ -144,7 +144,7 @@ public class Player extends Entity {
         return -2; // item is not a weapon and hands are occupied
     }
 
-    public int equipItemToToolBelt(String s) {
+    public int equipItemToToolBelt(String s) { //Kai Wiggins & Caleb Butler
         int idx = isInInventory(s);
         if (idx < 0) return -1; // item not in inventory
         if (toolBelt.size() >= 5) return -2; // toolbelt full
@@ -156,7 +156,7 @@ public class Player extends Entity {
 
     }
 
-    public int unEquipItemFromHands(String s) {
+    public int unEquipItemFromHands(String s) {//Kai Wiggins
         if (equippedItem != null && equippedItem.getItemName().equalsIgnoreCase(s)) {
             addItem(equippedItem);
             equippedItem = null;
@@ -165,7 +165,7 @@ public class Player extends Entity {
         return -1;
     }
 
-    public int removeItemFromToolBelt(String s) {
+    public int removeItemFromToolBelt(String s) {  //Kai Wiggins & Caleb Butler
         if (toolBelt.isEmpty()) return -1; // toolbelt empty
         for (int i = 0; i < toolBelt.size(); i++) {
             if (toolBelt.get(i).getItemName().equalsIgnoreCase(s)) {
@@ -177,7 +177,7 @@ public class Player extends Entity {
         return -2; // item not in toolbelt
     }
     
-    public int useToolBeltItem(int x) {
+    public int useToolBeltItem(int x) { //Kai Wiggins & Caleb Butler
         if (toolBelt.isEmpty()) return -1; // toolbelt empty
         if (x > toolBelt.size()-1) return -2; // no item in slot
         Item item = toolBelt.get(x);
@@ -204,7 +204,7 @@ public class Player extends Entity {
         return -3; // cant use item
     }
 
-    private int consumeItem(Item item) {
+    private int consumeItem(Item item) { //Caleb Butler
         if (item.getItemType().equalsIgnoreCase("Consumable")) {
             int restoreHP = ((Consumable) item).getHealth();
             this.health += restoreHP;
@@ -224,7 +224,7 @@ public class Player extends Entity {
         return 0;
     }
 
-    private int isInToolBelt(String name) {
+    private int isInToolBelt(String name) { //Caleb Butler
         for (int i = 0; i < toolBelt.size(); i++) {
             if (toolBelt.get(i).getItemName().equalsIgnoreCase(name)) {
                 return i;
@@ -233,7 +233,7 @@ public class Player extends Entity {
         return -1; // not found
     }
 
-    public int dropEquippedItem() { // Caleb
+    public int dropEquippedItem() { //Caleb Butler
         if (equippedItem != null) {
             currRoom.addItem(equippedItem);
             equippedItem = null;
@@ -242,7 +242,7 @@ public class Player extends Entity {
         return -1;
     }
 
-    public int dropItem(String s) {
+    public int dropItem(String s) { //Kai Wiggins
         int idx = isInInventory(s);
         if (idx >= 0) {
             Item item = inventory.remove(idx);
@@ -252,7 +252,7 @@ public class Player extends Entity {
         return 0;
     }
 
-    public int pickupItem(String s) {
+    public int pickupItem(String s) { //Kai Wiggins
         Item item = currRoom.removeItem(s);
         if (item != null) {
             inventory.add(item);
@@ -262,7 +262,7 @@ public class Player extends Entity {
     }
 
 
-    public int destroyItem(String s) {
+    public int destroyItem(String s) {  //Kai Wiggins
         int idx = isInInventory(s);
 
         if (idx >= 0) {
@@ -275,7 +275,7 @@ public class Player extends Entity {
     // ==============================
     //          Combat System
     // ==============================
-    public int inflictDamage(Monster enemy) {
+    public int inflictDamage(Monster enemy) { //Kai Wiggins & Caleb Butler
         if (equippedItem == null) return 0; // no weapon equipped
         int damage = ((Weapon)equippedItem).getDamage();
         int weaponStatus = ((Weapon) equippedItem).useDurability();
@@ -289,28 +289,18 @@ public class Player extends Entity {
         return damage;
     }
 
-    public void loseItemOnDefeat() {
+    public void loseItemOnDefeat() { //Kai Wiggins & Caleb Butler
         if (equippedItem != null) {
             equippedItem = null;
         }
     }
 
-    public void receiveRewardItem(Item item) {
-        inventory.add(item);
-    }
 
     // ==============================
     // Player Memory & Bartering
     // ==============================
-    public void rememberEvent(String event) {
-        narrativeMemory.add(event);
-    }
 
-    public ArrayList<String> getMemories() {
-        return narrativeMemory;
-    }
-
-    public int buyItem( String itemName) { // Kai
+    public int buyItem( String itemName) { //Kai Wiggins & Caleb Butler
         // Find item in shop stock
         Item item = null;
 
@@ -332,7 +322,7 @@ public class Player extends Entity {
         return item.getCost();
     }
 
-    public int sellItem(String itemName) { // Caleb
+    public int sellItem(String itemName) { //Caleb Butler
         Item item = null;
         for (Item i : inventory) {
             if (i.getItemName().equalsIgnoreCase(itemName)) {
@@ -362,7 +352,7 @@ public class Player extends Entity {
     // ==============================
     // Movement
     // ==============================
-    public int move(String direction) {
+    public int move(String direction) {//Kai Wiggins
         HashMap<String, Room> exits = currRoom.getExits();
         Room nextRoom = exits.get(direction);
 
@@ -383,29 +373,29 @@ public class Player extends Entity {
 
     public Room getCurrRoom() {
         return currRoom;
-    }
+    } //Anita Philip
 
     public Item getEquippedItem() {
         return equippedItem;
-    }
+    } //Anita Philip
 
     public Room getPrevRoom() {
         return prevRoom;
-    }
+    } //Anita Philip
 
-    public void setCurrRoom(Room newRoom) {
+    public void setCurrRoom(Room newRoom) { //Anita Philip
         this.prevRoom = this.currRoom;  // store current as previous
         this.currRoom = newRoom;        // move to new room
     }
 
-    public void rest() {
+    public void rest() { //Caleb Butler
         this.health += 5;
         if (this.health > 100) {
             this.health = 100;
         }
     }
 
-    public int storeItemInShip(String item) {
+    public int storeItemInShip(String item) {  //Caleb Butler
         if (!(this.currRoom instanceof LandingSite)) return -3; // not at landing site
         int idx = isInInventory(item);
         if (idx >= 0) {
@@ -419,7 +409,7 @@ public class Player extends Entity {
         return -1; // item not in inventory
     }
 
-    public int storeItemInCrashedShip(String item) {
+    public int storeItemInCrashedShip(String item) { //Caleb Butler
         if (!(this.currRoom instanceof CrashSite)) return -3; // not at crash site
         int idx = isInInventory(item);
         if (idx >= 0) {
@@ -431,7 +421,7 @@ public class Player extends Entity {
 
     }
 
-    public int getFromCrashedShip(String item) { // Caleb
+    public int getFromCrashedShip(String item) { //Caleb Butler
         if (!(this.currRoom instanceof CrashSite)) return -2; // not at crash site
         ArrayList<Item> crashStorage = ((CrashSite) this.currRoom).getShipStorage();
         if (crashStorage.isEmpty()) return -3; // crash ship storage empty
@@ -445,7 +435,7 @@ public class Player extends Entity {
         return -1; // item not in crash ship storage
     }
 
-    public int getFromShip(String item) { // Caleb
+    public int getFromShip(String item) {  //Caleb Butler
         if (!(this.currRoom instanceof LandingSite)) return -2; // not at landing site
         if (shipStorage.isEmpty()) return -3; // ship storage empty
         for (int i = 0; i < shipStorage.size(); i++) {
@@ -458,4 +448,3 @@ public class Player extends Entity {
         return -1; // item not in ship storage
     }
 }
-///need a arraylist with a ship capacity of 20 items, we going to need a method in the player class to move to a different landing site which will take in a string called landingsite, its going to check if they current room is a landingsite, we also need to check if its an existing landingsite, if it exist update player room to the new landingsite, if its false return -1, if true return 1, if not in landingsite from the start return -2.

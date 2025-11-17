@@ -1,10 +1,10 @@
 package Model.Items;
 
-public class Weapon extends Item{
+public class Weapon extends Item{ //Caleb Butler
     private int damage;
     private int durability;
 
-    public Weapon(
+    public Weapon( //Caleb Butler
             String itemID,
             String roomID,
             String itemName,
@@ -20,14 +20,14 @@ public class Weapon extends Item{
         super(itemID, roomID, itemName, itemType, itemRarity, itemDescription, puzzleID, quantity, cost);
         this.damage = itemDamage;
         this.durability = itemDurability;
-    }
+    } //Caleb Butler
 
     public int getDamage() {
         return damage;
-    }
+    }//Caleb Butler
 
 
-    public int useDurability() { // Caleb
+    public int useDurability() { //Caleb Butler
         durability--;
         if (durability >= 1) {
             return 1;

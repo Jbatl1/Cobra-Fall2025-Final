@@ -17,7 +17,7 @@ import java.util.Map;
 
 //items --> roomItems
 //getName() --> getItemName
-public class Room {
+public class Room {// Anita Philip
     private String roomID;
     private String roomName;
     private String roomDescription;
@@ -41,7 +41,7 @@ public class Room {
     // Constructor
     // ==============================
 
-    public Room(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop) {
+    public Room(String roomID, String roomName, String roomDescription, String roomType, String northNavigation, String eastNavigation, String southNavigation, String westNavigation, boolean roomVisited, boolean isRaider, boolean isShop) { // Anita Philip
         this.roomID = roomID;
         this.roomName = roomName;
         this.roomDescription = roomDescription;
@@ -56,6 +56,8 @@ public class Room {
 
         this.exits = new HashMap<>();  // <<< REQUIRED
     }
+
+    //Getters/Setters - // Anita Philip
     public void setStock(Map<Item, Integer> stock) {
         this.stock = stock;
     }

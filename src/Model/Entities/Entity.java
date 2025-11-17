@@ -6,7 +6,7 @@ package Model.Entities;
  * No print statements — View layer handles all output.
  */
 
-public abstract class Entity {
+public abstract class Entity { //Kai Wiggins
 
     // ==============================
     // Fields
@@ -19,7 +19,7 @@ public abstract class Entity {
     // ==============================
     // Constructor
     // ==============================
-    public Entity(String name, int health, int attackPower) {
+    public Entity(String name, int health, int attackPower) { //Kai Wiggins
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;
@@ -27,7 +27,7 @@ public abstract class Entity {
     }
 
     // ==============================
-    // Getters and Setters
+    // Getters and Setters - //Kai Wiggins
     // ==============================
     public String getName() {
         return name;
@@ -50,12 +50,7 @@ public abstract class Entity {
     // Core Combat Logic
     // ==============================
 
-    /**
-     * Applies incoming damage after accounting for defense.
-     * Ensures health never drops below zero.
-     * Logic-only — no direct printing.
-     */
-    public void receiveDamage(int amount) {
+    public void receiveDamage(int amount) { //Kai Wiggins
         int damageTaken = Math.max(0, amount - defense);
         health -= damageTaken;
         if (health < 0) {
