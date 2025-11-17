@@ -481,7 +481,7 @@ public class Controller {
                 && !boundaryPuzzle.isPuzzleIsSolved()
                 && boundaryPuzzle.getType().equalsIgnoreCase("boundary")) {
 
-            view.displayBoundaryPuzzlePrompt(boundaryPuzzle); // e.g., "This room has a puzzle (Examine / Ignore)"
+            view.displayPuzzleChoice(); // e.g., "This room has a puzzle (Examine / Ignore)"
             String choice = view.getInput();
 
             if (choice.equalsIgnoreCase("EXAMINE")) {
