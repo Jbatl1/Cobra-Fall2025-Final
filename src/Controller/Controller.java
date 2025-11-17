@@ -221,7 +221,7 @@ public class Controller {
                         this.view.displayShipInv(((CrashSite) this.model.getPlayer().getCurrRoom()).getShipStorage());
                     }
                     break;
-                case String s when input.matches("GET.*?CRASHED_SHIP"): ;
+                case String s when input.matches("GET.*?CRASHED SHIP"): ;
                     trim = s.substring(4, s.length() - 12).trim();
                     x = this.model.getPlayer().getFromCrashedShip(trim);
                     this.view.displayGetFromCrashedShip(x, trim);
@@ -270,10 +270,6 @@ public class Controller {
                 // ROOMS ----------------------
 
                 case "EXPLORE": // explore room
-//                    System.out.println(model.getPlayer().getCurrRoom().getNorthNavigation() + " " + model.getPlayer().getCurrRoom().getEastNavigation() + " " + model.getPlayer().getCurrRoom().getSouthNavigation() + " " + model.getPlayer().getCurrRoom().getWestNavigation());
-//                    System.out.println(model.getPlayer().getCurrRoom().getExits().keySet());
-//                    System.out.println("-------------------");
-//                    System.out.println(model.getPlayer().getCurrRoom().isShop());
 
                     this.view.displayExploreRoom(this.model.getPlayer().getCurrRoom());
                     break;
@@ -301,6 +297,9 @@ public class Controller {
                     break;
                 case "HELP":
                     view.displayHelp();
+                    break;
+                case "STATS":
+                    view.printStats(this.model.getPlayer());
                     break;
                 default:
                     this.view.displayInvalidCommand();
@@ -361,6 +360,9 @@ public class Controller {
                     x = model.getPlayer().useToolBeltItem(Integer.parseInt(input) - 1);
                     view.displayToolBeltUse(x);
                     break;
+                case "STATS":
+                    view.printStats(this.model.getPlayer());
+                    break;
                 default:
                     this.view.displayInvalidCommand();
                     break;
@@ -384,18 +386,21 @@ public class Controller {
 
         while (shop) {
             String input = this.view.getInput().toUpperCase();
+            String trim = "";
             switch (input) {
                 case "VIEW ITEMS": // displays items for sale
                     Map<Item, Integer> stock = (this.model.getPlayer().getCurrRoom()).getStock();
                     this.view.displayStock(stock);
                     break;
                 case String s when input.matches("^BUY\\s.*$"): // buy item
-                    x = this.model.getPlayer().buyItem(s.substring(4).trim()); // -1 = not enough money, -2 = item not found, else return price of item
-                    this.view.displayPurchaseItem(x, s);
+                    trim = s.substring(4).trim();
+                    x = this.model.getPlayer().buyItem(trim); // -1 = not enough money, -2 = item not found, else return price of item
+                    this.view.displayPurchaseItem(x, trim);
                     break;
                 case String s when input.matches("^SELL\\s.*$"): // sell item
-                    x = this.model.getPlayer().sellItem(s.substring(5).trim()); // -1 = item not found, else return sell price
-                    this.view.displaySellItem(x, s);
+                    trim = s.substring(5).trim();
+                    x = this.model.getPlayer().sellItem(trim); // -1 = item not found, else return sell price
+                    this.view.displaySellItem(x, trim);
                     break;
                 case "EXIT": // exit shop
                     this.view.displayExitShop();
@@ -472,6 +477,31 @@ public class Controller {
         return puzzle.isPuzzleIsSolved();
     }
 
+    private boolean runBoundaryPuzzleLoop(Puzzle puzzle) { //Anita Philip
+        view.displayPuzzleQuestion(puzzle);
+        while (!puzzle.isPuzzleIsSolved() && !puzzle.isPuzzleLocked()) {
+            String input = view.getInput();
+            int result =  puzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), input);
+
+            switch (result) {
+                case 1: // Solved
+                    view.displayPuzzleSolved(puzzle);
+                    model.getPlayer().getCurrRoom().getPuzzlePresent().remove(puzzle); // ✅ Clean removal
+                    return true;
+
+                case 0: // Incorrect attempt
+                    view.displayPuzzleIncorrect(puzzle);
+                    break;
+
+                case -1: // Locked, invalid, or no attempts left
+                default:
+                    view.displayPuzzleLocked(puzzle);
+                    return false;
+            }
+        }
+        return puzzle.isPuzzleIsSolved();
+    }
+
 
 
     public void handleBoundaryPuzzle(Room room) { //Anita Philip
@@ -481,16 +511,18 @@ public class Controller {
                 && !boundaryPuzzle.isPuzzleIsSolved()
                 && boundaryPuzzle.getType().equalsIgnoreCase("boundary")) {
 
-            view.displayBoundaryPuzzlePrompt(boundaryPuzzle); // e.g., "This room has a puzzle (Examine / Ignore)"
+            view.displayAttemptPuzzle(); // e.g., "This room has a puzzle (Examine / Ignore)"
             String choice = view.getInput();
 
             if (choice.equalsIgnoreCase("EXAMINE")) {
-                boolean solved = runPuzzleLoop(boundaryPuzzle, choice);
+                boolean solved = runBoundaryPuzzleLoop(boundaryPuzzle);
                 if (!solved) {
+                    // Player failed the puzzle; move back
                     view.displayPuzzleFailed(boundaryPuzzle);
                     movePlayerToPreviousRoom(); // return player to previous room
                 }
             } else {
+                System.out.println(model.getPlayer().getCurrRoom().getRoomName());
                 view.displayPuzzleIgnored(boundaryPuzzle);
                 movePlayerToPreviousRoom(); // return player to previous room
             }

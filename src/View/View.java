@@ -360,7 +360,7 @@ public class View {
             System.out.println("You ignored the puzzle and took 5 damage!");
         }
 
-        public static void displayPuzzleLocked (Puzzle puzzle){//Anita Philip
+        public void displayPuzzleLocked (Puzzle puzzle){//Anita Philip
 
 
         if(puzzle.getType().equalsIgnoreCase("normal") || puzzle.getType().equalsIgnoreCase("loot")){
@@ -861,5 +861,20 @@ public class View {
                 IGNORE - ignores monster
                 EXAMINE - displays information about the monster
                 """);
+    }
+
+    public void printStats(Player player) {
+        System.out.println("=== PLAYER STATS ===");
+        System.out.println("Health: " + player.getHealth());
+        System.out.println("Damage: " + player.getAttackPower());
+        System.out.println("Gold: " + player.getGold());
+    }
+
+    public void displayAttemptPuzzle() {
+        System.out.println("Do you want to examine or ignore this puzzle?");
+    }
+
+    public void displayPuzzleQuestion(Puzzle puzzle) {
+        System.out.println("Puzzle question: " + puzzle.getPuzzleQuestion());
     }
 }
