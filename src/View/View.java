@@ -871,4 +871,11 @@ public class View {
                 EXAMINE - displays information about the monster
                 """);
     }
+
+    public void printStats(Player player) {
+        System.out.println("=== PLAYER STATS ===");
+        System.out.println("Health: " + player.getHealth());
+        System.out.println("Damage: " + player.getAttackPower());
+        System.out.println("Gold: " + player.getGold());
+    }
 }

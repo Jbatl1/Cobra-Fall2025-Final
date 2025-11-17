@@ -298,6 +298,9 @@ public class Controller {
                 case "HELP":
                     view.displayHelp();
                     break;
+                case "STATS":
+                    view.printStats(this.model.getPlayer());
+                    break;
                 default:
                     this.view.displayInvalidCommand();
                     break;
@@ -357,6 +360,9 @@ public class Controller {
                     x = model.getPlayer().useToolBeltItem(Integer.parseInt(input) - 1);
                     view.displayToolBeltUse(x);
                     break;
+                case "STATS":
+                    view.printStats(this.model.getPlayer());
+                    break;
                 default:
                     this.view.displayInvalidCommand();
                     break;
@@ -380,18 +386,21 @@ public class Controller {
 
         while (shop) {
             String input = this.view.getInput().toUpperCase();
+            String trim = "";
             switch (input) {
                 case "VIEW ITEMS": // displays items for sale
                     Map<Item, Integer> stock = (this.model.getPlayer().getCurrRoom()).getStock();
                     this.view.displayStock(stock);
                     break;
                 case String s when input.matches("^BUY\\s.*$"): // buy item
-                    x = this.model.getPlayer().buyItem(s.substring(4).trim()); // -1 = not enough money, -2 = item not found, else return price of item
-                    this.view.displayPurchaseItem(x, s);
+                    trim = s.substring(4).trim();
+                    x = this.model.getPlayer().buyItem(trim); // -1 = not enough money, -2 = item not found, else return price of item
+                    this.view.displayPurchaseItem(x, trim);
                     break;
                 case String s when input.matches("^SELL\\s.*$"): // sell item
-                    x = this.model.getPlayer().sellItem(s.substring(5).trim()); // -1 = item not found, else return sell price
-                    this.view.displaySellItem(x, s);
+                    trim = s.substring(5).trim();
+                    x = this.model.getPlayer().sellItem(trim); // -1 = item not found, else return sell price
+                    this.view.displaySellItem(x, trim);
                     break;
                 case "EXIT": // exit shop
                     this.view.displayExitShop();
@@ -436,7 +445,6 @@ public class Controller {
 
     private boolean runPuzzleLoop(Puzzle puzzle) { //Anita Philip
         view.displayPuzzleQuestion(puzzle);
-        System.out.println(puzzle.getType());
         while (!puzzle.isPuzzleIsSolved() && !puzzle.isPuzzleLocked()) {
             String input = view.getInput();
             int result =  puzzle.solvePuzzle(model.getPlayer().getCurrRoom(), model.getPlayer(), input);
@@ -459,6 +467,8 @@ public class Controller {
         }
         return puzzle.isPuzzleIsSolved();
     }
+
+
 
 
 
